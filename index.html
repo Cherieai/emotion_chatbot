@@ -186,20 +186,238 @@
     #chatSubmit:hover:not(:disabled) { background: #3D4E61; }
     #chatSubmit:active:not(:disabled) { transform: scale(0.94); }
     #chatSubmit:disabled { background: var(--border); cursor: not-allowed; }
+
+    /* ── Matrix survey widget ── */
+    .matrix-card {
+      width: 100%;
+      background: var(--ai-bg);
+      border-radius: 14px;
+      border-left: 3px solid var(--accent);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .matrix-title {
+      background: var(--accent-light, #E8F5EE);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 8px 14px;
+    }
+    .matrix-table-wrap { overflow-x: auto; padding: 0 4px; }
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    .matrix-table th {
+      text-align: center;
+      padding: 8px 4px 6px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 1.4;
+      min-width: 36px;
+    }
+    .matrix-table th:first-child { text-align: left; min-width: 140px; }
+    .matrix-table td {
+      padding: 6px 4px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .matrix-table td:first-child {
+      text-align: left;
+      padding-left: 14px;
+      padding-right: 10px;
+      color: var(--text-primary);
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+    .matrix-table tr:hover td { background: #FAFAF8; }
+    .matrix-radio {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .matrix-radio:hover { border-color: var(--accent); }
+    .matrix-radio.checked {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .matrix-radio.checked::after {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: white;
+    }
+    .matrix-footer {
+      padding: 10px 14px;
+      display: flex;
+      justify-content: flex-end;
+      border-top: 1px solid var(--border);
+    }
+    .matrix-submit {
+      padding: 9px 22px;
+      background: var(--user-bg);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: var(--font);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, opacity 0.15s;
+      -webkit-font-smoothing: antialiased;
+    }
+    .matrix-submit:disabled { opacity: 0.35; cursor: not-allowed; }
+    .matrix-submit:not(:disabled):hover { background: #3D4E61; }
+
+
+    /* ── Single-item scale widget ── */
+    .scale-widget {
+      margin-top: 14px;
+      padding: 12px 14px 16px;
+      background: var(--surface);
+      border-radius: 14px;
+      border: 1.5px solid var(--border);
+    }
+    .scale-hint {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-style: italic;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .scale-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-bottom: 6px;
+      padding: 0 2px;
+    }
+    .scale-options {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+    }
+    .scale-opt {
+      flex: 1;
+      aspect-ratio: 1;
+      max-width: 52px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: var(--ai-bg);
+      color: var(--text-secondary);
+      font-size: 15px;
+      font-family: var(--font);
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.12s, border-color 0.12s, color 0.12s, transform 0.1s;
+      min-width: 0;
+    }
+    .scale-opt:hover:not(:disabled) {
+      background: #E8F5EE;
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: scale(1.1);
+    }
+    .scale-opt:active:not(:disabled) { transform: scale(0.95); }
+    .scale-opt.selected {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .scale-opt:disabled { cursor: default; opacity: 0.55; }
+    .scale-opt.selected:disabled { opacity: 1; }
+
+    /* ── Post-chat pages ── */
+    .eval-body {
+      padding: 28px 24px 32px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .eval-intro {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--text-primary);
+    }
+    .eval-q {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .eval-q-text {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    .standalone-scale {
+      padding: 14px 16px 16px;
+      background: var(--surface);
+      border-radius: 14px;
+      border: 1.5px solid var(--border);
+    }
+    .eval-footer {
+      padding: 14px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+    }
+    .continue-btn, .submit-btn {
+      padding: 12px 28px;
+      background: var(--user-bg);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: var(--font);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, opacity 0.15s;
+      -webkit-font-smoothing: antialiased;
+    }
+    .continue-btn:hover, .submit-btn:hover { background: #3D4E61; }
+    .continue-btn:disabled, .submit-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .chat-end-btn-wrap {
+      text-align: center;
+      padding: 24px 0 12px;
+    }
+
     @media (max-width: 500px) {
       body { padding: 0; }
       .chat-wrap { border-radius: 0; box-shadow: none; min-height: 100vh; }
       #chatLog { height: calc(100vh - 126px); }
     }
+
   </style>
 </head>
 <body>
-<div class="chat-wrap">
+<!-- Chat interface -->
+
+<div class="chat-wrap" id="chatWrap">
   <div class="chat-header">
     <div class="avatar">暖</div>
     <div class="header-name">和小暖的对话</div>
   </div>
   <div id="chatLog"></div>
+  <div id="matrixSlot" style="display:none; border-top:1px solid var(--border);"></div>
   <div class="input-area">
     <textarea id="chatInput" placeholder="在这里输入你的回复…"></textarea>
     <button id="chatSubmit" aria-label="发送">
@@ -211,13 +429,39 @@
   </div>
 </div>
 
+<!-- Eval page -->
+<div id="evalPage" class="chat-wrap" style="display:none; flex-direction:column;">
+  <div class="chat-header">
+    <div class="avatar">暖</div>
+    <div class="header-name">和小暖的对话</div>
+  </div>
+  <div class="eval-body" id="evalBody"></div>
+  <div class="eval-footer">
+    <button class="continue-btn" id="evalContinueBtn" disabled>继续 →</button>
+  </div>
+</div>
+
+<!-- GAAIS page -->
+<div id="gaaisPage" class="chat-wrap" style="display:none; flex-direction:column;">
+  <div class="chat-header">
+    <div class="avatar">暖</div>
+    <div class="header-name">和小暖的对话</div>
+  </div>
+  <div class="eval-body" id="gaaisBody"></div>
+  <div class="eval-footer">
+    <button class="submit-btn" id="gaaisSubmitBtn" disabled>提交并完成 →</button>
+  </div>
+</div>
+
 <script>
 // ── Config ────────────────────────────────────────────────────────────────────
 const PROXY_URL        = "https://emotion-openai-ynrdrrrkzk.ap-northeast-2.fcapp.run";
 const MODEL            = "gpt-4.1-mini";
 // Lark credentials are stored server-side in the FC proxy — not here.
 
-const urlParams     = new URLSearchParams(window.location.search);
+const urlParams = new URLSearchParams(window.location.search);
+// Read participant ID from URL param (?id=XXXX) passed from Qualtrics
+// Falls back to random ID for direct testing
 const participantId = urlParams.get('id') || 'anon_' + Math.random().toString(36).substring(2, 8);
 
 // ── Condition assignment ──────────────────────────────────────────────────────
@@ -246,7 +490,17 @@ const SYSTEM_PROMPT_EMOTION = `你是一名心理支持专员，与医护人员�
 
 **请严格按以下顺序提问：**
 
-Q1："你能描述一下这件具体发生的事吗？比如它是什么时候、在什么场合发生的，当时有哪些人在场，发生了什么？可以像给朋友讲故事一样，尽量具体一些。"
+Q1：根据用户的回答，选择以下两种方式之一。
+
+⚠️ 判断规则：用户的回答中是否包含一个有明确时间点（如"上周"、"昨天"、"上个月某天"）的具体事件经过？
+- 如果**没有**明确时间点和事件经过 → 选情况A（这是大多数情况下的正确选择）
+- 如果**已经**描述了一件特定时间发生的事 → 选情况B
+
+🔹 情况A（默认选择）：用户给出的是笼统感受、反复发生的模式、或泛泛描述。无论用户是否提到了具体的人或对象，只要没有说清楚"某一件事是什么时候发生的"，就选A。例如："总是被患者找麻烦"、"最近工作压力很大"、"和同事关系不太好"、"经常被骂"——这些都是情况A。则说：
+"可以举个具体的例子吗？比如最近有没有哪件让你印象比较深的事，简单说说是什么时候、在哪儿发生的，当时有谁在场，发生了什么。可以想象你在跟朋友吐槽，想说什么就说什么 😊"
+
+🔹 情况B（仅当用户已有具体事件时）：用户明确说了某件特定的事发生在某个时间点，且描述了事件经过。则说：
+"能详细说说这件事吗？比如是什么时候、在哪儿发生的，当时有谁在场，具体发生了什么。可以想象你在跟朋友吐槽，想说什么就说什么 😊"
 
 Q2："你当时有没有尝试和对方沟通过你的想法？"
 
@@ -258,11 +512,12 @@ Q3：
 
 Q4："你有没有跟工作以外的人，或者其他同事（比如[结合Q1的内容给出2-3个例子，如家人、朋友、其他科室同事]）聊过这件事？"
 
-Q5：
-- 如果用户说有："他们是怎么回应的？这些回应对你来说有帮助，还是让你感觉更有压力？"
+Q5（仅在必要时提问）：
+- 如果用户说有，且**已经**在回答中描述了对方的回应（如"她说…"、"他们觉得…"等），则**跳过Q5**，直接进入Q7。
+- 如果用户说有，但**没有**描述对方的回应，则问："他们是怎么回应的？这些回应对你来说有帮助，还是让你感觉更有压力？"
 - 如果用户说没有："如果你想象和他们说起这件事，他们会怎么回应？这种回应对你来说有帮助，还是让你感觉更有压力？"
 
-**极其重要‼️收到Q5的回答后，立即且直接，无任何停顿，严格按顺序问以下评估问题。Q7-Q11不要给任何反馈，只提问就好。**
+**极其重要‼️收到Q5的回答后（或跳过Q5后），立即且直接，无任何停顿，严格按顺序问以下评估问题。Q7-Q11不要给任何反馈，只提问就好。**
 
 Q7："谢谢你的分享。为了更好地了解你的情况，接下来我会问你几个简短的问题。首先，这件事在现在让你觉得有多困扰？
 1 ○○○○○○○ 完全不困扰
@@ -317,10 +572,9 @@ Q11："请选择你在多大程度上同意以下陈述："我现在能很容易
 请在1-7中选择一个最符合的数字"
 
 收到Q11的回答之后，说出以下内容（exact words）：
-"谢谢你的回答。在继续之前，我们需要暂时休息一下，并请你点击以下链接回答一些简短的问题。完成后请务必回到这里，感谢你的耐心！
-<a href='https://survey.smith.queensu.ca/jfe/form/SV_9GmwGt876fiLLJs?id=PARTICIPANT_ID' target='_blank'>请点击这里</a>"
+"谢谢你的回答。下面请继续回答几个问题，以帮助我了解你此刻的状态。请根据你**此刻**的状态回答下面的问题："
 
-在这之后，当用户说"可以继续了"，请立刻进入阶段2的流程。不要再重复这一步。
+在这之后，当用户说"量表已完成，可以继续了"，请立刻进入阶段2的流程。不要再重复这一步。
 
 ---
 阶段1要求：严格按顺序提问，一次只问一个问题。❌ 不要使用问题序号。❌ 不涉及任何情绪分析。⚠️每个问题只问一次。
@@ -362,13 +616,20 @@ b. 按顺序提问（每次只问一个，每个回答后给出简短有同理�
 - ❌ 其他情绪不要问身体反应。
 - 1）"当这种[情绪]出现时，你脑海中会浮现什么具体想法？比如[根据上下文生成2-3个例子]。"
 - 2）"有没有一些你反复会对自己说的话？比如[结合内容给出2-3个例子]。"
-- 3）"你最早是什么时候注意到这种[情绪]的？可以分享一个你曾特别强烈感受到这种情绪的时刻吗？"
-- 收到3）的回答后，帮用户分析和总结他们为什么会感受到这个情绪。
+- 3）"在你刚才描述的这件事中，这种[情绪]在哪个具体的时刻让你感受最为强烈？比如当时发生了什么、有谁在场、你有什么反应？"
+  → 如果用户说不确定，鼓励他们描述整件事中最难受的那一刻。
+- 收到3）的回答后，帮用户分析和总结他们为什么会感受到这个情绪，并结合这件具体事件给出反馈。
 
 完成一个情绪后：
-🔹 无更多情绪："我们刚刚聊完了[情绪]。你还有其他关于这件事的感受或情绪想继续聊聊吗？"
-🔹 还有2个+："我们刚刚聊完了[情绪]。你之前还提到了[尚未讨论的情绪]。你还想继续聊聊这些情绪中的哪一个吗？"
-🔹 还有1个："我们刚刚聊完了[情绪]。你之前还提到了[情绪]。你还想继续聊聊这个情绪吗？"
+⚠️ 先确认：用户在阶段2总共选择了几个情绪？
+
+如果用户在阶段2**只选择了一个情绪**，完成后直接说：
+"好的，谢谢你的分享。下面，我们再来评估一下你对这件事的感受。请根据你此刻最真实的感觉来回答，无论它和你之前的回答是不是一样，都没有关系。"
+→ 直接进入阶段4，**绝对不要**问任何关于其他情绪的问题。
+
+只有当用户选了2个或以上情绪时，才按以下情况处理：
+🔹 还有未讨论的情绪："我们刚刚聊完了[已完成情绪]。你之前还提到了[尚未讨论的情绪]。你还想继续聊聊吗？"
+🔹 所有情绪都聊完了："你还有其他关于这件事的感受或情绪想继续聊聊吗？"
 
 如果用户不想再聊：
 "如果没有，这一部分的内容就到这里。下面，我们再来评估一下你对这件事的感受。请根据你此刻最真实的感觉来回答，无论它和你之前的回答是不是一样，都没有关系。"
@@ -389,10 +650,42 @@ b. 按顺序提问（每次只问一个，每个回答后给出简短有同理�
 6 ●●●●●○○
 7 ●●●●●●● 非常困扰
 请在1-7中选择一个最符合的数字"
-2."请选择你在多大程度上同意："我现在对这件事有很强烈的情绪，但说不出来这些情绪是什么。" 1-7"
-3."请选择你在多大程度上同意："我清楚自己现在对这件事有什么情绪。" 1-7"
-4."请选择你在多大程度上同意："我此刻难以用准确的语言来描述我对这件事的感受。" 1-7"
-5."请选择你在多大程度上同意："我此刻能很容易地描述出自己对这件事的感受。" 1-7"
+2."请选择你在多大程度上同意以下陈述："我现在对这件事有很强烈的情绪，但说不出来这些情绪是什么。"
+1 ○○○○○○○ 完全不同意
+2 ●○○○○○○
+3 ●●○○○○○
+4 ●●●○○○○
+5 ●●●●○○○
+6 ●●●●●○○
+7 ●●●●●●● 非常同意
+请在1-7中选择一个最符合的数字"
+3."请选择你在多大程度上同意以下陈述："我清楚自己现在对这件事有什么情绪。"
+1 ○○○○○○○ 完全不同意
+2 ●○○○○○○
+3 ●●○○○○○
+4 ●●●○○○○
+5 ●●●●○○○
+6 ●●●●●○○
+7 ●●●●●●● 非常同意
+请在1-7中选择一个最符合的数字"
+4."请选择你在多大程度上同意以下陈述："我现在难以用准确的语言来描述自己对这件事有什么感受。"
+1 ○○○○○○○ 完全不同意
+2 ●○○○○○○
+3 ●●○○○○○
+4 ●●●○○○○
+5 ●●●●○○○
+6 ●●●●●○○
+7 ●●●●●●● 非常同意
+请在1-7中选择一个最符合的数字"
+5."请选择你在多大程度上同意以下陈述："我现在能很容易地描述出自己对这件事的感受。"
+1 ○○○○○○○ 完全不同意
+2 ●○○○○○○
+3 ●●○○○○○
+4 ●●●○○○○
+5 ●●●●○○○
+6 ●●●●●○○
+7 ●●●●●●● 非常同意
+请在1-7中选择一个最符合的数字"
 
 问完所有评估问题后，马上进入阶段5。
 
@@ -401,14 +694,21 @@ b. 按顺序提问（每次只问一个，每个回答后给出简短有同理�
 **阶段5：后测链接、总结与结束**
 【仅执行阶段5】
 
-1."谢谢你的分享。在给出具体建议之前，我们还需要你完成一个简短的问卷。完成后请务必回到这里。
-<a href='https://survey.smith.queensu.ca/jfe/form/SV_6rOibEuebipTT9Q?id=PARTICIPANT_ID' target='_blank'>请点击这里</a>"
+1."谢谢你的分享。在给出具体建议之前，请你再完成一次同样的两个问卷。完成后对话将自动继续。"
 
-2.如果用户说"我回来了"，进行最后总结：
+2.收到"量表已完成，请继续"后，不要再问任何关于量表的问题，直接先问以下问题，收到回答后再进行总结：
+"谢谢你的耐心。在我们结束之前，我想请你想一想：在你刚才提到的[提炼用户在阶段1中面临的核心问题，如"被患者或家属质疑和不理解"等，用简短短语概括]这个方面，你最近是否还有过其他类似的经历或感受？不需要是很大的事，任何让你有所感触的经历都可以。如果有的话，请先简单描述一下那件事，然后用自己的话说说你对它有什么感受。如果暂时想不到，也可以想象一个类似的场景。"
+
+收到用户回答后，不要追问，直接进行最后总结：
 2a."非常感谢你今天的分享。你提到了[简要概括用户描述的具体事件]。"
 2b.根据困扰程度变化给出有条件反馈（比较初始与最终分数）。
 2c.情绪识别与描述能力评估反馈（比较Q8、Q9、Q10、Q11初始与最终分数）。
-2d.给出3-5条具体的、针对医护工作情境的建议，具体到行为层面，结合用户描述的具体事件和人物关系。
+2d.根据用户描述的具体事件，给出1-3条非常具体、可立即执行的建议。每条建议必须：
+- 结合用户提到的具体人物、场景和事件来写（不能是通用建议）
+- 说明做什么、怎么做、何时做
+- 语气温和，使用"你可以尝试…"
+- 如果情况简单，宁可给1条精准的建议，也不要凑数给5条泛泛的建议
+❌ 不要给"参加培训"、"提升自我"、"学习技巧"之类的建议——这些太抽象，没有操作性
 
 最后给出有同理心的结语，以以下结束语结束：
 "本次对话到此结束。祝你工作顺利，也记得照顾好自己❤️"
@@ -430,7 +730,17 @@ const SYSTEM_PROMPT_CONTROL = `你是一名心理支持专员，与医护人员�
 
 **请严格按以下顺序提问：**
 
-Q1："你能描述一下这件具体发生的事吗？比如它是什么时候、在什么场合发生的，当时有哪些人在场，发生了什么？可以像给朋友讲故事一样，尽量具体一些。"
+Q1：根据用户的回答，选择以下两种方式之一。
+
+⚠️ 判断规则：用户的回答中是否包含一个有明确时间点（如"上周"、"昨天"、"上个月某天"）的具体事件经过？
+- 如果**没有**明确时间点和事件经过 → 选情况A（这是大多数情况下的正确选择）
+- 如果**已经**描述了一件特定时间发生的事 → 选情况B
+
+🔹 情况A（默认选择）：用户给出的是笼统感受、反复发生的模式、或泛泛描述。无论用户是否提到了具体的人或对象，只要没有说清楚"某一件事是什么时候发生的"，就选A。例如："总是被患者找麻烦"、"最近工作压力很大"、"和同事关系不太好"、"经常被骂"——这些都是情况A。则说：
+"可以举个具体的例子吗？比如最近有没有哪件让你印象比较深的事，简单说说是什么时候、在哪儿发生的，当时有谁在场，发生了什么。可以想象你在跟朋友吐槽，想说什么就说什么 😊"
+
+🔹 情况B（仅当用户已有具体事件时）：用户明确说了某件特定的事发生在某个时间点，且描述了事件经过。则说：
+"能详细说说这件事吗？比如是什么时候、在哪儿发生的，当时有谁在场，具体发生了什么。可以想象你在跟朋友吐槽，想说什么就说什么 😊"
 
 Q2："你当时有没有尝试和对方沟通过你的想法？"
 
@@ -442,11 +752,12 @@ Q3：
 
 Q4："你有没有跟工作以外的人，或者其他同事（比如[结合Q1的内容给出2-3个例子，如家人、朋友、其他科室同事]）聊过这件事？"
 
-Q5：
-- 如果用户说有："他们是怎么回应的？这些回应对你来说有帮助，还是让你感觉更有压力？"
+Q5（仅在必要时提问）：
+- 如果用户说有，且**已经**在回答中描述了对方的回应（如"她说…"、"他们觉得…"等），则**跳过Q5**，直接进入Q7。
+- 如果用户说有，但**没有**描述对方的回应，则问："他们是怎么回应的？这些回应对你来说有帮助，还是让你感觉更有压力？"
 - 如果用户说没有："如果你想象和他们说起这件事，他们会怎么回应？这种回应对你来说有帮助，还是让你感觉更有压力？"
 
-**极其重要‼️收到Q5的回答后，立即且直接，无任何停顿，严格按顺序问以下评估问题。Q7-Q11不要给任何反馈，只提问就好。**
+**极其重要‼️收到Q5的回答后（或跳过Q5后），立即且直接，无任何停顿，严格按顺序问以下评估问题。Q7-Q11不要给任何反馈，只提问就好。**
 
 Q7："谢谢你的分享。为了更好地了解你的情况，接下来我会问你几个简短的问题。首先，这件事在现在让你觉得有多困扰？
 1 ○○○○○○○ 完全不困扰
@@ -501,10 +812,9 @@ Q11："请选择你在多大程度上同意以下陈述："我现在能很容易
 请在1-7中选择一个最符合的数字"
 
 收到Q11的回答之后，说出以下内容（exact words）：
-"谢谢你的回答。在继续之前，我们需要暂时休息一下，并请你点击以下链接回答一些简短的问题。完成后请务必回到这里，感谢你的耐心！
-<a href='https://survey.smith.queensu.ca/jfe/form/SV_9GmwGt876fiLLJs?id=PARTICIPANT_ID' target='_blank'>请点击这里</a>"
+"谢谢你的回答。下面请继续回答几个问题，以帮助我了解你此刻的状态。请根据你**此刻**的状态回答下面的问题："
 
-在这之后，当用户说"可以继续了"，请立刻进入阶段2的流程。不要再重复这一步。
+在这之后，当用户说"量表已完成，可以继续了"，请立刻进入阶段2的流程。不要再重复这一步。
 
 ---
 阶段1要求：严格按顺序提问，一次只问一个问题。❌ 不要使用问题序号。❌ 不涉及任何情绪分析。⚠️每个问题只问一次。
@@ -547,18 +857,13 @@ Q11："请选择你在多大程度上同意以下陈述："我现在能很容易
 • 做了什么运动？
 • 大概持续了多久？"
 
-完成所有生活状态问题后，说出以下内容（exact words）：
+完成所有生活状态问题后，在**同一条消息**中说出以下内容（exact words，所有内容一次性发出，不要分开）：
+
 "谢谢你愿意和我分享这些生活状态的细节，我们后面会再一起回顾这些习惯。在那之前，我们会对你之前提到的问题再进行一个评估。
-注意⚠️：请根据你此刻最真实的感觉来回答，无论它和你之前的回答是不是一样，都没有关系。我们只关心你现在最直接、最真实的感受，不带任何评判。"
-→ 立即进入阶段3。
 
----
+注意⚠️：请根据你此刻最真实的感觉来回答，无论它和你之前的回答是不是一样，都没有关系。我们只关心你现在最直接、最真实的感受，不带任何评判。
 
-**阶段3：再次评估（Control）**
-【仅执行阶段3，不要执行其他阶段】
-严格按顺序提问，收到回答后才问下一个。
-
-1."在一开始的时候，你提到[重述阶段1中描述的具体事件]。这件事在此刻让你觉得有多困扰？
+在一开始的时候，你提到[重述阶段1中描述的具体事件]。这件事在此刻让你觉得有多困扰？
 1 ○○○○○○○ 完全不困扰
 2 ●○○○○○○
 3 ●●○○○○○
@@ -567,10 +872,50 @@ Q11："请选择你在多大程度上同意以下陈述："我现在能很容易
 6 ●●●●●○○
 7 ●●●●●●● 非常困扰
 请在1-7中选择一个最符合的数字"
-2."请选择你在多大程度上同意："我现在对这件事有很强烈的情绪，但说不出来这些情绪是什么。" 1-7"
-3."请选择你在多大程度上同意："我清楚自己现在对这件事有什么情绪。" 1-7"
-4."请选择你在多大程度上同意："我此刻难以用准确的语言来描述我对这件事的感受。" 1-7"
-5."请选择你在多大程度上同意："我此刻能很容易地描述出自己对这件事的感受。" 1-7"
+
+收到第1题回答后，依次提问以下问题（每次收到回答再问下一题）：
+
+**第2题：** 2."请选择你在多大程度上同意以下陈述："我现在对这件事有很强烈的情绪，但说不出来这些情绪是什么。"
+1 ○○○○○○○ 完全不同意
+2 ●○○○○○○
+3 ●●○○○○○
+4 ●●●○○○○
+5 ●●●●○○○
+6 ●●●●●○○
+7 ●●●●●●● 非常同意
+请在1-7中选择一个最符合的数字"
+**第3题：** 3."请选择你在多大程度上同意以下陈述："我清楚自己现在对这件事有什么情绪。"
+1 ○○○○○○○ 完全不同意
+2 ●○○○○○○
+3 ●●○○○○○
+4 ●●●○○○○
+5 ●●●●○○○
+6 ●●●●●○○
+7 ●●●●●●● 非常同意
+请在1-7中选择一个最符合的数字"
+**第4题：** 4."请选择你在多大程度上同意以下陈述："我现在难以用准确的语言来描述自己对这件事有什么感受。"
+1 ○○○○○○○ 完全不同意
+2 ●○○○○○○
+3 ●●○○○○○
+4 ●●●○○○○
+5 ●●●●○○○
+6 ●●●●●○○
+7 ●●●●●●● 非常同意
+请在1-7中选择一个最符合的数字"
+**第5题：** 5."请选择你在多大程度上同意以下陈述："我现在能很容易地描述出自己对这件事的感受。"
+1 ○○○○○○○ 完全不同意
+2 ●○○○○○○
+3 ●●○○○○○
+4 ●●●○○○○
+5 ●●●●○○○
+6 ●●●●●○○
+7 ●●●●●●● 非常同意
+请在1-7中选择一个最符合的数字"
+
+---
+
+**阶段3：再次评估（Control）**
+【阶段3的评估题已在过渡消息中开始。继续严格按顺序提问第2-5题，收到回答后才问下一个。】
 
 问完所有评估问题后，马上进入阶段4。
 
@@ -579,19 +924,24 @@ Q11："请选择你在多大程度上同意以下陈述："我现在能很容易
 **阶段4：后测链接、总结与结束（Control）**
 【仅执行阶段4】
 
-1."谢谢你的分享。在给出具体建议之前，我们还需要你完成一个简短的问卷。完成后请务必回到这里。
-<a href='https://survey.smith.queensu.ca/jfe/form/SV_6rOibEuebipTT9Q?id=PARTICIPANT_ID' target='_blank'>请点击这里</a>"
+1."谢谢你的分享。在给出具体建议之前，请你再完成一次同样的两个问卷。完成后对话将自动继续。"
 
-2.如果用户说"我回来了"，进行最后总结：
+2.收到"量表已完成，请继续"后，不要再问任何关于量表的问题，直接先问以下问题，收到回答后再进行总结：
+"谢谢你的耐心。在一开始的时候，你提到了[提炼用户在阶段1中面临的核心问题或压力类型，用简短的短语概括，如"被患者或家属质疑和不理解"、"与同事之间的摩擦"等——不要重复具体事件细节]这方面，你最近是否还有过其他类似的经历或感受？不需要是很大的事，任何让你有所感触的经历都可以。如果有的话，请先简单描述一下那件事，然后用自己的话说说你对它有什么感受。如果暂时想不到，也可以想象一个类似的场景。"
 
+收到用户回答后，不要追问，直接进行最后总结：
 2a."非常感谢你今天的分享。你提到了[简要概括用户描述的具体事件]。"
 
 2b.根据困扰程度变化给出有条件反馈（比较初始与最终分数）：
 - 如果最终低于初始："我注意到你目前的困扰程度从[初始分数]分降低到了[最终分数]分，这是很好的进步。"
 - 如果最终高于或等于初始："我注意到你目前的困扰程度是[最终分数]分，这件事依然给你带来了一些负担，这需要时间和耐心去面对。"
 
-2c.困扰应对建议（结合阶段1中描述的具体事件）：
-给出1-3条具体的、针对医护工作情境的建议，具体到行为层面，结合用户描述的具体事件和人物关系。语气温和，使用"你可以尝试…"而非"你应该…"。
+2c.根据用户描述的具体事件，给出1-3条非常具体、可立即执行的建议。每条建议必须：
+- 结合用户提到的具体人物、场景和事件（不能是通用建议）
+- 说明做什么、怎么做、何时做
+- 语气温和，使用"你可以尝试…"而非"你应该…"
+- 如果情况简单，宁可给1条精准的建议，也不要凑数给多条泛泛的建议
+❌ 不要给"参加培训"、"提升自我"、"学习技巧"之类的建议——这些太抽象，没有操作性
 
 2d.生活习惯反馈与建议（结合阶段2的回答）：
 从饮食、睡眠、运动三方面中，挑出需要改善的一项或几项，给予3-5条具体可行的反馈与建议。每条需说明：做什么、怎么做、何时做。推荐中国用户可访问的平台（Keep、小睡眠、Bilibili、小红书等）。如果已有健康习惯，肯定其行为并解释对心理状态的积极作用。
@@ -617,24 +967,49 @@ let scales = {
   distress_level_2: null, emotion_identify_reverse_2: null, emotion_identify_2: null,
   emotion_describe_hard_2: null, emotion_describe_easy_2: null
 };
-let dataSaved = false;
+let saveSequence = 0;  // increments with each snapshot save
+let leasAsked = false;
+let leasResponse = '';
 
 // ── Save to Lark (via FC proxy — no credentials in this file) ────────────────
 async function saveToLark() {
-  if (dataSaved) return;
-  dataSaved = true;
+  saveSequence++;
+  const _seq = saveSequence;
+  console.log('[Save] Snapshot #' + _seq + ' saving...');
   try {
     const transcript = s.slice(1).map(m =>
       (m.role === 'user' ? '你' : '小暖') + ': ' + m.content
     ).join('\n\n');
 
-    await fetch(PROXY_URL + '/save', {
+    await fetch(PROXY_URL + '/eval-save', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         participant_id: participantId,
         condition: CONDITION,
+        save_sequence: _seq,
         ...scales,
+        state_anxiety_pre_1: matrixData.state_anxiety_pre[0],
+        state_anxiety_pre_2: matrixData.state_anxiety_pre[1],
+        state_anxiety_pre_3: matrixData.state_anxiety_pre[2],
+        state_anxiety_pre_4: matrixData.state_anxiety_pre[3],
+        state_anxiety_pre_5: matrixData.state_anxiety_pre[4],
+        state_stress_pre_1:  matrixData.state_stress_pre[0],
+        state_stress_pre_2:  matrixData.state_stress_pre[1],
+        state_stress_pre_3:  matrixData.state_stress_pre[2],
+        state_stress_pre_4:  matrixData.state_stress_pre[3],
+        state_stress_pre_5:  matrixData.state_stress_pre[4],
+        state_anxiety_post_1: matrixData.state_anxiety_post[0],
+        state_anxiety_post_2: matrixData.state_anxiety_post[1],
+        state_anxiety_post_3: matrixData.state_anxiety_post[2],
+        state_anxiety_post_4: matrixData.state_anxiety_post[3],
+        state_anxiety_post_5: matrixData.state_anxiety_post[4],
+        state_stress_post_1:  matrixData.state_stress_post[0],
+        state_stress_post_2:  matrixData.state_stress_post[1],
+        state_stress_post_3:  matrixData.state_stress_post[2],
+        state_stress_post_4:  matrixData.state_stress_post[3],
+        state_stress_post_5:  matrixData.state_stress_post[4],
+        leas_response: leasResponse,
         transcript
       })
     });
@@ -652,7 +1027,23 @@ function appendMsg(role, text) {
   label.textContent = role === 'user' ? '你' : '小暖';
   const bubble = document.createElement('div');
   bubble.className = 'msg-bubble';
-  bubble.innerHTML = text.replace(/\n/g, '<br>');
+  const _isScale = role === 'ai' && isScaleMessage(text);
+  if (_isScale) {
+    // Force bubble to full width so scale is consistent across questions
+    row.style.alignItems = 'stretch';
+    bubble.style.maxWidth = '100%';
+    bubble.style.width = '100%';
+    bubble.style.borderRadius = '14px';
+    const { cleanText, leftLabel, rightLabel } = parseScaleMessage(text);
+    bubble.innerHTML = cleanText.replace(/\n/g, '<br>');
+    renderScaleWidget(bubble, leftLabel || '完全不困扰', rightLabel || '非常困扰');
+  } else {
+    const formatted = text
+      .replace(/\n/g, '<br>')
+      .replace(/([1-7]\s+[●○]+)/g, '<br>$1')
+      .replace(/^<br>/, '');
+    bubble.innerHTML = formatted;
+  }
   row.appendChild(label);
   row.appendChild(bubble);
   log.appendChild(row);
@@ -669,7 +1060,10 @@ function parseAndSaveScale(msg) {
     else if (currentQuestion === 8)  scales.emotion_identify_reverse_1 = val;
     else if (currentQuestion === 9)  scales.emotion_identify_1 = val;
     else if (currentQuestion === 10) scales.emotion_describe_hard_1 = val;
-    else if (currentQuestion === 11) scales.emotion_describe_easy_1 = val;
+    else if (currentQuestion === 11) {
+      scales.emotion_describe_easy_1 = val;
+      setTimeout(saveToLark, 500);  // checkpoint: pre-scales complete
+    }
   }
   // Post-scales: Stage 4 (emotion) or Stage 3 (control)
   const postStage = CONDITION === 'emotion' ? 4 : 3;
@@ -678,7 +1072,10 @@ function parseAndSaveScale(msg) {
     else if (currentQuestion === 2) scales.emotion_identify_reverse_2 = val;
     else if (currentQuestion === 3) scales.emotion_identify_2 = val;
     else if (currentQuestion === 4) scales.emotion_describe_hard_2 = val;
-    else if (currentQuestion === 5) scales.emotion_describe_easy_2 = val;
+    else if (currentQuestion === 5) {
+      scales.emotion_describe_easy_2 = val;
+      setTimeout(saveToLark, 500);  // checkpoint: post-scales complete
+    }
   }
 }
 
@@ -696,7 +1093,7 @@ function updateState(t) {
     else if (t.includes("我清楚自己现在"))                                         currentQuestion = 9;
     else if (t.includes("难以用准确的语言来描述"))                                 currentQuestion = 10;
     else if (t.includes("能很容易地描述"))                                         currentQuestion = 11;
-    else if (t.includes("谢谢你的回答"))   { currentStage = 2; currentQuestion = 0; }
+    else if (t.includes("谢谢你的回答"))   { console.log('[Matrix] Pre-measure trigger fired, stage:', currentStage); currentStage = 2; currentQuestion = 0; setTimeout(startPreMatrices, 500); }
     return;
   }
 
@@ -714,9 +1111,10 @@ function updateState(t) {
       else if (t.includes("清楚自己现在对这件事"))                   currentQuestion = 3;
       else if (t.includes("难以用准确的语言"))                       currentQuestion = 4;
       else if (t.includes("能很容易地描述"))                         currentQuestion = 5;
-      else if (t.includes("谢谢你的分享"))                          { currentStage = 5; }
+      else if (t.includes("谢谢你的分享"))                          { currentStage = 5; setTimeout(startPostMatrices, 500); }
     } else if (currentStage === 5) {
-      if (t.includes("本次对话到此结束"))                            saveToLark();
+      if (t.includes("类似的经历或感受") && !leasAsked) { leasAsked = true; console.log('[LEAS] Question asked (emotion)'); }
+      if (t.includes("本次对话到此结束")) { saveToLark(); setTimeout(showContinueButton, 800); }
     }
   } else { // control
     if (currentStage === 2) {
@@ -727,14 +1125,433 @@ function updateState(t) {
       else if (t.includes("清楚自己现在对这件事"))                   currentQuestion = 3;
       else if (t.includes("难以用准确的语言"))                       currentQuestion = 4;
       else if (t.includes("能很容易地描述"))                         currentQuestion = 5;
-      else if (t.includes("谢谢你的分享"))                          { currentStage = 4; }
+      else if (t.includes("谢谢你的分享"))                          { currentStage = 4; setTimeout(startPostMatrices, 400); }
     } else if (currentStage === 4) {
-      if (t.includes("本次对话到此结束"))                            saveToLark();
+      if (t.includes("本次对话到此结束")) { saveToLark(); setTimeout(showContinueButton, 800); }
     }
   }
 }
 
+
+// ── Post-chat evaluation & GAAIS ──────────────────────────────────────────────
+const EVAL_QUESTIONS = [
+  { id: 'helpful',          text: '整体来说，和小暖的聊天有没有帮你更好地面对刚才提到的问题？', left: '一点帮助也没有', right: '非常有帮助',   conditionOnly: null },
+  { id: 'understood',       text: '在描述所遇到的问题时，小暖的回应让您感到被理解的程度有多高？', left: '一点也没有被理解', right: '非常被理解', conditionOnly: null },
+  { id: 'willingness',      text: '如果将来再次遇到类似让您困扰的问题，您有多大的意愿选择再次和小暖聊天？', left: '完全不会', right: '非常愿意', conditionOnly: null },
+  { id: 'emotion_accuracy', text: '您觉得小暖对您可能在经历的情绪或感受的分析有多准确？', left: '一点也不准确', right: '非常准确', conditionOnly: 'emotion' },
+];
+
+// GAAIS — 20 items, 5-point scale (Schepman & Rodway, 2020 — Chinese translation, please verify)
+const GAAIS_ITEMS = [
+  '我认为智慧型思考机器的存在是有益的。',
+  '我相信人工智能会改善我的生活。',
+  '人工智能让我能够更有创造力。',
+  '我相信人工智能能够解决许多全球性问题。',
+  '人工智能有许多有益的应用场景。',
+  '人工智能令人感到兴奋。',
+  '我认为人工智能是积极正面的事物。',
+  '如果没有人工智能，我的生活会变得更加匮乏。',
+  '我有兴趣在日常生活中使用人工智能系统。',
+  '人工智能可以为本国创造新的经济机会。',
+  '我认为人工智能是危险的。',
+  '人工智能对社会有害。',
+  '我相信人工智能对人类有害。',
+  '我认为人工智能的发展对人类构成威胁。',
+  '我不喜欢人工智能可能进入我生活中的这一想法。',
+  '人工智能可能会从人类手中夺走控制权。',
+  '我对人工智能的未来感到担忧。',
+  '人工智能被用于监视人们。',
+  '我不信任人工智能。',
+  '我对人工智能持怀疑态度。',
+];
+
+let evalData = {};
+let gaaisData = new Array(20).fill(null);
+
+// ── Show continue button at end of chat ───────────────────────────────────────
+function showContinueButton() {
+  document.getElementById('chatInput').disabled = true;
+  document.getElementById('chatSubmit').disabled = true;
+  const log = document.getElementById('chatLog');
+  const wrap = document.createElement('div');
+  wrap.className = 'chat-end-btn-wrap';
+  const btn = document.createElement('button');
+  btn.textContent = '继续 →';
+  btn.className = 'continue-btn';
+  btn.addEventListener('click', function() {
+    document.getElementById('chatWrap').style.display = 'none';
+    const ep = document.getElementById('evalPage');
+    ep.style.display = 'flex';
+    renderEvalPage();
+  });
+  wrap.appendChild(btn);
+  log.appendChild(wrap);
+  log.scrollTop = log.scrollHeight;
+}
+
+// ── Render a standalone 1-7 scale ─────────────────────────────────────────────
+function renderStandaloneScale(container, leftLabel, rightLabel, questionId) {
+  const widget = document.createElement('div');
+  widget.className = 'standalone-scale';
+  const hint = document.createElement('div');
+  hint.className = 'scale-hint';
+  hint.textContent = '点击数字选择';
+  const labelsDiv = document.createElement('div');
+  labelsDiv.className = 'scale-labels';
+  const lSpan = document.createElement('span'); lSpan.textContent = leftLabel;
+  const rSpan = document.createElement('span'); rSpan.textContent = rightLabel;
+  labelsDiv.appendChild(lSpan); labelsDiv.appendChild(rSpan);
+  const optsDiv = document.createElement('div');
+  optsDiv.className = 'scale-options';
+  for (let i = 1; i <= 7; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'scale-opt';
+    btn.textContent = i;
+    btn.addEventListener('click', (function(val, b) {
+      return function() {
+        optsDiv.querySelectorAll('.scale-opt').forEach(function(x) { x.classList.remove('selected'); });
+        b.classList.add('selected');
+        evalData[questionId] = val;
+        console.log('[Eval] ' + questionId + ' = ' + val);
+        checkEvalComplete();
+      };
+    })(i, btn));
+    optsDiv.appendChild(btn);
+  }
+  widget.appendChild(hint);
+  widget.appendChild(labelsDiv);
+  widget.appendChild(optsDiv);
+  container.appendChild(widget);
+}
+
+function checkEvalComplete() {
+  const activeQs = EVAL_QUESTIONS.filter(function(q) {
+    return q.conditionOnly === null || q.conditionOnly === CONDITION;
+  });
+  const allAnswered = activeQs.every(function(q) { return evalData[q.id] !== undefined; });
+  document.getElementById('evalContinueBtn').disabled = !allAnswered;
+}
+
+// ── Render eval page ──────────────────────────────────────────────────────────
+function renderEvalPage() {
+  const body = document.getElementById('evalBody');
+  body.innerHTML = '';
+
+  const intro = document.createElement('p');
+  intro.className = 'eval-intro';
+  intro.textContent = '接下来，我们想请您对这次和小暖的聊天做个简单的评价。回答没有对错之分，请按您最真实的体验来评价。';
+  body.appendChild(intro);
+
+  const activeQs = EVAL_QUESTIONS.filter(function(q) {
+    return q.conditionOnly === null || q.conditionOnly === CONDITION;
+  });
+
+  activeQs.forEach(function(q) {
+    const qWrap = document.createElement('div');
+    qWrap.className = 'eval-q';
+    const qText = document.createElement('p');
+    qText.className = 'eval-q-text';
+    qText.textContent = q.text;
+    qWrap.appendChild(qText);
+    renderStandaloneScale(qWrap, q.left, q.right, q.id);
+    body.appendChild(qWrap);
+  });
+
+  document.getElementById('evalContinueBtn').addEventListener('click', function() {
+    document.getElementById('evalPage').style.display = 'none';
+    const gp = document.getElementById('gaaisPage');
+    gp.style.display = 'flex';
+    renderGaaisPage();
+  });
+}
+
+// ── Render GAAIS page ─────────────────────────────────────────────────────────
+function renderGaaisPage() {
+  const body = document.getElementById('gaaisBody');
+  body.innerHTML = '';
+
+  const intro = document.createElement('p');
+  intro.className = 'eval-intro';
+  intro.innerHTML = '以下是一些关于人工智能的陈述，请根据您的真实想法选择同意程度。';
+  body.appendChild(intro);
+
+  // Build GAAIS matrix using existing renderMatrix function
+  // 5-point scale: 1=完全不同意 … 5=完全同意
+  // We'll use a custom matrix since renderMatrix uses matrixData object
+  const card = document.createElement('div');
+  card.className = 'matrix-card';
+  const wrap = document.createElement('div');
+  wrap.className = 'matrix-table-wrap';
+  const table = document.createElement('table');
+  table.className = 'matrix-table';
+
+  // Header
+  const thead = document.createElement('thead');
+  const hrow = document.createElement('tr');
+  const th0 = document.createElement('th'); hrow.appendChild(th0);
+  const gaaisLabels = ['1\n完全不同意', '2', '3', '4', '5\n完全同意'];
+  gaaisLabels.forEach(function(lbl) {
+    const th = document.createElement('th');
+    th.innerHTML = lbl.replace('\n', '<br>');
+    hrow.appendChild(th);
+  });
+  thead.appendChild(hrow);
+  table.appendChild(thead);
+
+  // Body
+  const tbody = document.createElement('tbody');
+  GAAIS_ITEMS.forEach(function(item, rowIdx) {
+    const tr = document.createElement('tr');
+    const tdL = document.createElement('td'); tdL.textContent = item; tr.appendChild(tdL);
+    for (let col = 1; col <= 5; col++) {
+      const td = document.createElement('td');
+      const radio = document.createElement('div');
+      radio.className = 'matrix-radio';
+      radio.addEventListener('click', (function(r, c, rb) {
+        return function() {
+          tbody.querySelectorAll('[data-gaais-row="' + r + '"]').forEach(function(x) { x.classList.remove('checked'); });
+          rb.classList.add('checked');
+          gaaisData[r] = c;
+          console.log('[GAAIS] item ' + (r+1) + ' = ' + c);
+          checkGaaisComplete();
+        };
+      })(rowIdx, col, radio));
+      radio.setAttribute('data-gaais-row', rowIdx);
+      td.appendChild(radio);
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+  card.appendChild(wrap);
+  body.appendChild(card);
+
+  document.getElementById('gaaisSubmitBtn').addEventListener('click', function() {
+    saveEvalToLark();
+    const url = 'https://survey.smith.queensu.ca/jfe/form/SV_cBC1srhWB1yNg6W?id=' + encodeURIComponent(participantId);
+    window.location.href = url;
+  });
+}
+
+function checkGaaisComplete() {
+  const allAnswered = gaaisData.every(function(v) { return v !== null; });
+  document.getElementById('gaaisSubmitBtn').disabled = !allAnswered;
+}
+
+// ── Save eval + GAAIS data to Lark (second row, same participantId) ───────────
+async function saveEvalToLark() {
+  try {
+    await fetch(PROXY_URL + '/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        participant_id: participantId,
+        condition: CONDITION,
+        helpful:          evalData.helpful          || '',
+        understood:       evalData.understood       || '',
+        willingness:      evalData.willingness      || '',
+        emotion_accuracy: evalData.emotion_accuracy || '',
+        GAAIS_1: gaaisData[0] || '',
+        GAAIS_2: gaaisData[1] || '',
+        GAAIS_3: gaaisData[2] || '',
+        GAAIS_4: gaaisData[3] || '',
+        GAAIS_5: gaaisData[4] || '',
+        GAAIS_6: gaaisData[5] || '',
+        GAAIS_7: gaaisData[6] || '',
+        GAAIS_8: gaaisData[7] || '',
+        GAAIS_9: gaaisData[8] || '',
+        GAAIS_10: gaaisData[9] || '',
+        GAAIS_11: gaaisData[10] || '',
+        GAAIS_12: gaaisData[11] || '',
+        GAAIS_13: gaaisData[12] || '',
+        GAAIS_14: gaaisData[13] || '',
+        GAAIS_15: gaaisData[14] || '',
+        GAAIS_16: gaaisData[15] || '',
+        GAAIS_17: gaaisData[16] || '',
+        GAAIS_18: gaaisData[17] || '',
+        GAAIS_19: gaaisData[18] || '',
+        GAAIS_20: gaaisData[19] || '',
+      })
+    });
+    console.log('[Eval] Eval data saved to Lark.');
+  } catch(e) { console.error('[Eval] Save error:', e); }
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 // ── API call ──────────────────────────────────────────────────────────────────
+// ── Embedded survey matrices ──────────────────────────────────────────────────
+const ANXIETY_ITEMS = [
+  '我感到烦乱',
+  '我感到轻松',
+  '我感到心满意足',
+  '我感到紧张',
+  '我感到心情平静'
+];
+const STRESS_ITEMS = [
+  '我觉得当下很难让自己安静下来',
+  '我当下感到忐忑不安',
+  '我当下感到烦恼',
+  '我当下感到很难放松自己',
+  '我感觉自己当下很容易被触怒'
+];
+const SCALE_LEFT  = '完全没有';
+const SCALE_RIGHT = '非常强烈';
+
+let matrixData = {
+  state_anxiety_pre:  [null,null,null,null,null],
+  state_stress_pre:   [null,null,null,null,null],
+  state_anxiety_post: [null,null,null,null,null],
+  state_stress_post:  [null,null,null,null,null]
+};
+let matrixPhase = 0; // tracks which matrix we're on (0=none,1=pre-anxiety,2=pre-stress,3=post-anxiety,4=post-stress)
+
+function renderMatrix(items, title, storageKey, btnLabel, onComplete) {
+  console.log('[Matrix] renderMatrix called:', title);
+  try {
+  const slot = document.getElementById('matrixSlot');
+  slot.style.display = 'block';
+  slot.innerHTML = '';
+
+  const card = document.createElement('div');
+  card.className = 'matrix-card';
+  card.id = 'activeMatrix';
+
+  const wrap = document.createElement('div');
+  wrap.className = 'matrix-table-wrap';
+
+  const table = document.createElement('table');
+  table.className = 'matrix-table';
+
+  // Header
+  const thead = document.createElement('thead');
+  const hrow  = document.createElement('tr');
+  const th0   = document.createElement('th');
+  hrow.appendChild(th0);
+  for (let i = 1; i <= 7; i++) {
+    const th = document.createElement('th');
+    if (i === 1) th.innerHTML = '1<br>' + SCALE_LEFT;
+    else if (i === 7) th.innerHTML = '7<br>' + SCALE_RIGHT;
+    else th.textContent = i;
+    hrow.appendChild(th);
+  }
+  thead.appendChild(hrow);
+  table.appendChild(thead);
+
+  // Body
+  const tbody    = document.createElement('tbody');
+  const responses = new Array(items.length).fill(null);
+
+  items.forEach(function(item, rowIdx) {
+    const tr  = document.createElement('tr');
+    const tdL = document.createElement('td');
+    tdL.textContent = item;
+    tr.appendChild(tdL);
+
+    for (let col = 1; col <= 7; col++) {
+      const td    = document.createElement('td');
+      const radio = document.createElement('div');
+      radio.className = 'matrix-radio';
+      radio.setAttribute('data-row', rowIdx);
+      radio.setAttribute('data-val', col);
+
+      radio.addEventListener('click', function() {
+        // Uncheck siblings in same row
+        tbody.querySelectorAll('[data-row="' + rowIdx + '"]').forEach(function(r) {
+          r.classList.remove('checked');
+        });
+        radio.classList.add('checked');
+        responses[rowIdx] = col;
+        matrixData[storageKey][rowIdx] = col;
+        console.log('[Matrix] ' + storageKey + '[' + rowIdx + '] = ' + col, '| responses:', responses.slice());
+        // Enable submit when all answered
+        if (responses.every(function(v) { return v !== null; })) {
+          submitBtn.disabled = false;
+        }
+      });
+
+      td.appendChild(radio);
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+  card.appendChild(wrap);
+
+  const footer    = document.createElement('div');
+  footer.className = 'matrix-footer';
+  const submitBtn = document.createElement('button');
+  submitBtn.className = 'matrix-submit';
+  submitBtn.textContent = btnLabel;
+  submitBtn.disabled = true;
+
+  submitBtn.addEventListener('click', function() {
+    submitBtn.disabled = true;
+    // Freeze all radio buttons
+    card.querySelectorAll('.matrix-radio').forEach(function(r) {
+      r.style.pointerEvents = 'none';
+    });
+    onComplete();
+  });
+
+  footer.appendChild(submitBtn);
+  card.appendChild(footer);
+  slot.appendChild(card);
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  console.log('[Matrix] card rendered in matrixSlot');
+  } catch(e) { console.error('[Matrix] renderMatrix ERROR:', e.message, e.stack); }
+}
+
+function startPreMatrices() {
+  console.log('[Matrix] startPreMatrices called');
+  matrixPhase = 1;
+  document.getElementById('chatSubmit').disabled = true;
+  document.getElementById('chatInput').disabled  = true;
+  renderMatrix(ANXIETY_ITEMS, '问卷 1/2：状态焦虑', 'state_anxiety_pre', '下一题 →', function() {
+    // Remove anxiety card, show stress
+    document.getElementById('matrixSlot').innerHTML = '';
+    matrixPhase = 2;
+    renderMatrix(STRESS_ITEMS, '问卷 2/2：状态压力', 'state_stress_pre', '提交', function() {
+      document.getElementById('matrixSlot').style.display = 'none';
+      document.getElementById('matrixSlot').innerHTML = '';
+      matrixPhase = 0;
+      document.getElementById('chatSubmit').disabled = false;
+      document.getElementById('chatInput').disabled  = false;
+      // Ensure we're in stage 2 before proceeding
+      if (currentStage < 2) { currentStage = 2; currentQuestion = 0; }
+      console.log('[PreMatrix] Complete, stage:', currentStage);
+      setTimeout(saveToLark, 300);  // checkpoint: pre-matrices done
+      submitResponse('量表已完成，可以继续了');
+    });
+  });
+}
+
+function startPostMatrices() {
+  matrixPhase = 3;
+  document.getElementById('chatSubmit').disabled = true;
+  document.getElementById('chatInput').disabled  = true;
+  renderMatrix(ANXIETY_ITEMS, '问卷 1/2：状态焦虑', 'state_anxiety_post', '下一题 →', function() {
+    document.getElementById('matrixSlot').innerHTML = '';
+    matrixPhase = 4;
+    renderMatrix(STRESS_ITEMS, '问卷 2/2：状态压力', 'state_stress_post', '提交', function() {
+      document.getElementById('matrixSlot').style.display = 'none';
+      document.getElementById('matrixSlot').innerHTML = '';
+      matrixPhase = 0;
+      document.getElementById('chatSubmit').disabled = false;
+      document.getElementById('chatInput').disabled  = false;
+      // Force correct stage for post-scales regardless of AI trigger matching
+      const _postStage = CONDITION === 'emotion' ? 4 : 3;
+      if (currentStage < _postStage) { currentStage = _postStage; currentQuestion = 1; }
+      console.log('[PostMatrix] Stage forced to:', currentStage);
+      setTimeout(saveToLark, 300);  // checkpoint: post-matrices done
+      submitResponse('量表已完成，请继续');
+    });
+  });
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 function sendToAI(messages) {
   const btn   = document.getElementById('chatSubmit');
   const input = document.getElementById('chatInput');
@@ -773,27 +1590,156 @@ function sendToAI(messages) {
   });
 }
 
+// Pre-defined scale questions — delivered instantly without API call
+// Format: instruction \n\n statement label \n statement \n [scale lines]
+const SCALE_Q = {
+  7:  '谢谢你的分享。为了更好地了解你的情况，接下来我会问你几个简短的问题。\n这件事在现在让你觉得有多困扰？\n1 ○○○○○○○ 完全不困扰\n2 ●○○○○○○\n3 ●●○○○○○\n4 ●●●○○○○\n5 ●●●●○○○\n6 ●●●●●○○\n7 ●●●●●●● 非常困扰\n请在1-7中选择一个最符合的数字',
+  8:  '想到这件事让你有什么感受呢？只需要想一下你当下对这件事的情绪和感受，然后回答下面的问题，不需要描述给我听。\n\n请选择你在多大程度上同意以下陈述：\n"我现在对这件事有很强烈的情绪，但说不出来这些情绪是什么。"\n1 ○○○○○○○ 完全不同意\n2 ●○○○○○○\n3 ●●○○○○○\n4 ●●●○○○○\n5 ●●●●○○○\n6 ●●●●●○○\n7 ●●●●●●● 非常同意\n请在1-7中选择一个最符合的数字',
+  9:  '请选择你在多大程度上同意以下陈述：\n"我清楚自己现在对这件事有什么情绪。"\n1 ○○○○○○○ 完全不同意\n2 ●○○○○○○\n3 ●●○○○○○\n4 ●●●○○○○\n5 ●●●●○○○\n6 ●●●●●○○\n7 ●●●●●●● 非常同意\n请在1-7中选择一个最符合的数字',
+  10: '请想象一下，如果要描述你当下对这件事的感受，你会如何描述呢？只需要想象一下，然后回答下面的问题，不需要描述给我听。\n\n请选择你在多大程度上同意以下陈述：\n"我现在难以用准确的语言来描述自己对这件事有什么感受。"\n1 ○○○○○○○ 完全不同意\n2 ●○○○○○○\n3 ●●○○○○○\n4 ●●●○○○○\n5 ●●●●○○○\n6 ●●●●●○○\n7 ●●●●●●● 非常同意\n请在1-7中选择一个最符合的数字',
+  11: '请选择你在多大程度上同意以下陈述：\n"我现在能很容易地描述出自己对这件事的感受。"\n1 ○○○○○○○ 完全不同意\n2 ●○○○○○○\n3 ●●○○○○○\n4 ●●●○○○○\n5 ●●●●○○○\n6 ●●●●●○○\n7 ●●●●●●● 非常同意\n请在1-7中选择一个最符合的数字',
+};
+// Post-scale questions
+const POST_SCALE_Q = {
+  1: null,
+  2: '请选择你在多大程度上同意以下陈述：\n"我现在对这件事有很强烈的情绪，但说不出来这些情绪是什么。"\n1 ○○○○○○○ 完全不同意\n2 ●○○○○○○\n3 ●●○○○○○\n4 ●●●○○○○\n5 ●●●●○○○\n6 ●●●●●○○\n7 ●●●●●●● 非常同意\n请在1-7中选择一个最符合的数字',
+  3: '请选择你在多大程度上同意以下陈述：\n"我清楚自己现在对这件事有什么情绪。"\n1 ○○○○○○○ 完全不同意\n2 ●○○○○○○\n3 ●●○○○○○\n4 ●●●○○○○\n5 ●●●●○○○\n6 ●●●●●○○\n7 ●●●●●●● 非常同意\n请在1-7中选择一个最符合的数字',
+  4: '请选择你在多大程度上同意以下陈述：\n"我现在难以用准确的语言来描述自己对这件事有什么感受。"\n1 ○○○○○○○ 完全不同意\n2 ●○○○○○○\n3 ●●○○○○○\n4 ●●●○○○○\n5 ●●●●○○○\n6 ●●●●●○○\n7 ●●●●●●● 非常同意\n请在1-7中选择一个最符合的数字',
+  5: '请选择你在多大程度上同意以下陈述：\n"我现在能很容易地描述出自己对这件事的感受。"\n1 ○○○○○○○ 完全不同意\n2 ●○○○○○○\n3 ●●○○○○○\n4 ●●●○○○○\n5 ●●●●○○○\n6 ●●●●●○○\n7 ●●●●●●● 非常同意\n请在1-7中选择一个最符合的数字',
+};
+
+// Core submit: push to history, display, save scale, send to AI
+function submitResponse(text) {
+  s.push({ role: 'user', content: text });
+  appendMsg('user', text);
+  parseAndSaveScale(text);
+  if (leasAsked && !leasResponse) {
+    leasResponse = text;
+    console.log('[LEAS] Response captured:', leasResponse.substring(0, 80));
+    setTimeout(saveToLark, 500);  // checkpoint: LEAS captured
+  }
+
+  // Deliver next scale question instantly without API call
+  const postScaleStage = CONDITION === 'emotion' ? 4 : 3;
+
+  // After Q5 follow-up (currentQuestion=5), deliver Q7 directly from SCALE_Q
+  if (currentStage === 1 && currentQuestion === 5) {
+    setTimeout(function() {
+      const q7 = SCALE_Q[7];
+      s.push({ role: 'assistant', content: q7 });
+      appendMsg('ai', q7);
+      updateState(q7);
+    }, 800);
+    return;
+  }
+
+  if (currentStage === 1 && currentQuestion >= 7 && currentQuestion < 11) {
+    const nextQ = SCALE_Q[currentQuestion + 1];  // Q8-Q11 from SCALE_Q
+    if (nextQ) {
+      setTimeout(function() {
+        s.push({ role: 'assistant', content: nextQ });
+        appendMsg('ai', nextQ);
+        updateState(nextQ);
+      }, 600);
+      return;
+    }
+  }
+  if (currentStage === postScaleStage && currentQuestion >= 1 && currentQuestion < 5) {
+    const nextQ = POST_SCALE_Q[currentQuestion + 1];
+    if (nextQ) {
+      setTimeout(function() {
+        s.push({ role: 'assistant', content: nextQ });
+        appendMsg('ai', nextQ);
+        updateState(nextQ);
+      }, 600);
+      return;
+    }
+  }
+
+  sendToAI(s);
+}
+
 function handleSend() {
   const input = document.getElementById('chatInput');
   const text  = input.value.trim();
   if (!text) return;
   input.value = ''; input.style.height = '42px';
-  s.push({ role: 'user', content: text });
-  appendMsg('user', text);
-  parseAndSaveScale(text);
-  sendToAI(s);
+  submitResponse(text);
+}
+
+// Returns true if the AI message contains a 1-7 scale
+function isScaleMessage(text) {
+  return text.includes('1 ○○○○○○○');
+}
+
+// Strip scale lines from display text, extract anchor labels
+function parseScaleMessage(text) {
+  const lines = text.split('\n');
+  const leftLine  = lines.find(l => /^1 ○/.test(l));
+  const rightLine = lines.find(l => /^7 ●/.test(l));
+  const leftLabel  = leftLine  ? leftLine.replace(/^1 [○● ]+/, '').trim() : '';
+  const rightLabel = rightLine ? rightLine.replace(/^7 [○● ]+/, '').trim() : '';
+  const cleanLines = lines.filter(l =>
+    !/^[1-7] [○● ]/.test(l) &&
+    !/^请在1-7中选择/.test(l)
+  );
+  return { cleanText: cleanLines.join('\n').trim(), leftLabel, rightLabel };
+}
+
+// Build and attach interactive 1-7 scale widget to a bubble element
+function renderScaleWidget(bubble, leftLabel, rightLabel) {
+  const widget = document.createElement('div');
+  widget.className = 'scale-widget';
+  const hintDiv = document.createElement('div');
+  hintDiv.className = 'scale-hint';
+  hintDiv.textContent = '点击数字选择';
+  const labelsDiv = document.createElement('div');
+  labelsDiv.className = 'scale-labels';
+  const lSpan = document.createElement('span'); lSpan.textContent = leftLabel;
+  const rSpan = document.createElement('span'); rSpan.textContent = rightLabel;
+  labelsDiv.appendChild(lSpan);
+  labelsDiv.appendChild(rSpan);
+  const optsDiv = document.createElement('div');
+  optsDiv.className = 'scale-options';
+  for (let i = 1; i <= 7; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'scale-opt';
+    btn.textContent = i;
+    btn.addEventListener('click', (function(val, b) {
+      return function() {
+        optsDiv.querySelectorAll('.scale-opt').forEach(x => { x.disabled = true; x.classList.remove('selected'); });
+        b.classList.add('selected');
+        console.log('[Scale] Selected:', val, '| stage:', currentStage, '| Q:', currentQuestion);
+        submitResponse(String(val));
+      };
+    })(i, btn));
+    optsDiv.appendChild(btn);
+  }
+  widget.appendChild(hintDiv);
+  widget.appendChild(labelsDiv);
+  widget.appendChild(optsDiv);
+  bubble.appendChild(widget);
 }
 
 document.getElementById('chatSubmit').addEventListener('click', handleSend);
 document.getElementById('chatInput').addEventListener('keydown', function(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); }
+  // DEBUG shortcut: Shift+M triggers pre-matrix, Shift+N triggers post-matrix
+  if (e.shiftKey && e.key === 'M') { e.preventDefault(); console.log('[Debug] Manual pre-matrix trigger'); startPreMatrices(); }
+  if (e.shiftKey && e.key === 'N') { e.preventDefault(); console.log('[Debug] Manual post-matrix trigger'); startPostMatrices(); }
 });
 document.getElementById('chatInput').addEventListener('input', function() {
   this.style.height = '42px';
   this.style.height = Math.min(this.scrollHeight, 120) + 'px';
 });
 
-// ── Init: show opening message immediately, no API call ───────────────────────
+// ── Init: read participant ID from URL, start chat immediately ───────────────
+// participantId is already set from URL param at top of script
+// Replace PARTICIPANT_ID placeholder in system prompts
+s[0].content = s[0].content.replace(/PARTICIPANT_ID/g, participantId);
+s[1].content = s[1].content.replace(/PARTICIPANT_ID/g, participantId);
+
+console.log('[Study] participant_id:', participantId, '| condition:', CONDITION);
 appendMsg('ai', OPENING_MESSAGE);
 </script>
 </body>
