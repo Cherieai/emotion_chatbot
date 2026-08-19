@@ -986,7 +986,8 @@ let scales = {
   emotion_describe_hard_2: null, emotion_describe_easy_2: null
 };
 let saveSequence = 0;
-let larkRowNumber = null;   // set after first save, used for row overwrites
+let larkRowNumber = null;      // set after first save, used for row overwrites
+let larkRowPromise = null;     // pending promise for first save — prevents race condition
 let larkRowNum = null;  // row number in Lark, set after first save
 let leasAsked = false;
 let leasResponse = '';
@@ -1008,21 +1009,33 @@ async function saveToLark() {
       leas_response: leasResponse,
       transcript: s.slice(1).map(m => (m.role === 'user' ? '你' : '小暖') + ': ' + m.content).join('\n\n'),
     };
+
     if (larkRowNumber) {
-      // Overwrite existing row
+      // Row already known — overwrite directly
       payload.row_number = larkRowNumber;
       await fetch(PROXY_URL + '/save-update', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
       });
       console.log('[Save] #' + _seq + ' → overwrote row', larkRowNumber);
+    } else if (larkRowPromise) {
+      // First save still in flight — wait for it, then overwrite
+      await larkRowPromise;
+      if (larkRowNumber) {
+        payload.row_number = larkRowNumber;
+        await fetch(PROXY_URL + '/save-update', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+        });
+        console.log('[Save] #' + _seq + ' → overwrote row', larkRowNumber, '(waited for first)');
+      }
     } else {
-      // First save: append new row, get row number back
-      const resp = await fetch(PROXY_URL + '/save', {
+      // Very first save — create the row and store a promise so concurrent saves wait
+      larkRowPromise = fetch(PROXY_URL + '/save', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+      }).then(r => r.json()).then(data => {
+        if (data.rowNumber) { larkRowNumber = data.rowNumber; console.log('[Save] Row assigned:', larkRowNumber); }
       });
-      const data = await resp.json();
-      if (data.rowNumber) { larkRowNumber = data.rowNumber; console.log('[Save] Row assigned:', larkRowNumber); }
-      console.log('[Save] #' + _seq + ' → new row');
+      await larkRowPromise;
+      console.log('[Save] #' + _seq + ' → new row created');
     }
   } catch(e) { console.error('[Save] Error:', e); }
 }
