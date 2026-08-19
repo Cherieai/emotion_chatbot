@@ -1028,6 +1028,212 @@ async function saveToLark() {
 }
 
 
+
+// ── Post-chat evaluation & GAAIS ──────────────────────────────────────────────
+const EVAL_QUESTIONS = [
+  { id: 'helpful',          text: '整体来说，和小暖的聊天有没有帮你更好地面对刚才提到的问题？', left: '一点帮助也没有', right: '非常有帮助',   conditionOnly: null },
+  { id: 'understood',       text: '在描述所遇到的问题时，小暖的回应让您感到被理解的程度有多高？', left: '一点也没有被理解', right: '非常被理解', conditionOnly: null },
+  { id: 'willingness',      text: '如果将来再次遇到类似让您困扰的问题，您有多大的意愿选择再次和小暖聊天？', left: '完全不会', right: '非常愿意', conditionOnly: null },
+  { id: 'emotion_accuracy', text: '您觉得小暖对您可能在经历的情绪或感受的分析有多准确？', left: '一点也不准确', right: '非常准确', conditionOnly: 'emotion' },
+];
+
+const GAAIS_ITEMS = [
+  '我认为智慧型思考机器的存在是有益的。',
+  '我相信人工智能会改善我的生活。',
+  '人工智能让我能够更有创造力。',
+  '我相信人工智能能够解决许多全球性问题。',
+  '人工智能有许多有益的应用场景。',
+  '人工智能令人感到兴奋。',
+  '我认为人工智能是积极正面的事物。',
+  '如果没有人工智能，我的生活会变得更加匮乏。',
+  '我有兴趣在日常生活中使用人工智能系统。',
+  '人工智能可以为本国创造新的经济机会。',
+  '我认为人工智能是危险的。',
+  '人工智能对社会有害。',
+  '我相信人工智能对人类有害。',
+  '我认为人工智能的发展对人类构成威胁。',
+  '我不喜欢人工智能可能进入我生活中的这一想法。',
+  '人工智能可能会从人类手中夺走控制权。',
+  '我对人工智能的未来感到担忧。',
+  '人工智能被用于监视人们。',
+  '我不信任人工智能。',
+  '我对人工智能持怀疑态度。',
+];
+
+let evalData = {};
+let gaaisData = new Array(20).fill(null);
+
+function showContinueButton() {
+  document.getElementById('chatInput').disabled = true;
+  document.getElementById('chatSubmit').disabled = true;
+  const log = document.getElementById('chatLog');
+  const wrap = document.createElement('div');
+  wrap.className = 'chat-end-btn-wrap';
+  const btn = document.createElement('button');
+  btn.textContent = '继续 →';
+  btn.className = 'continue-btn';
+  btn.addEventListener('click', function() {
+    document.getElementById('chatWrap').style.display = 'none';
+    document.getElementById('evalPage').style.display = 'flex';
+    renderEvalPage();
+  });
+  wrap.appendChild(btn);
+  log.appendChild(wrap);
+  log.scrollTop = log.scrollHeight;
+}
+
+function renderStandaloneScale(container, leftLabel, rightLabel, questionId) {
+  const widget = document.createElement('div');
+  widget.className = 'standalone-scale';
+  const hint = document.createElement('div');
+  hint.className = 'scale-hint';
+  hint.textContent = '点击数字选择';
+  const labelsDiv = document.createElement('div');
+  labelsDiv.className = 'scale-labels';
+  const lSpan = document.createElement('span'); lSpan.textContent = leftLabel;
+  const rSpan = document.createElement('span'); rSpan.textContent = rightLabel;
+  labelsDiv.appendChild(lSpan); labelsDiv.appendChild(rSpan);
+  const optsDiv = document.createElement('div');
+  optsDiv.className = 'scale-options';
+  for (let i = 1; i <= 7; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'scale-opt';
+    btn.textContent = i;
+    btn.addEventListener('click', (function(val, b) {
+      return function() {
+        optsDiv.querySelectorAll('.scale-opt').forEach(function(x) { x.classList.remove('selected'); });
+        b.classList.add('selected');
+        evalData[questionId] = val;
+        console.log('[Eval] ' + questionId + ' = ' + val);
+        checkEvalComplete();
+      };
+    })(i, btn));
+    optsDiv.appendChild(btn);
+  }
+  widget.appendChild(hint);
+  widget.appendChild(labelsDiv);
+  widget.appendChild(optsDiv);
+  container.appendChild(widget);
+}
+
+function checkEvalComplete() {
+  const activeQs = EVAL_QUESTIONS.filter(function(q) { return q.conditionOnly === null || q.conditionOnly === CONDITION; });
+  const allAnswered = activeQs.every(function(q) { return evalData[q.id] !== undefined; });
+  document.getElementById('evalContinueBtn').disabled = !allAnswered;
+}
+
+function renderEvalPage() {
+  const body = document.getElementById('evalBody');
+  body.innerHTML = '';
+  const intro = document.createElement('p');
+  intro.className = 'eval-intro';
+  intro.textContent = '接下来，我们想请您对这次和小暖的聊天做个简单的评价。回答没有对错之分，请按您最真实的体验来评价。';
+  body.appendChild(intro);
+  const activeQs = EVAL_QUESTIONS.filter(function(q) { return q.conditionOnly === null || q.conditionOnly === CONDITION; });
+  activeQs.forEach(function(q) {
+    const qWrap = document.createElement('div');
+    qWrap.className = 'eval-q';
+    const qText = document.createElement('p');
+    qText.className = 'eval-q-text';
+    qText.textContent = q.text;
+    qWrap.appendChild(qText);
+    renderStandaloneScale(qWrap, q.left, q.right, q.id);
+    body.appendChild(qWrap);
+  });
+  document.getElementById('evalContinueBtn').addEventListener('click', function() {
+    document.getElementById('evalPage').style.display = 'none';
+    document.getElementById('gaaisPage').style.display = 'flex';
+    renderGaaisPage();
+  });
+}
+
+function renderGaaisPage() {
+  const body = document.getElementById('gaaisBody');
+  body.innerHTML = '';
+  const intro = document.createElement('p');
+  intro.className = 'eval-intro';
+  intro.textContent = '以下是一些关于人工智能的陈述，请根据您的真实想法选择同意程度。';
+  body.appendChild(intro);
+  const card = document.createElement('div');
+  card.className = 'matrix-card';
+  const wrap = document.createElement('div');
+  wrap.className = 'matrix-table-wrap';
+  const table = document.createElement('table');
+  table.className = 'matrix-table';
+  const thead = document.createElement('thead');
+  const hrow = document.createElement('tr');
+  const th0 = document.createElement('th'); hrow.appendChild(th0);
+  ['1\n完全不同意','2','3','4','5\n完全同意'].forEach(function(lbl) {
+    const th = document.createElement('th');
+    th.innerHTML = lbl.replace('\n','<br>');
+    hrow.appendChild(th);
+  });
+  thead.appendChild(hrow); table.appendChild(thead);
+  const tbody = document.createElement('tbody');
+  GAAIS_ITEMS.forEach(function(item, rowIdx) {
+    const tr = document.createElement('tr');
+    const tdL = document.createElement('td'); tdL.textContent = item; tr.appendChild(tdL);
+    for (let col = 1; col <= 5; col++) {
+      const td = document.createElement('td');
+      const radio = document.createElement('div');
+      radio.className = 'matrix-radio';
+      radio.setAttribute('data-gaais-row', rowIdx);
+      radio.addEventListener('click', (function(r, c, rb) {
+        return function() {
+          tbody.querySelectorAll('[data-gaais-row="' + r + '"]').forEach(function(x) { x.classList.remove('checked'); });
+          rb.classList.add('checked');
+          gaaisData[r] = c;
+          console.log('[GAAIS] item ' + (r+1) + ' = ' + c);
+          checkGaaisComplete();
+        };
+      })(rowIdx, col, radio));
+      td.appendChild(radio); tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody); wrap.appendChild(table); card.appendChild(wrap);
+  body.appendChild(card);
+  document.getElementById('gaaisSubmitBtn').addEventListener('click', function() {
+    saveEvalToLark();
+    window.location.href = 'https://survey.smith.queensu.ca/jfe/form/SV_cBC1srhWB1yNg6W?id=' + encodeURIComponent(participantId);
+  });
+}
+
+function checkGaaisComplete() {
+  document.getElementById('gaaisSubmitBtn').disabled = !gaaisData.every(function(v) { return v !== null; });
+}
+
+async function saveEvalToLark() {
+  try {
+    const payload = {
+      participant_id: participantId,
+      condition: CONDITION,
+      save_sequence: saveSequence,
+      ...scales,
+      state_anxiety_pre_1: matrixData.state_anxiety_pre[0], state_anxiety_pre_2: matrixData.state_anxiety_pre[1], state_anxiety_pre_3: matrixData.state_anxiety_pre[2], state_anxiety_pre_4: matrixData.state_anxiety_pre[3], state_anxiety_pre_5: matrixData.state_anxiety_pre[4],
+      state_stress_pre_1:  matrixData.state_stress_pre[0],  state_stress_pre_2:  matrixData.state_stress_pre[1],  state_stress_pre_3:  matrixData.state_stress_pre[2],  state_stress_pre_4:  matrixData.state_stress_pre[3],  state_stress_pre_5:  matrixData.state_stress_pre[4],
+      state_anxiety_post_1: matrixData.state_anxiety_post[0], state_anxiety_post_2: matrixData.state_anxiety_post[1], state_anxiety_post_3: matrixData.state_anxiety_post[2], state_anxiety_post_4: matrixData.state_anxiety_post[3], state_anxiety_post_5: matrixData.state_anxiety_post[4],
+      state_stress_post_1:  matrixData.state_stress_post[0],  state_stress_post_2:  matrixData.state_stress_post[1],  state_stress_post_3:  matrixData.state_stress_post[2],  state_stress_post_4:  matrixData.state_stress_post[3],  state_stress_post_5:  matrixData.state_stress_post[4],
+      leas_response: leasResponse,
+      transcript: s.slice(1).map(function(m) { return (m.role==='user'?'你':'小暖')+': '+m.content; }).join('\n\n'),
+      helpful: evalData.helpful || '', understood: evalData.understood || '',
+      willingness: evalData.willingness || '', emotion_accuracy: evalData.emotion_accuracy || '',
+      GAAIS_1: gaaisData[0]||'', GAAIS_2: gaaisData[1]||'', GAAIS_3: gaaisData[2]||'', GAAIS_4: gaaisData[3]||'', GAAIS_5: gaaisData[4]||'',
+      GAAIS_6: gaaisData[5]||'', GAAIS_7: gaaisData[6]||'', GAAIS_8: gaaisData[7]||'', GAAIS_9: gaaisData[8]||'', GAAIS_10: gaaisData[9]||'',
+      GAAIS_11: gaaisData[10]||'', GAAIS_12: gaaisData[11]||'', GAAIS_13: gaaisData[12]||'', GAAIS_14: gaaisData[13]||'', GAAIS_15: gaaisData[14]||'',
+      GAAIS_16: gaaisData[15]||'', GAAIS_17: gaaisData[16]||'', GAAIS_18: gaaisData[17]||'', GAAIS_19: gaaisData[18]||'', GAAIS_20: gaaisData[19]||'',
+    };
+    if (larkRowNumber) {
+      payload.row_number = larkRowNumber;
+      await fetch(PROXY_URL + '/save-update', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      console.log('[Eval] Final row updated at row', larkRowNumber);
+    } else {
+      await fetch(PROXY_URL + '/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      console.log('[Eval] Fallback: new row created.');
+    }
+  } catch(e) { console.error('[Eval] Save error:', e); }
+}
+
 // ── API call ──────────────────────────────────────────────────────────────────
 // ── Embedded survey matrices ──────────────────────────────────────────────────
 const ANXIETY_ITEMS = [
