@@ -1406,6 +1406,114 @@ function startPostMatrices() {
 }
 // ─────────────────────────────────────────────────────────────────────────────
 
+// ── Chat UI ───────────────────────────────────────────────────────────────────
+function appendMsg(role, text) {
+  const log = document.getElementById('chatLog');
+  const row = document.createElement('div');
+  row.className = 'msg-row ' + (role === 'user' ? 'user' : 'ai');
+  const label = document.createElement('div');
+  label.className = 'msg-label';
+  label.textContent = role === 'user' ? '你' : '小暖';
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  const postScaleStageLocal = CONDITION === 'emotion' ? 4 : 3;
+  const _isScale = role === 'ai' && isScaleMessage(text);
+  const _isPostQ1 = role === 'ai' && currentStage === postScaleStageLocal && currentQuestion === 1 && text.includes('有多困扰');
+  if (_isScale || _isPostQ1) {
+    row.style.alignItems = 'stretch';
+    bubble.style.maxWidth = '100%';
+    bubble.style.width = '100%';
+    bubble.style.borderRadius = '14px';
+    const { cleanText, leftLabel, rightLabel } = parseScaleMessage(text);
+    bubble.innerHTML = cleanText.replace(/\n/g, '<br>');
+    renderScaleWidget(bubble, leftLabel || '完全不困扰', rightLabel || '非常困扰');
+  } else {
+    const formatted = text
+      .replace(/\n/g, '<br>')
+      .replace(/([1-7]\s+[●○]+)/g, '<br>$1')
+      .replace(/^<br>/, '');
+    bubble.innerHTML = formatted;
+  }
+  row.appendChild(label);
+  row.appendChild(bubble);
+  log.appendChild(row);
+  log.scrollTop = log.scrollHeight;
+}
+
+// ── Scale tracking ────────────────────────────────────────────────────────────
+function parseAndSaveScale(text) {
+  const match = text.match(/\d+/);
+  const val = match ? parseInt(match[0]) : null;
+  const postScaleStage = CONDITION === 'emotion' ? 4 : 3;
+  if (currentStage === 1) {
+    if      (currentQuestion === 7)  scales.distress_level_1 = val;
+    else if (currentQuestion === 8)  scales.emotion_identify_reverse_1 = val;
+    else if (currentQuestion === 9)  scales.emotion_identify_1 = val;
+    else if (currentQuestion === 10) scales.emotion_describe_hard_1 = val;
+    else if (currentQuestion === 11) { scales.emotion_describe_easy_1 = val; }
+  }
+  if (currentStage === postScaleStage) {
+    if      (currentQuestion === 1)  scales.distress_level_2 = val;
+    else if (currentQuestion === 2)  scales.emotion_identify_reverse_2 = val;
+    else if (currentQuestion === 3)  scales.emotion_identify_2 = val;
+    else if (currentQuestion === 4)  scales.emotion_describe_hard_2 = val;
+    else if (currentQuestion === 5)  scales.emotion_describe_easy_2 = val;
+  }
+}
+
+// ── State machine ─────────────────────────────────────────────────────────────
+function updateState(t) {
+  if (currentStage === 1) {
+    if      (t.includes("工作的哪个方面"))                                  currentQuestion = 1;
+    else if (t.includes("描述一下这件具体发生的事吗"))                      currentQuestion = 2;
+    else if (t.includes("尝试和对方沟通过你的想法"))                        currentQuestion = 3;
+    else if (t.includes("这种回应对你来说是有帮助的，还是让你感到更有压力")) currentQuestion = 4;
+    else if (t.includes("有没有跟工作以外的人"))                            currentQuestion = 5;
+    else if (t.includes("有多困扰"))                                        currentQuestion = 7;
+    else if (t.includes("很强烈的情绪"))                                    currentQuestion = 8;
+    else if (t.includes("我清楚自己现在"))                                  currentQuestion = 9;
+    else if (t.includes("难以用准确的语言来描述"))                          currentQuestion = 10;
+    else if (t.includes("能很容易地描述"))                                   currentQuestion = 11;
+    else if (t.includes("谢谢你的回答")) { currentStage = 2; currentQuestion = 0; setTimeout(startPreMatrices, 500); }
+    return;
+  }
+  if (CONDITION === 'emotion') {
+    if (currentStage === 2) {
+      if (t.includes("我们来聊聊")) { currentStage = 3; currentQuestion = 0; }
+    } else if (currentStage === 3) {
+      if      (t.includes("我们再来评估一下"))                      { currentStage = 4; currentQuestion = 1; setTimeout(startPostMatrices, 500); }
+      else if (t.includes("脑海中会浮现什么具体想法"))               currentQuestion = 1;
+      else if (t.includes("有没有一些你反复会对自己说的话"))         currentQuestion = 2;
+      else if (t.includes("在你刚才描述的这件事中"))                 currentQuestion = 3;
+    } else if (currentStage === 4) {
+      if      (t.includes("有多困扰"))                              currentQuestion = 1;
+      else if (t.includes("有很强烈的情绪"))                        currentQuestion = 2;
+      else if (t.includes("清楚自己现在对这件事"))                  currentQuestion = 3;
+      else if (t.includes("难以用准确的语言"))                      currentQuestion = 4;
+      else if (t.includes("能很容易地描述"))                        currentQuestion = 5;
+      else if (t.includes("谢谢你的分享"))                          { currentStage = 5; setTimeout(startPostMatrices, 500); }
+    } else if (currentStage === 5) {
+      if (t.includes("类似的经历或感受") && !leasAsked)             { leasAsked = true; }
+      if (t.includes("本次对话到此结束"))                            { saveToLark(); setTimeout(showContinueButton, 800); }
+    }
+  } else { // control
+    if (currentStage === 2) {
+      if ((t.includes("再进行一个评估") || t.includes("在一开始的时候，你提到")) && currentStage === 2) { currentStage = 3; currentQuestion = 1; setTimeout(startPostMatrices, 400); }
+    } else if (currentStage === 3) {
+      if ((t.includes("再进行一个评估") || t.includes("在一开始的时候，你提到")) && currentStage === 2) { currentStage = 3; currentQuestion = 1; setTimeout(startPostMatrices, 400); }
+      if      (t.includes("有多困扰"))                              currentQuestion = 1;
+      else if (t.includes("有很强烈的情绪"))                        currentQuestion = 2;
+      else if (t.includes("清楚自己现在对这件事"))                  currentQuestion = 3;
+      else if (t.includes("难以用准确的语言"))                      currentQuestion = 4;
+      else if (t.includes("能很容易地描述"))                        currentQuestion = 5;
+      else if (t.includes("谢谢你的分享"))                          { currentStage = 4; setTimeout(startPostMatrices, 400); }
+    } else if (currentStage === 4) {
+      if (t.includes("类似的经历或感受") && !leasAsked)             { leasAsked = true; }
+      if (t.includes("本次对话到此结束"))                            { saveToLark(); setTimeout(showContinueButton, 800); }
+    }
+  }
+}
+
 function sendToAI(messages) {
   const btn   = document.getElementById('chatSubmit');
   const input = document.getElementById('chatInput');
