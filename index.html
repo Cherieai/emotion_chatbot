@@ -986,58 +986,43 @@ let scales = {
   emotion_describe_hard_2: null, emotion_describe_easy_2: null
 };
 let saveSequence = 0;
-let larkRowNumber = null;      // set after first save, used for row overwrites
-let larkRowPromise = null;     // pending promise for first save — prevents race condition
+let larkRowNumber = null;
+let larkSaveQueue = Promise.resolve();  // serial queue — saves never run in parallel
 let larkRowNum = null;  // row number in Lark, set after first save
 let leasAsked = false;
 let leasResponse = '';
 
 // ── Save to Lark (via FC proxy — no credentials in this file) ────────────────
-async function saveToLark() {
+function saveToLark() {
   saveSequence++;
   const _seq = saveSequence;
-  try {
-    const payload = {
-      participant_id: participantId,
-      condition: CONDITION,
-      save_sequence: _seq,
-      ...scales,
-      state_anxiety_pre_1: matrixData.state_anxiety_pre[0], state_anxiety_pre_2: matrixData.state_anxiety_pre[1], state_anxiety_pre_3: matrixData.state_anxiety_pre[2], state_anxiety_pre_4: matrixData.state_anxiety_pre[3], state_anxiety_pre_5: matrixData.state_anxiety_pre[4],
-      state_stress_pre_1:  matrixData.state_stress_pre[0],  state_stress_pre_2:  matrixData.state_stress_pre[1],  state_stress_pre_3:  matrixData.state_stress_pre[2],  state_stress_pre_4:  matrixData.state_stress_pre[3],  state_stress_pre_5:  matrixData.state_stress_pre[4],
-      state_anxiety_post_1: matrixData.state_anxiety_post[0], state_anxiety_post_2: matrixData.state_anxiety_post[1], state_anxiety_post_3: matrixData.state_anxiety_post[2], state_anxiety_post_4: matrixData.state_anxiety_post[3], state_anxiety_post_5: matrixData.state_anxiety_post[4],
-      state_stress_post_1:  matrixData.state_stress_post[0],  state_stress_post_2:  matrixData.state_stress_post[1],  state_stress_post_3:  matrixData.state_stress_post[2],  state_stress_post_4:  matrixData.state_stress_post[3],  state_stress_post_5:  matrixData.state_stress_post[4],
-      leas_response: leasResponse,
-      transcript: s.slice(1).map(m => (m.role === 'user' ? '你' : '小暖') + ': ' + m.content).join('\n\n'),
-    };
-
-    if (larkRowNumber) {
-      // Row already known — overwrite directly
-      payload.row_number = larkRowNumber;
-      await fetch(PROXY_URL + '/save-update', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
-      });
-      console.log('[Save] #' + _seq + ' → overwrote row', larkRowNumber);
-    } else if (larkRowPromise) {
-      // First save still in flight — wait for it, then overwrite
-      await larkRowPromise;
+  // Chain onto previous save — guarantees serial execution, no race condition
+  larkSaveQueue = larkSaveQueue.then(async function() {
+    try {
+      const payload = {
+        participant_id: participantId,
+        condition: CONDITION,
+        save_sequence: _seq,
+        ...scales,
+        state_anxiety_pre_1: matrixData.state_anxiety_pre[0], state_anxiety_pre_2: matrixData.state_anxiety_pre[1], state_anxiety_pre_3: matrixData.state_anxiety_pre[2], state_anxiety_pre_4: matrixData.state_anxiety_pre[3], state_anxiety_pre_5: matrixData.state_anxiety_pre[4],
+        state_stress_pre_1:  matrixData.state_stress_pre[0],  state_stress_pre_2:  matrixData.state_stress_pre[1],  state_stress_pre_3:  matrixData.state_stress_pre[2],  state_stress_pre_4:  matrixData.state_stress_pre[3],  state_stress_pre_5:  matrixData.state_stress_pre[4],
+        state_anxiety_post_1: matrixData.state_anxiety_post[0], state_anxiety_post_2: matrixData.state_anxiety_post[1], state_anxiety_post_3: matrixData.state_anxiety_post[2], state_anxiety_post_4: matrixData.state_anxiety_post[3], state_anxiety_post_5: matrixData.state_anxiety_post[4],
+        state_stress_post_1:  matrixData.state_stress_post[0],  state_stress_post_2:  matrixData.state_stress_post[1],  state_stress_post_3:  matrixData.state_stress_post[2],  state_stress_post_4:  matrixData.state_stress_post[3],  state_stress_post_5:  matrixData.state_stress_post[4],
+        leas_response: leasResponse,
+        transcript: s.slice(1).map(function(m) { return (m.role==='user'?'你':'小暖')+': '+m.content; }).join('\n\n'),
+      };
       if (larkRowNumber) {
         payload.row_number = larkRowNumber;
-        await fetch(PROXY_URL + '/save-update', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
-        });
-        console.log('[Save] #' + _seq + ' → overwrote row', larkRowNumber, '(waited for first)');
-      }
-    } else {
-      // Very first save — create the row and store a promise so concurrent saves wait
-      larkRowPromise = fetch(PROXY_URL + '/save', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
-      }).then(r => r.json()).then(data => {
+        await fetch(PROXY_URL + '/save-update', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        console.log('[Save] #' + _seq + ' → overwrote row', larkRowNumber);
+      } else {
+        const resp = await fetch(PROXY_URL + '/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        const data = await resp.json();
         if (data.rowNumber) { larkRowNumber = data.rowNumber; console.log('[Save] Row assigned:', larkRowNumber); }
-      });
-      await larkRowPromise;
-      console.log('[Save] #' + _seq + ' → new row created');
-    }
-  } catch(e) { console.error('[Save] Error:', e); }
+        console.log('[Save] #' + _seq + ' → new row');
+      }
+    } catch(e) { console.error('[Save] Error:', e); }
+  });
 }
 
 
