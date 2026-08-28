@@ -504,6 +504,12 @@ Q1：根据用户的回答，选择以下两种方式之一。
 
 Q2："你当时有没有尝试和对方沟通过你的想法？"
 
+⚠️ 理解Q2回答时，不要只判断用户有没有直接说“有/没有”，要根据整句话的语义判断他们是否实际和对方沟通过。
+- 如果用户明确说没有沟通，或表达“没敢说 / 不知道怎么说 / 不知道怎么开口 / 对方是领导所以不好说 / 还没说 / 没机会说”等，均视为【没有实际沟通】。此时后续只能询问假设性的回应，例如：“如果你想象和对方沟通，对方会怎么回应……”绝对不要问“对方是怎么回应的”。
+- 如果用户说已经沟通过，但没有说明对方如何回应，则后续可以问“对方是怎么回应的？这种回应……”
+- 如果用户在同一句回答里已经说明了对方的回应（例如“我跟她说了，她让我别想太多”），则不要再次问“对方是怎么回应的”，只询问这种回应对用户是否有帮助或增加压力。
+- 核心原则：不要重复询问用户已经通过语义明确回答过的信息。
+
 Q3：收到Q2的回答后，给出一句简短有同理心的回应（不涉及情绪词汇），然后等待。系统会自动询问下一个问题。
 
 **非常重要‼️收到Q3的回应之后，给出简短回应后才能继续，绝对不要连续问两个问题。**
@@ -773,6 +779,12 @@ Q1：根据用户的回答，选择以下两种方式之一。
 
 Q2："你当时有没有尝试和对方沟通过你的想法？"
 
+⚠️ 理解Q2回答时，不要只判断用户有没有直接说“有/没有”，要根据整句话的语义判断他们是否实际和对方沟通过。
+- 如果用户明确说没有沟通，或表达“没敢说 / 不知道怎么说 / 不知道怎么开口 / 对方是领导所以不好说 / 还没说 / 没机会说”等，均视为【没有实际沟通】。此时后续只能询问假设性的回应，例如：“如果你想象和对方沟通，对方会怎么回应……”绝对不要问“对方是怎么回应的”。
+- 如果用户说已经沟通过，但没有说明对方如何回应，则后续可以问“对方是怎么回应的？这种回应……”
+- 如果用户在同一句回答里已经说明了对方的回应（例如“我跟她说了，她让我别想太多”），则不要再次问“对方是怎么回应的”，只询问这种回应对用户是否有帮助或增加压力。
+- 核心原则：不要重复询问用户已经通过语义明确回答过的信息。
+
 Q3：收到Q2的回答后，给出一句简短有同理心的回应（不涉及情绪词汇），然后等待。系统会自动询问下一个问题。
 
 **非常重要‼️收到Q3的回应之后，给出简短回应后才能继续，绝对不要连续问两个问题。**
@@ -1008,6 +1020,13 @@ let scales = {
 };
 let larkRowNumber = null;
 let larkSaveQueue = Promise.resolve();
+const startTime = new Date();  // used for duration calculation
+
+function toBeijingTime(date) {
+  // UTC+8, formatted as YYYY-MM-DD HH:MM:SS
+  const bjt = new Date(date.getTime() + 8 * 60 * 60 * 1000);
+  return bjt.toISOString().replace('T', ' ').slice(0, 19) + ' (BJT)';
+}
 let postMatricesStarted = false;  // guard: startPostMatrices fires only once
 let userMsgCount = 0;
 let textData = { stress_event: '', specific_event: '', selected_emotions: '', another_event: '', another_emotion: '' };
@@ -1024,7 +1043,8 @@ function saveToLark() {
       const payload = {
         participant_id: participantId,
         condition: CONDITION,
-          ...scales,
+        duration: Math.round((new Date() - startTime) / 1000),
+        ...scales,
         state_anxiety_pre_1: matrixData.state_anxiety_pre[0], state_anxiety_pre_2: matrixData.state_anxiety_pre[1], state_anxiety_pre_3: matrixData.state_anxiety_pre[2], state_anxiety_pre_4: matrixData.state_anxiety_pre[3], state_anxiety_pre_5: matrixData.state_anxiety_pre[4],
         state_stress_pre_1:  matrixData.state_stress_pre[0],  state_stress_pre_2:  matrixData.state_stress_pre[1],  state_stress_pre_3:  matrixData.state_stress_pre[2],  state_stress_pre_4:  matrixData.state_stress_pre[3],  state_stress_pre_5:  matrixData.state_stress_pre[4],
         state_anxiety_post_1: matrixData.state_anxiety_post[0], state_anxiety_post_2: matrixData.state_anxiety_post[1], state_anxiety_post_3: matrixData.state_anxiety_post[2], state_anxiety_post_4: matrixData.state_anxiety_post[3], state_anxiety_post_5: matrixData.state_anxiety_post[4],
@@ -1233,6 +1253,7 @@ async function saveEvalToLark() {
     const payload = {
       participant_id: participantId,
       condition: CONDITION,
+      duration: Math.round((new Date() - startTime) / 1000),
       ...scales,
       state_anxiety_pre_1: matrixData.state_anxiety_pre[0], state_anxiety_pre_2: matrixData.state_anxiety_pre[1], state_anxiety_pre_3: matrixData.state_anxiety_pre[2], state_anxiety_pre_4: matrixData.state_anxiety_pre[3], state_anxiety_pre_5: matrixData.state_anxiety_pre[4],
       state_stress_pre_1:  matrixData.state_stress_pre[0],  state_stress_pre_2:  matrixData.state_stress_pre[1],  state_stress_pre_3:  matrixData.state_stress_pre[2],  state_stress_pre_4:  matrixData.state_stress_pre[3],  state_stress_pre_5:  matrixData.state_stress_pre[4],
@@ -1603,11 +1624,23 @@ function sendToAI(messages) {
 
 // Pre-defined Q5 follow-up (always delivered from JS after Q4 to prevent AI from skipping it)
 
+// Detect what the user has ALREADY told us, so we do not ask a question
+// that has effectively already been answered.
 function descriptionDetected(text) {
-  return /她说|他说|告诉我|让我|叫我|根本不|不听|不理|没有回应/.test(text);
+  const t = text.trim();
+  // The user has described the other person's actual response/reaction.
+  return /她说|他说|对方说|领导说|回复|回应|回答|表示|告诉我|让我|叫我|道歉|拒绝|同意|答应|解释|批评|骂我|不听|不理|没理|沉默|没有回应|没回应/.test(t);
 }
+
 function noContactDetected(text) {
-  return /^没有|\^没$/.test(text.trim());
+  const t = text.trim();
+  // Treat answers that clearly imply "I did not communicate" as NO,
+  // even when the user does not literally say “没有”.
+  // Examples: “不知道怎么说，她是领导”, “不敢说”, “还没跟她提”, “没机会说”.
+  return /^(没有|没|还没有|还没|尚未)\s*$/i.test(t)
+    || /(?:没有|没|还没|尚未).{0,8}(?:说|沟通|提|讲|告诉|表达|聊|谈)/.test(t)
+    || /(?:不敢|没敢|不好意思|不方便|不太敢|不知道(?:该|要|怎么)?|不知道怎么开口|不知道如何).{0,8}(?:说|沟通|提|讲|告诉|表达|开口)/.test(t)
+    || /(?:没机会|没有机会|找不到机会).{0,6}(?:说|沟通|提|讲|表达)/.test(t);
 }
 const Q3_FULL = '对方是怎么回应的？这种回应对你来说是有帮助的，还是让你感到更有压力？';
 const Q3_HELPFUL = '这种回应对你来说是有帮助的，还是让你感到更有压力？';
@@ -1807,6 +1840,18 @@ s[1].content = s[1].content.replace(/PARTICIPANT_ID/g, participantId);
 
 console.log('[Study] participant_id:', participantId, '| condition:', CONDITION);
 appendMsg('ai', OPENING_MESSAGE);
+
+// Send a final duration save when the window is closed or navigated away
+window.addEventListener('pagehide', function() {
+  if (!larkRowNumber) return;  // no row created yet, nothing to update
+  const finalPayload = JSON.stringify({
+    participant_id: participantId,
+    condition: CONDITION,
+    duration: Math.round((new Date() - startTime) / 1000),
+    row_number: larkRowNumber,
+  });
+  navigator.sendBeacon(PROXY_URL + '/save-update', new Blob([finalPayload], { type: 'application/json' }));
+});
 </script>
 </body>
 </html>
