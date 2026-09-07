@@ -1629,6 +1629,28 @@ function actualContactDetected(text) {
     || /^(?:有|有的|有过|当时有|后来有).{0,20}(?:沟通过|沟通了|交流过|交流了|谈过|谈了|聊过|聊了|说过|说了|解释过|解释了|说明过|说明了|表达过|表达了|提过|提了)/.test(t);
 }
 
+function bareYesContactDetected(text) {
+  const t = text.trim();
+  // User clearly answers “yes” to Q2 but gives no usable details yet.
+  // Examples: “有”, “有啊”, “有的”, “有过”, “试过”, “尝试过”.
+  return /^(?:有|有啊|有的|有呀|有过|有过啊|试过|试过啊|尝试过|尝试过啊|沟通过|沟通过啊|交流过|交流过啊)[。！!，,、~～\s]*$/.test(t);
+}
+
+// Once the user has explicitly confirmed that communication happened, remember it
+// across the follow-up turn. This prevents a later detail such as “他还是坚持他的看法”
+// from being misread as if communication never happened.
+let q2ActualCommunicationConfirmed = false;
+
+function responseFromOtherDetected(text) {
+  const t = text.trim();
+  // Broad detection of the other person's actual reaction/position after communication.
+  // Includes verbal replies, refusal, persistence, silence, anger, disagreement, etc.
+  if (descriptionDetected(t)) return true;
+  return /(?:她|他|对方|家属|患者|领导|同事).{0,16}(?:还是|仍然|依然|继续|坚持|不同意|不接受|不理解|不听|听不进去|不理|没理|没说|没有说|沉默|不说话|发火|生气|骂|拒绝|答应|同意|道歉|解释|反驳|质疑|回应|回复|表示|态度|比较着急|很着急)/.test(t)
+    || /(?:还是|仍然|依然|继续).{0,12}(?:不听|听不进去|不理|坚持|骂|发火|质疑|反驳|不同意|不接受)/.test(t)
+    || /(?:没说什么|没有说什么|没回应|没有回应|沉默了|不说话)/.test(t);
+}
+
 function noContactDetected(text) {
   const t = text.trim();
 
@@ -1649,6 +1671,7 @@ function noContactDetected(text) {
     || /(?:她|他|对方).{0,6}(?:是)?(?:领导|上级).{0,10}(?:不好说|不方便说|不太方便|不敢说)?/.test(t);
 }
 
+const Q2_DETAILS = '可以具体说说你当时是怎么和对方沟通的吗？比如你说了什么、对方当时怎么回应的。';
 const Q3_FULL = '对方当时是怎么回应你的？对方的回应有没有帮助你处理当时的情况，还是让事情变得更难处理？';
 const Q3_HELPFUL = '对方这样的回应有没有帮助你处理当时的情况，还是让事情变得更难处理？';
 const Q3_HYPOTHETICAL = '如果当时和对方沟通，你觉得对方可能会怎么回应？你觉得这样的回应会有助于处理这件事，还是会让事情变得更难处理？';
@@ -1700,10 +1723,34 @@ function submitResponse(text) {
   // After Q2 (communication with direct party), deliver Q3 helpfulness from JS
   if (currentStage === 1 && currentQuestion === 2) {
     console.log('[Q3] currentQ:', currentQuestion, '| text:', text.substring(0,30), '| desc:', descriptionDetected(text));
-    const q3 = noContactDetected(text) ? Q3_HYPOTHETICAL
-             : (actualContactDetected(text) && descriptionDetected(text)) ? Q3_HELPFUL
-             : actualContactDetected(text) ? Q3_FULL
-             : Q3_HYPOTHETICAL;
+    // If the user only says “yes” (e.g., “有啊”) without details, do not jump to a
+    // hypothetical scenario. Ask them to describe the actual communication first.
+    if (bareYesContactDetected(text)) {
+      q2ActualCommunicationConfirmed = true;
+      setTimeout(function() {
+        s.push({ role: 'assistant', content: Q2_DETAILS });
+        appendMsg('ai', Q2_DETAILS);
+        // Keep currentQuestion at 2 so the next user reply supplies details of the ACTUAL communication.
+      }, 700);
+      return;
+    }
+
+    // If an earlier turn already confirmed that communication happened, never fall back
+    // to the hypothetical branch. Interpret this turn as details of that real interaction.
+    let q3;
+    if (q2ActualCommunicationConfirmed) {
+      if (responseFromOtherDetected(text)) q3 = Q3_HELPFUL;
+      else q3 = Q3_FULL;
+      q2ActualCommunicationConfirmed = false;
+    } else if (noContactDetected(text)) {
+      q3 = Q3_HYPOTHETICAL;
+    } else if (actualContactDetected(text) && responseFromOtherDetected(text)) {
+      q3 = Q3_HELPFUL;
+    } else if (actualContactDetected(text)) {
+      q3 = Q3_FULL;
+    } else {
+      q3 = Q3_HYPOTHETICAL;
+    }
     setTimeout(function() {
       s.push({ role: 'assistant', content: q3 });
       appendMsg('ai', q3);
