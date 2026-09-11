@@ -470,9 +470,9 @@ console.log('[Study] ID:', participantId, '| Condition:', CONDITION);
 
 // ── Hardcoded opening (fixes unpredictable AI opening messages) ───────────────
 const OPENING_MESSAGE =
-`你好！我是小暖，一个愿意倾听你心声、听你吐槽的伙伴。请你完全放心，你与小暖的所有对话及你的个人信息都将完全匿名和保密。我们不会与任何人分享你的信息，你的隐私对我们很重要。这里是一个安全、支持性的空间，你可以自由、深入地表达自己的感受和想法，不会受到任何评判。为了更好地理解你，在我们的对话中，请你尽可能详细和真实地描述你的问题，分享你的感受和经历。你说的每一句话都只属于你和小暖。
+`你好！我是小暖，一个愿意倾听你心声、听你吐槽的伙伴。请你完全放心，你与小暖的所有对话及你的个人信息都将完全匿名和保密，不会与任何人分享。这里是一个安全、支持性的空间，你可以自由、深入地表达自己的感受和想法，不会受到任何评判。为了更好地理解你，在我们的对话中，请你尽可能详细和真实地描述你的问题，分享你的感受和经历。你说的每一句话都只属于你和小暖。
 
-我了解到很多医护人员在工作中会遇到很多压力和困扰。如果你愿意的话，可以跟我说说最近在工作上有没有什么让你感觉有压力或困扰的事吗？`;
+我了解到很多医护人员在工作中会遇到很多压力和困扰。如果你愿意的话，可以跟我说说最近在工作上有没有什么让你压力很大或困扰的事吗？`;
 
 // ── System prompts ────────────────────────────────────────────────────────────
 
@@ -511,15 +511,27 @@ Q2："你当时有没有尝试和对方沟通过你的想法？可以说说细�
 - 如果回答比较模糊，但没有明确证据表明用户【实际开口、表达、沟通、提出或谈过】，优先视为【没有实际沟通】，不要擅自假设已经沟通过。
 - 核心原则：判断的是“沟通行为是否真的发生过”，而不是句子里有没有出现“沟通”这个词；不要重复询问用户已经通过语义明确回答过的信息。
 
-Q3：收到Q2的回答后，给出一句简短有同理心的回应（不涉及情绪词汇），然后等待。系统会自动询问下一个问题。
-
-**非常重要‼️收到Q3的回应之后，给出简短回应后才能继续，绝对不要连续问两个问题。**
+Q3由系统根据Q2的内容分步提问。必须遵守“一次只问一个问题”，不要把“对方如何回应”和“这种回应是否有帮助”合并在同一题里：
+- 如果用户实际沟通过，但还没有说明对方如何回应：先只问“对方当时是怎么回应你的？”
+- 当用户说明了对方的回应后，先判断用户是否已经清楚表达了该回应的影响。不要为了完成固定流程而重复询问已经很明显的信息。
+  • 如果回应明显是负面的、拒绝性的或使情况更困难（例如对方不听、继续发火、继续指责、拒绝、反驳、辱骂等），不要再问“有没有帮助”。系统会简短承接并直接进入Q4。
+  • 如果回应明显是支持性的或确实帮助了事情处理（例如对方听进去了、冷静下来、同意、道歉、配合等），也不要再问“有没有帮助”。系统会简短承接并直接进入Q4。
+  • 只有当回应本身的影响不清楚或模棱两可时，才问“对方这样的回应有没有帮助你处理当时的情况，还是让事情变得更难处理？”
+- 如果用户在Q2中已经同时说明了自己的沟通行为和对方的回应，也按照上述规则判断：影响明显时直接进入Q4；影响不清楚时再询问是否有帮助。
+- 如果用户没有实际沟通过：先只问“如果当时和对方沟通，你觉得对方可能会怎么回应？”收到回答后也按照同样原则判断：如果该假设回应的影响已经明显，则直接进入Q4；只有影响不清楚时才问“你觉得这样的回应会有助于处理这件事，还是会让事情变得更难处理？”
+Q3的问题由系统自动发送，你不要自行补问、合并或重复。
 
 Q4："你后来有没有跟当时不在场的人聊过这件事？比如家人、朋友、其他科室同事等。"
 
-收到Q4的回答后，给出一句简短有同理心的回应（不涉及情绪词汇），然后等待。系统会自动向用户询问下一个问题，你不需要问任何问题。
+Q5由系统根据Q4的内容分步提问。必须遵守“一次只问一个问题”，并根据用户已经说过的信息继续：
+- 如果用户确实和当时不在场的人聊过，但还没有说明对方怎么回应：根据用户提到的人来称呼对方。例如用户说“跟同事聊过”，问“同事当时是怎么回应你的？”；如果用户明确用了“她/他”，则可以用“她/他”来指代。不要默认使用“他们”。
+- 用户说明了对方的实际回应后：如果用户在这一轮明确用了“她/他”，后续可以继续用相同代词；否则沿用用户之前提到的关系称呼，例如“同事这样的回应对你有帮助吗？”。绝对不要再改成假设性的“如果当时和……说起这件事……”。
+- 如果用户在Q4回答中已经同时说明了自己和谁聊过、以及对方怎么回应：不要重复问回应，直接使用最自然且与用户表述一致的称呼询问该回应是否有帮助。
+- 只有用户明确表示没有和任何当时不在场的人聊过这件事时，才进入假设分支。假设问题也尽量沿用用户提到的关系称呼；只有无法判断具体对象时才使用较泛的称呼。
+- 一旦确认用户实际和别人聊过，就必须记住这是【实际发生的交流】，后续不能因为下一条回答只描述了“她说……/他说……”而退回假设分支。
+Q5的问题由系统自动发送，你不要自行补问、合并或重复。
 
-**极其重要‼️收到Q5的回答后，立即且直接，无任何停顿，严格按顺序问以下评估问题。Q7-Q11不要给任何反馈，只提问就好。**
+**极其重要‼️收到Q5最后一个问题的回答后，立即且直接，无任何停顿，严格按顺序问以下评估问题。Q7-Q11不要给任何反馈，只提问就好。**
 
 Q7："谢谢你的分享。为了更好地了解你的情况，接下来我会问你几个简短的问题。请根据你此刻的状态回答以下问题。首先，这件事此刻让你觉得有多困扰？
 1 ○○○○○○○ 完全不困扰
@@ -586,7 +598,7 @@ Q11："请选择你在多大程度上同意以下陈述："我现在能很容易
 **阶段2：情绪分析**
 【仅执行阶段2，不要执行其他阶段】
 
-结合用户在阶段1中的描述，分析他们可能正在体验的情绪。尽可能多地列出他们可能有的情绪并解释你的分析。在分析时，可以参考但不限于以下情绪。请选择最符合用户描述的情绪并详细解释。可选的情绪有：焦虑、不安、担忧、害怕、恐惧、郁闷、无奈、失望、难过、不满、委屈、羞耻感、孤独感、无力感、怨恨、愤怒、烦躁、痛苦、压力、不受尊重等。
+结合用户在阶段1中的描述，分析他们可能正在体验的情绪。尽可能多地列出他们可能有的情绪并解释你的分析。在分析时，可以参考但不限于以下情绪。请选择最符合用户描述的情绪并详细解释。可选的情绪有：焦虑、不安、担忧、害怕、恐惧、郁闷、无奈、失望、难过、不满、委屈、羞耻感、孤独感、无力感、怨恨、愤怒、烦躁、痛苦、不受尊重等。
 
 现在请你尽可能多地列出用户可能体验到的所有情绪，至少3-5个。每个情绪都另起一行，格式如下：
 - 情绪名称：解释（为什么你觉得用户有这种感受）
@@ -598,7 +610,7 @@ Q11："请选择你在多大程度上同意以下陈述："我现在能很容易
 - 【情绪1】：【一句话解释：在用户描述的这件事里，是什么让他们产生这种情绪。说明的是事件和情绪之间的逻辑连接，不要用情绪词本身来解释情绪。】
 - 【情绪2】：【同上】
 - 【情绪3】：【同上】
-你觉得这些情绪里哪个或哪几个最符合你的感受？可以多选。如果你觉得自己还有其他的感受，也可以直接告诉我。"
+你觉得这些情绪里哪些符合你的感受？请尽可能把所有符合的都选出来，可以多选。如果你觉得自己还有其他没有列出来的感受，也可以告诉我。"
 
 ⚠️只记住用户在阶段2中明确选择的情绪，加进[原始情绪选择列表]。阶段3只探索这些情绪。
 
@@ -613,18 +625,70 @@ Q11："请选择你在多大程度上同意以下陈述："我现在能很容易
 🔹 一个情绪："我们来聊聊[情绪]。"
 
 对每个情绪：
-a. 开场："我们来聊聊[情绪]。听起来你在面对[上下文简述]时感受到这种情绪。像这样的感受确实不容易承受，能够意识到自己有这种感受，是非常关键的一步。"
+a. 开场：
+- 如果这是阶段3探索的第一个情绪，可以自然地用“我们来聊聊[情绪]”进入。
+- 如果是从一个已经探索完的情绪继续到下一个，最自然的过渡方式是“接下来我们来聊聊[下一个情绪]。”然后直接进入这个情绪的探索。不要再重复“我们刚刚聊完了……你还想继续聊聊吗？”之类的确认，也不要重新列出全部情绪。
+- 过渡后的具体措辞继续遵循下面的自然语言原则：结合用户前文和当前情绪自然表达，不要机械套用固定句子。
 
-b. 对每个情绪，从情绪的不同组成部分进行探索。用户已经选择了具体情绪名称，这本身体现了情绪的主观体验（affective component）；接下来要进一步探索认知、生理/外在表现、行为倾向，以及情绪最强烈的具体情境。严格按以下顺序，每次只问一个问题；每个回答后只给一句简短、自然、有同理心的回应，再问下一题。不要一次问多个方面。
+b. 情绪深入探索的目标是帮助用户把情绪名称和自己的具体体验联系起来，更清楚地理解和描述“这个情绪对我来说是什么样的”。用户已经选择了具体情绪名称，这本身体现了情绪的主观体验（affective component）。接下来保留原有问题和示例，从认知、生理/外在表现、行动倾向，以及具体情境几个方面帮助用户进一步探索。
 
-1）认知（cognitive）："当这种[情绪]出现时，你脑海中会浮现什么具体想法？" 可以根据用户的具体情境给1-2个简短例子，但不要替用户下结论。
-2）生理与外在表现（physiological / expressive）："当这种[情绪]出现时，你身体上或者外在表现上会有什么变化吗？" 可以根据情境给少量例子（如身体紧绷、愣住、想哭、语气变化等），但不要暗示用户一定会有这些反应。所有情绪都可以询问这一部分，不只限于焦虑、压力或愤怒。
-3）行为/动机倾向（motivational / action tendency）："这种[情绪]出现时，会让你特别想做什么、说什么，或者想避开什么吗？"
-4）具体情境与强度（affective/context）："在你刚才描述的这件事中，这种[情绪]在哪个具体的时刻最强烈？当时发生了什么、有谁在场、你有什么反应？" 如果用户说不确定，鼓励他们描述整件事中这种情绪最明显的一刻。
+⚠️ 阶段3最重要的语言原则：
+- 下面列出的是每一步**要探索的信息和目的**，不是固定台词或模板。每次提问都必须结合当前情绪、具体事件、人物关系，以及用户刚才实际说了什么来组织自然的中文。
+- 不要只是把[情绪]名称塞进固定句式里。如果某种说法放在当前情绪或情境里听起来别扭、重复、带有预设，必须自然改写。
+- 不要用“冲动”“倾向”等研究术语直接问用户，也不要预设用户一定有身体反应、行为反应、想法或想做的事情。
+- 如果用户已经在前面的回答中明确提供了某一步需要的信息，简短回应后直接进入还没有探索的内容，不要机械重复。
+- **同一个情绪下，每一种探索内容最多问一次。** 尤其是行为/动机问题，用户回答过“想做什么、说什么或避开什么”后，后面绝对不要再以不同措辞重复询问这一内容。
+- 在提出下一题前，先回看当前情绪已经问过并得到回答的内容，只进入尚未探索的下一项。顺序为：认知 →（整个阶段3尚未问过时才问一次整体身体/外在表现）→ 行为/动机 → 具体情境。完成具体情境后，这个情绪的探索已经结束，不得再回到认知、身体或行为/动机问题。
+- 每次只问一个主要问题。对中间步骤，收到回答后先用1句话简短、自然、有同理心地回应，然后在**同一条回复里继续下一个尚未探索的问题**，不能只回应后停住，也不能重复已经问过的问题。
+- 在认知问题中，原则上给1-2个很短的例子来帮助用户理解问题；只有确实无法生成自然且合适的例子时才省略。其他问题是否需要例子，根据当前语境决定。所有例子都必须根据**当前情绪 + 当前具体事件**即时生成；不要使用固定例子、通用模板或跨情绪重复同样的例子，也不要暗示例子就是用户真实的体验。
+- 生成例子前，先判断**当前情绪在这个具体情境中的核心体验是什么**。例子不仅要符合事件背景，也必须真正贴合当前情绪本身。不要只生成“在这个事件里说得通”的想法；如果一个例子其实更像另一种情绪（例如更像委屈、无奈、害怕等），就不要用于当前情绪。
+- 如果认知问题实在无法生成既自然、又同时符合当前情绪和当前情境的例子，可以省略例子，直接自然地询问用户当时脑海里最直接冒出的想法。
+- 每次阶段3提问后，在回复最末尾加上对应的内部标记：认知问题 [[S3_COG]]；整体身体/外在表现问题 [[S3_BODY]]；行为/动机问题 [[S3_ACTION]]；具体情境问题 [[S3_CONTEXT]]。这些标记只用于程序追踪，不要解释它们，也不要把它们放在句子中间。
 
-收到第4题的回答后，请结合用户在以上各方面的回答，分析和总结他们为什么会感受到这个情绪，作为对这个情绪整体的反馈。总结要真诚、有同理心，具体对应用户的经历；不要像在做诊断或报告，也不要加入用户没有提到的心理原因。
+对每个情绪，逐步完成以下探索目标。顺序原则保持不变，但具体问法必须自然适配上下文：
 
-完成一个情绪的探索后（收到第4题的回答，给出总结后），立即按以下逻辑决定下一步：
+1）认知（cognitive）
+探索目标：帮助用户注意这种情绪出现时，当时脑海里最直接冒出的具体想法。
+问法要自然、具体、容易理解。可以采用“当时这种感受出现的时候，你脑海里最直接会冒出什么想法？”这一类自然表达作为风格参考，但不要固定使用某一句模板，也不要再问“这些想法是怎样和当时的情境联系起来的”之类抽象问题。
+原则上在这个问题里给1-2个很短的可能想法作为例子，帮助用户理解你在问什么。例子必须根据当前事件和当前情绪即时生成：先判断这个情绪在当前事件中的核心体验，再检查每个例子是否真的体现**这个情绪**，而不只是符合事件本身。如果例子更像其他情绪，删掉并重新生成。只有实在无法生成自然且贴切的例子时，才可以不举例。引出例子时直接自然地说“比如‘……’或‘……’”即可，不要说“比如你会不会想……”这类带预设的句式。例子不得照搬固定示例，也不要在例子后再追加“你当时自己是怎么想的？”等重复追问。
+提问末尾加：[[S3_COG]]
+
+收到回答后：先简短回应。如果整个阶段3还没有询问过身体/外在表现，则自然进入第2步；如果已经问过，则自然进入第3步。不要停在单纯回应上。
+
+2）生理与外在表现（physiological / expressive）
+这一部分在整个阶段3中**只针对整体情绪体验问一次**，不要绑定在某一个具体情绪上，也不要对每个情绪重复询问。
+探索目标：了解用户在刚才这些情绪出现时，是否注意到身体感觉或外在表现有任何变化。
+- 问法要自然、整体化，不要说“这种[情绪]在身体上有什么表现”或“这些无力感出现时”等生硬表达。
+- 不要预设一定有变化，应明确允许“没有明显变化”“没注意到”“不知道”等回答。
+- 可以用1-2个中性的方面帮助用户理解问题，例如呼吸、心跳、语气、表情等，但只点到这些**方面**，不要替用户预设具体反应。例如可以自然地问是否注意到呼吸、心跳、语气或表情上和平时有什么不一样，而不要说“脸红”“呼吸急促”“心跳加快”等具体变化。
+- 措辞必须自然。不要使用“语气里有什么特别的表现”这类生硬说法；根据上下文可以自然地说“语气有没有变化”“说话的语气有没有和平时不一样”等，但不要固定套用某一句。
+提问末尾加：[[S3_BODY]]
+
+收到回答后：简短回应，然后在同一条消息里自然进入第3步。不要继续追问身体反应，也不要只回应后停住。
+
+3）行为/动机（motivational / action tendency）
+探索目标：帮助用户注意这种情绪是否让他们特别想做什么、说什么，或者想避开什么。这里是在回顾当时自然出现的反应，不是让用户制定下一步行动，也不是给建议。
+问法必须根据当前情绪和前文自然组织，不要使用“你的冲动或倾向是什么”之类的研究化表达，也不要预设用户一定有某种冲动或行为反应。
+像“这种烦躁出现时，会让你特别想做什么、说什么，或者想避开什么吗？”这样的表达可以作为自然语言风格的参考，但**不是固定模板**；如果当前情绪、语境或用户刚才的回答更适合别的说法，应自然改写。
+如需举例，最多给1-2个，并且必须根据当前情绪和具体事件即时生成；如果不需要例子就不要硬加。
+提问末尾加：[[S3_ACTION]]
+
+收到回答后：简短回应，然后在同一条消息里自然进入第4步。**第3步到此已经完成；之后不要再以任何措辞重复询问用户想做什么、想说什么或想避开什么。**
+
+4）具体情境与强度（affective/context）
+探索目标：帮助用户把这种情绪放回事件中的具体时刻，区分它什么时候最明显、当时发生了什么，以及为什么那个时刻与这种感受有关。
+提问时根据前文自然询问这种情绪在哪个时刻最明显或最强烈，以及当时的具体情况。不要机械地把“发生了什么、有谁在场、你有什么反应”全部堆在一句里；如果前文已经知道其中一些信息，就只问尚不清楚且有助于理解情绪的部分。
+如果用户说不确定，可以轻柔地邀请他们回想整件事里这种感受最明显的一刻，但不要替用户推断。
+提问末尾加：[[S3_CONTEXT]]
+
+收到第4步回答后，当前情绪的四步探索即告完成。**不要再回头询问认知、身体/外在表现或行为/动机，也不要把第3步换一种说法再问一次。** 先对当前情绪进行整体总结，结合用户在以上各方面实际提供的信息，帮助他们把零散的体验联系起来，更清楚地理解和描述为什么会有这种情绪。总结要自然、真诚、有同理心，具体对应用户经历；不要像诊断或研究报告，不要加入用户没有表达过的心理原因，也不要给解决问题的建议。若还有下一个已选择但未探索的情绪，总结后用“接下来我们来聊聊[下一个情绪]。”自然过渡，并直接从该情绪的认知问题开始。
+
+如果用户选择了多个情绪：
+- 每个情绪都分别探索认知、行为/动机和具体情境；整体身体/外在表现通常只在整个阶段3问一次。
+- 不要因为顺序相同就把不同情绪问成相同的机械问卷。每一次提问都要利用用户前面已经说过的信息，让措辞和关注点自然变化。
+- 如果某个问题在当前情绪下明显不自然，先判断用户是否已经在前文提供了相关信息；如果已经提供，就不要再问。如果尚未提供，则换一种更符合当前语境的自然问法，而不是硬套模板。
+
+完成一个情绪的上述探索并给出总结后，立即按以下逻辑决定下一步：
 
 ❌ 严格禁止在这里说"你刚才提到了这些情绪：[X]。我们会一个一个来聊。你想先从哪一个开始呢？"——那句话只用于阶段2→3的开场，绝不能在情绪探索结束后重复。
 
@@ -632,7 +696,7 @@ b. 对每个情绪，从情绪的不同组成部分进行探索。用户已经�
 
 **情况A：用户只选了一个情绪，探索完毕**
 → 给出总结后问："我们刚刚聊完了[情绪]。你还有其他关于这件事的感受或情绪想继续聊聊吗？"
-→ 用户说有 → 继续探索该情绪（按同样的4个问题流程）。
+→ 用户说有 → 按上述同样的探索逻辑继续探索该情绪。
 → 用户说没有 → 在同一条消息中直接过渡并立即提问阶段4的Q1（不要停下来等待用户回应过渡语）：
 "好的，谢谢你的分享。下面，我们再来评估一下你对这件事的感受。请根据你此刻最真实的感觉来回答，无论它和你之前的回答是不是一样，都没有关系。
 在一开始的时候，你提到了[简短重述阶段1中的具体事件]。这件事在此刻让你觉得有多困扰？
@@ -646,7 +710,10 @@ b. 对每个情绪，从情绪的不同组成部分进行探索。用户已经�
 请在1-7中选择一个最符合的数字"
 
 **情况B：用户选了多个情绪，还有未探索的**
-→ "我们刚刚聊完了[情绪]。你之前还提到了[其他情绪]，你还想继续聊聊吗？"
+→ 不再询问用户是否还想继续。用户已经在阶段2明确选择了这些情绪，因此按其选择继续逐个探索。
+→ 当前情绪总结结束后，自然过渡到下一个未探索情绪，优先使用："接下来我们来聊聊[下一个情绪]。"
+→ 在同一条回复中直接进入下一个情绪的第1个尚未探索内容（通常是认知问题），不要只说过渡语后停住。
+→ 不要说“我们刚刚聊完了……你还想继续聊聊吗？”，也不要重新列出全部已选择情绪。
 
 **情况C：用户选了多个情绪，全部探索完毕**
 → "你还有其他关于这件事的感受或情绪想继续聊聊吗？"
@@ -714,8 +781,8 @@ b. 对每个情绪，从情绪的不同组成部分进行探索。用户已经�
 1."谢谢你的回答。下面请继续回答几个问题，以帮助我了解你此刻的状态。请根据你**此刻**的状态回答下面的问题。"
 
 2.收到"量表已完成，请继续"后，不要再问任何关于量表的问题，直接先问以下问题，收到回答后再进行总结：
-"谢谢你的耐心。接下来请你回想一件最近或以前**别的让你困扰或有压力的经历**。这件事不需要和刚才聊的事情相似，也不需要是很大的事。请用自己的话尽量详细地描述一下：大概是什么时候、在哪里、当时有谁在场，以及具体发生了什么。"
-⚠️ 这是一道独立的问题。只说上面这一段，不要再追加“能详细说说这件事吗”等第二个问题。
+"谢谢你的耐心。在一开始你提到xxx这方面的问题，你最近或以前是否还有过其他类似的经历？不需要是很大的事，任何让你困扰或者有压力的经历都可以。请稍微回想一下。如果有的话，能详细说说这件事吗？比如是什么时候、在哪儿发生的，当时有谁在场，具体发生了什么。可以想象你在跟朋友吐槽，想说什么就说什么 。"
+⚠️ 这是一道独立的问题。请完整说出上面这一段，不要在同一条消息里追加其他问题。
 
 收到用户对经历的描述后，接着问：
 "在这件事中，你有什么感受或情绪？可以把任何想到的都写下来。"
@@ -771,15 +838,27 @@ Q2："你当时有没有尝试和对方沟通过你的想法？可以说说细�
 - 如果回答比较模糊，但没有明确证据表明用户【实际开口、表达、沟通、提出或谈过】，优先视为【没有实际沟通】，不要擅自假设已经沟通过。
 - 核心原则：判断的是“沟通行为是否真的发生过”，而不是句子里有没有出现“沟通”这个词；不要重复询问用户已经通过语义明确回答过的信息。
 
-Q3：收到Q2的回答后，给出一句简短有同理心的回应（不涉及情绪词汇），然后等待。系统会自动询问下一个问题。
-
-**非常重要‼️收到Q3的回应之后，给出简短回应后才能继续，绝对不要连续问两个问题。**
+Q3由系统根据Q2的内容分步提问。必须遵守“一次只问一个问题”，不要把“对方如何回应”和“这种回应是否有帮助”合并在同一题里：
+- 如果用户实际沟通过，但还没有说明对方如何回应：先只问“对方当时是怎么回应你的？”
+- 当用户说明了对方的回应后，先判断用户是否已经清楚表达了该回应的影响。不要为了完成固定流程而重复询问已经很明显的信息。
+  • 如果回应明显是负面的、拒绝性的或使情况更困难（例如对方不听、继续发火、继续指责、拒绝、反驳、辱骂等），不要再问“有没有帮助”。系统会简短承接并直接进入Q4。
+  • 如果回应明显是支持性的或确实帮助了事情处理（例如对方听进去了、冷静下来、同意、道歉、配合等），也不要再问“有没有帮助”。系统会简短承接并直接进入Q4。
+  • 只有当回应本身的影响不清楚或模棱两可时，才问“对方这样的回应有没有帮助你处理当时的情况，还是让事情变得更难处理？”
+- 如果用户在Q2中已经同时说明了自己的沟通行为和对方的回应，也按照上述规则判断：影响明显时直接进入Q4；影响不清楚时再询问是否有帮助。
+- 如果用户没有实际沟通过：先只问“如果当时和对方沟通，你觉得对方可能会怎么回应？”收到回答后也按照同样原则判断：如果该假设回应的影响已经明显，则直接进入Q4；只有影响不清楚时才问“你觉得这样的回应会有助于处理这件事，还是会让事情变得更难处理？”
+Q3的问题由系统自动发送，你不要自行补问、合并或重复。
 
 Q4："你后来有没有跟当时不在场的人聊过这件事？比如家人、朋友、其他科室同事等。"
 
-收到Q4的回答后，给出一句简短有同理心的回应（不涉及情绪词汇），然后等待。系统会自动向用户询问下一个问题，你不需要问任何问题。
+Q5由系统根据Q4的内容分步提问。必须遵守“一次只问一个问题”，并根据用户已经说过的信息继续：
+- 如果用户确实和当时不在场的人聊过，但还没有说明对方怎么回应：根据用户提到的人来称呼对方。例如用户说“跟同事聊过”，问“同事当时是怎么回应你的？”；如果用户明确用了“她/他”，则可以用“她/他”来指代。不要默认使用“他们”。
+- 用户说明了对方的实际回应后：如果用户在这一轮明确用了“她/他”，后续可以继续用相同代词；否则沿用用户之前提到的关系称呼，例如“同事这样的回应对你有帮助吗？”。绝对不要再改成假设性的“如果当时和……说起这件事……”。
+- 如果用户在Q4回答中已经同时说明了自己和谁聊过、以及对方怎么回应：不要重复问回应，直接使用最自然且与用户表述一致的称呼询问该回应是否有帮助。
+- 只有用户明确表示没有和任何当时不在场的人聊过这件事时，才进入假设分支。假设问题也尽量沿用用户提到的关系称呼；只有无法判断具体对象时才使用较泛的称呼。
+- 一旦确认用户实际和别人聊过，就必须记住这是【实际发生的交流】，后续不能因为下一条回答只描述了“她说……/他说……”而退回假设分支。
+Q5的问题由系统自动发送，你不要自行补问、合并或重复。
 
-**极其重要‼️收到Q5的回答后，立即且直接，无任何停顿，严格按顺序问以下评估问题。Q7-Q11不要给任何反馈，只提问就好。**
+**极其重要‼️收到Q5最后一个问题的回答后，立即且直接，无任何停顿，严格按顺序问以下评估问题。Q7-Q11不要给任何反馈，只提问就好。**
 
 Q7："谢谢你的分享。为了更好地了解你的情况，接下来我会问你几个简短的问题。请根据你此刻的状态回答以下问题。首先，这件事此刻让你觉得有多困扰？
 1 ○○○○○○○ 完全不困扰
@@ -947,8 +1026,8 @@ Q11："请选择你在多大程度上同意以下陈述："我现在能很容易
 1."谢谢你的回答。下面请继续回答几个问题，以帮助我了解你此刻的状态。请根据你**此刻**的状态回答下面的问题。"
 
 2.收到"量表已完成，请继续"后，不要再问任何关于量表的问题，直接先问以下问题，收到回答后再进行总结：
-"谢谢你的耐心。接下来请你回想一件最近或以前**别的让你困扰或有压力的经历**。这件事不需要和刚才聊的事情相似，也不需要是很大的事。请用自己的话尽量详细地描述一下：大概是什么时候、在哪里、当时有谁在场，以及具体发生了什么。"
-⚠️ 这是一道独立的问题。只说上面这一段，不要再追加“能详细说说这件事吗”等第二个问题。
+"谢谢你的耐心。在一开始你提到xxx这方面的问题，你最近或以前是否还有过其他类似的经历？不需要是很大的事，任何让你困扰或者有压力的经历都可以。请稍微回想一下。如果有的话，能详细说说这件事吗？比如是什么时候、在哪儿发生的，当时有谁在场，具体发生了什么。可以想象你在跟朋友吐槽，想说什么就说什么 。"
+⚠️ 这是一道独立的问题。请完整说出上面这一段，不要在同一条消息里追加其他问题。
 
 收到用户对经历的描述后，接着问：
 "在这件事中，你有什么感受或情绪？可以把任何想到的都写下来。"
@@ -1043,7 +1122,7 @@ function saveToLark() {
 
 // ── Post-chat evaluation & GAAIS ──────────────────────────────────────────────
 const EVAL_QUESTIONS = [
-  { id: 'helpful',          text: '整体来说，和小暖的聊天有没有帮你更好地面对刚才提到的问题？', left: '一点帮助也没有', right: '非常有帮助',   conditionOnly: null },
+  { id: 'helpful',          text: '整体来说，和小暖的聊天有没有帮你更好地面对一开始提到的问题？', left: '一点帮助也没有', right: '非常有帮助',   conditionOnly: null },
   { id: 'understood',       text: '在描述所遇到的问题时，小暖的回应让您感到被理解的程度有多高？', left: '一点也没有被理解', right: '非常被理解', conditionOnly: null },
   { id: 'willingness',      text: '如果将来再次遇到类似让您困扰的问题，您有多大的意愿选择再次和小暖聊天？', left: '完全不会', right: '非常愿意', conditionOnly: null },
   { id: 'emotion_accuracy', text: '您觉得小暖对您可能在经历的情绪或感受的分析有多准确？', left: '一点也不准确', right: '非常准确', conditionOnly: 'emotion' },
@@ -1059,7 +1138,7 @@ const GAAIS_ITEMS = [
   '我认为人工智能是积极正面的事物。',
   '如果没有人工智能，我的生活会变得更加匮乏。',
   '我有兴趣在日常生活中使用人工智能系统。',
-  '人工智能可以为本国创造新的经济机会。',
+  '人工智能可以为国家创造新的经济机会。',
   '我认为人工智能是危险的。',
   '人工智能对社会有害。',
   '我相信人工智能对人类有害。',
@@ -1262,11 +1341,11 @@ const ANXIETY_ITEMS = [
   '我感到心情平静'
 ];
 const STRESS_ITEMS = [
-  '我觉得当下很难让自己安静下来',
-  '我当下感到忐忑不安',
-  '我当下感到烦恼',
-  '我当下感到很难放松自己',
-  '我感觉自己当下很容易被触怒'
+  '我感觉很难松弛下来',
+  '我感到心烦意乱',
+  '我感到烦恼',
+  '我觉得很难放松自己',
+  '我觉得自己很容易被触怒或冒犯'
 ];
 const SCALE_LEFT  = '完全没有';
 const SCALE_RIGHT = '非常强烈';
@@ -1505,9 +1584,9 @@ function updateState(t) {
     if      (t.includes("工作的哪个方面"))                                  currentQuestion = 1;
     else if (t.includes("描述一下这件具体发生的事吗"))                      currentQuestion = 1;
     else if ((t.includes("尝试和对方沟通") || t.includes("和对方沟通过") || t.includes("沟通过你的想法") || t.includes("有没有尝试")) && !t.includes("有多困扰")) currentQuestion = 2;  // AI asked Q2
-    else if (t.includes("处理当时的情况") || t.includes("有助于处理这件事")) currentQuestion = 3;  // Q3 delivered → user will answer Q3
+    else if (t.includes("对方当时是怎么回应你的") || t.includes("对方可能会怎么回应") || t.includes("处理当时的情况") || t.includes("有助于处理这件事")) currentQuestion = 3;  // Q3 step delivered → user will answer Q3
     else if (t.includes("有没有跟当时不在场的人"))                          currentQuestion = 4;  // AI asked Q4 → user will answer Q4
-    else if (t.includes("他们这样的回应对你有帮助") || t.includes("回应会对你有帮助")) currentQuestion = 5;  // Q5 delivered → user will answer Q5
+    else if (/(?:当时是怎么回应你的|这样的回应对你有帮助吗|如果当时和.+说起这件事|这样的回应会对你有帮助吗)/.test(t)) currentQuestion = 5;  // Q5 step delivered → user will answer Q5
     else if (t.includes("有多困扰"))                                        currentQuestion = 7;
     else if (t.includes("很强烈的情绪"))                                    currentQuestion = 8;
     else if (t.includes("我清楚自己现在"))                                  currentQuestion = 9;
@@ -1521,10 +1600,15 @@ function updateState(t) {
       if (t.includes("我们来聊聊")) { currentStage = 3; currentQuestion = 0; }
     } else if (currentStage === 3) {
       if      (t.includes("我们再来评估一下"))                      { currentStage = 4; currentQuestion = 1; }
-      else if (t.includes("脑海中会浮现什么具体想法"))               currentQuestion = 1;
-      else if (t.includes("身体上或者外在表现上"))                   currentQuestion = 2;
-      else if (t.includes("特别想做什么、说什么"))                   currentQuestion = 3;
-      else if (t.includes("在哪个具体的时刻最强烈"))                 currentQuestion = 4;
+      else if (t.includes("[[S3_COG]]"))                           currentQuestion = 1;
+      else if (t.includes("[[S3_BODY]]"))                        { currentQuestion = 2; stage3BodyQuestionAsked = true; }
+      else if (t.includes("[[S3_ACTION]]"))                         currentQuestion = 3;
+      else if (t.includes("[[S3_CONTEXT]]"))                        currentQuestion = 4;
+      // Fallbacks for older model outputs that omit the internal marker.
+      else if (/脑海.{0,12}(?:想法|想到)/.test(t))                    currentQuestion = 1;
+      else if (/(?:身体|外在).{0,18}(?:变化|感觉|表现)/.test(t))      { currentQuestion = 2; stage3BodyQuestionAsked = true; }
+      else if (/(?:想做什么|想说什么|想避开|想躲开)/.test(t))         currentQuestion = 3;
+      else if (/(?:最明显|最强烈).{0,12}(?:时候|时刻)/.test(t))       currentQuestion = 4;
     } else if (currentStage === 4) {
       if      (t.includes("有多困扰"))                              currentQuestion = 1;
       else if (t.includes("有很强烈的情绪"))                        currentQuestion = 2;
@@ -1554,6 +1638,83 @@ function updateState(t) {
   }
 }
 
+// Stage-3 tracking uses invisible markers so the model can phrase questions naturally
+// instead of relying on fixed wording/templates. Markers are stripped before display.
+let stage3BodyQuestionAsked = false;
+
+function getStage3Marker(text) {
+  const m = text.match(/\[\[S3_(COG|BODY|ACTION|CONTEXT)\]\]/);
+  return m ? m[1] : null;
+}
+
+function stripStage3Markers(text) {
+  return text.replace(/\s*\[\[S3_(?:COG|BODY|ACTION|CONTEXT)\]\]\s*/g, '').trim();
+}
+
+function classifyStage3Question(text) {
+  const marker = getStage3Marker(text);
+  if (marker) return marker;
+  // Semantic fallbacks in case the model omits the internal marker.
+  if (/脑海.{0,16}(?:想法|想到|冒出)/.test(text)) return 'COG';
+  if (/(?:身体|外在).{0,20}(?:变化|感觉|表现)/.test(text)) return 'BODY';
+  if (/(?:想做什么|想说什么|想避开|想躲开)/.test(text)) return 'ACTION';
+  if (/(?:最明显|最强烈).{0,14}(?:时候|时刻)|哪个时刻.{0,12}(?:明显|强烈)/.test(text)) return 'CONTEXT';
+  return null;
+}
+
+function stage3ReplyHasNextQuestion(text) {
+  return !!classifyStage3Question(text) || text.includes('我们再来评估一下');
+}
+
+function expectedStage3NextQuestion() {
+  if (currentQuestion === 1) return stage3BodyQuestionAsked ? 'ACTION' : 'BODY';
+  if (currentQuestion === 2) return 'ACTION';
+  if (currentQuestion === 3) return 'CONTEXT';
+  return null;
+}
+
+function shouldRepairStage3Reply(text) {
+  if (CONDITION !== 'emotion' || currentStage !== 3) return false;
+  if (text.includes('我们再来评估一下')) return false;
+
+  const asked = classifyStage3Question(text);
+
+  // For the first three steps, the next category is deterministic. Repair not only
+  // missing questions but also repeated/out-of-order questions (e.g. ACTION twice).
+  if ([1, 2, 3].includes(currentQuestion)) {
+    const expected = expectedStage3NextQuestion();
+    return asked !== expected;
+  }
+
+  // Once CONTEXT has been answered, the current emotion is complete. The model must
+  // never return to BODY/ACTION/CONTEXT for that same emotion. If it starts the next
+  // emotion, it must explicitly transition and restart at COG.
+  if (currentQuestion === 4) {
+    if (asked === 'BODY' || asked === 'ACTION' || asked === 'CONTEXT') return true;
+    if (asked === 'COG' && !text.includes('接下来我们来聊聊')) return true;
+    if (text.includes('接下来我们来聊聊') && asked !== 'COG') return true;
+  }
+
+  return false;
+}
+
+function getStage3RepairInstruction() {
+  let stateRule = '';
+  if (currentQuestion === 1) {
+    stateRule = stage3BodyQuestionAsked
+      ? '用户刚刚已经回答了当前情绪的认知问题。下一步只能进入行为/动机问题，不要再问认知，也不要再问身体/外在表现。'
+      : '用户刚刚已经回答了当前情绪的认知问题。下一步只能询问整个阶段3唯一一次的整体身体/外在表现问题，不要重复认知问题。';
+  } else if (currentQuestion === 2) {
+    stateRule = '用户刚刚已经回答了整体身体/外在表现问题。下一步只能进入当前情绪的行为/动机问题，不要再问身体，也不要回到认知。';
+  } else if (currentQuestion === 3) {
+    stateRule = '用户刚刚已经回答了当前情绪的行为/动机问题。下一步只能进入具体情境问题。绝对不要换一种说法再次询问想做什么、想说什么或想避开什么。';
+  } else if (currentQuestion === 4) {
+    stateRule = '用户刚刚已经回答了当前情绪的具体情境问题，因此这个情绪的探索已经完成。绝对不要再问认知、身体/外在表现、行为/动机或具体情境。先总结这个情绪；如果还有阶段2已选择但未探索的情绪，用“接下来我们来聊聊XX。”过渡，并直接从下一个情绪的认知问题开始；如果已全部完成，则按系统提示进入结束该阶段的逻辑。';
+  }
+
+  return `你刚才的阶段3回复出现了漏问、重复或顺序错误。请重新生成这一条回复。\n${stateRule}\n1. 先用一句简短、自然、有同理心的话回应用户刚才说的内容；\n2. 严格按照上面的当前进度，只继续尚未完成的下一步；同一个情绪下每一种探索内容最多问一次；\n3. 不要使用固定模板。措辞必须结合当前情绪、事件、人物关系和用户刚才的回答，像自然中文对话；\n4. 不要重复用户已经明确回答过的信息，不要预设用户一定有身体反应或想做的事情，也不要用“冲动/倾向”等研究术语直接问用户；\n5. 如果需要提出认知问题，原则上给1-2个很短、自然的例子帮助理解；例子必须同时贴合当前具体情境和当前情绪的核心体验；引出例子时直接用“比如‘……’或‘……’”，不要用“比如你会不会想……”；\n6. 如果需要提出身体/外在表现问题，可以中性地点到呼吸、心跳、语气、表情等方面，但不要预设具体变化，也不要使用“脸红”“呼吸急促”“心跳加快”等具体反应作为示例；措辞要自然，不要说“语气里有什么特别的表现”；\n7. 如果提出阶段3问题，按系统提示在回复末尾加对应内部标记 [[S3_COG]]、[[S3_BODY]]、[[S3_ACTION]] 或 [[S3_CONTEXT]]。\n只重新生成这一条回复，不要解释这些规则。`;
+}
+
 function sendToAI(messages) {
   const btn   = document.getElementById('chatSubmit');
   const input = document.getElementById('chatInput');
@@ -1566,20 +1727,49 @@ function sendToAI(messages) {
   log.appendChild(typingRow);
   log.scrollTop = log.scrollHeight;
 
-  fetch(PROXY_URL, {
+  const callModel = (payloadMessages) => fetch(PROXY_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model: MODEL, messages, temperature: 0.7 })
+    body: JSON.stringify({ model: MODEL, messages: payloadMessages, temperature: 0.7 })
+  }).then(r => r.json());
+
+  callModel(messages)
+  .then(async data => {
+    if (!data.choices?.[0]) return { rawReply: null };
+
+    let rawReply = data.choices[0].message.content;
+
+    // If an intermediate emotion-reflection turn contains only acknowledgement and
+    // forgets the next question, ask the model to regenerate the turn naturally.
+    // This avoids inserting a canned JS fallback question.
+    if (shouldRepairStage3Reply(rawReply)) {
+      const repairMessages = messages.concat([
+        { role: 'assistant', content: rawReply },
+        { role: 'system', content: getStage3RepairInstruction() }
+      ]);
+      try {
+        const repaired = await callModel(repairMessages);
+        if (repaired.choices?.[0]?.message?.content) {
+          rawReply = repaired.choices[0].message.content;
+        }
+      } catch (repairErr) {
+        console.warn('[Stage3 repair]', repairErr);
+      }
+    }
+
+    return { rawReply };
   })
-  .then(r => r.json())
-  .then(data => {
+  .then(({ rawReply }) => {
     document.getElementById('typingIndicator')?.remove();
     btn.disabled = false; input.disabled = false;
-    if (data.choices?.[0]) {
-      const reply = data.choices[0].message.content;
+
+    if (rawReply) {
+      // Track state using the raw reply (including invisible Stage-3 markers),
+      // but never show or store those markers in the participant-facing conversation.
+      updateState(rawReply);
+      const reply = stripStage3Markers(rawReply);
       s.push({ role: 'assistant', content: reply });
       appendMsg('ai', reply);
-      updateState(reply);
     } else {
       appendMsg('ai', '抱歉，出现了一点问题，请重试。');
     }
@@ -1597,7 +1787,11 @@ function sendToAI(messages) {
 // Detect what the user has ALREADY told us, so we do not ask a question
 // that has effectively already been answered.
 function descriptionDetected(text) {
-  const t = text.trim();
+  const raw = text.trim();
+  // Mask pronouns that are clearly the OBJECT of the user's communication, e.g.
+  // “跟他解释”“向她说明”. Without this, “他解释” inside “跟他解释” can be
+  // misread as if HE explained something back to the user.
+  const t = raw.replace(/(?:跟|和|向|对|给)(?:她|他|对方|领导|家属|患者|同事)(?=(?:解释|说明|表达|说|讲|沟通|交流|告诉))/g, '[沟通对象]');
   // Detect whether the user has already described the OTHER PERSON'S actual response.
   // Avoid treating “我跟她说了” as if “她说了...” were the other person's response.
   if (/(?:她|他|对方|领导)(?:回复|回应|回答|表示|告诉我|让我|叫我|道歉|拒绝|同意|答应|解释|批评|骂我|不听|不理|没理|沉默|没有回应|没回应)/.test(t)) return true;
@@ -1621,7 +1815,7 @@ function actualContactDetected(text) {
     || /(?:^|[，。；;！!?\s])(?:我)?(?:已经|曾经|后来|最后|还是)*(?:跟|和|向|对).{0,10}(?:说了|提了|讲了|聊了|谈了|沟通了|交流了|表达了|说明了|解释了|反映了|提过|说过|讲过|聊过|谈过|沟通过|交流过|表达过|反映过)/.test(t)
     || /(?:^|[，。；;！!?\s])我(?:已经|曾经|后来|最后|还是)?(?:说了|提了|讲了|聊了|谈了|沟通了|交流了|表达了|说明了|解释了|反映了|说过|提过|讲过|聊过|谈过|沟通过|交流过|表达过|反映过)/.test(t)
     || /(?:已经|曾经|后来|最后|还是)(?:沟通过|交流过|说过|提过|讲过|聊过|谈过|表达过|反映过)/.test(t)
-    || /^(?:有|有的|有过|试过|尝试过|沟通过|交流过|说过|提过)[。！!，,\s]*$/.test(t)
+    || /^(?:有|有啊|有呀|有的|有过|当时有|当时有啊|当时有呀|后来有|后来有啊|试过|当时试过|尝试过|当时尝试过|沟通过|交流过|说过|提过)[。！!，,\s]*$/.test(t)
     || /(?:^|[，。；;！!?\s])(?:我)?(?:试着|尝试|尝试着|尝试过|试过).{0,8}(?:跟|和|向|对)?.{0,8}(?:说|沟通|交流|表达|谈|聊|提|解释|说明|告诉)/.test(t)
     || /(?:沟通过|交流过|谈过|聊过).{0,8}(?:但|不过|可是|然而).{0,8}(?:没用|没有用|没什么用)/.test(t)
     // Positive constructions beginning with “有…”, e.g. “有和病人家属沟通，告诉他……”.
@@ -1633,7 +1827,7 @@ function bareYesContactDetected(text) {
   const t = text.trim();
   // User clearly answers “yes” to Q2 but gives no usable details yet.
   // Examples: “有”, “有啊”, “有的”, “有过”, “试过”, “尝试过”.
-  return /^(?:有|有啊|有的|有呀|有过|有过啊|试过|试过啊|尝试过|尝试过啊|沟通过|沟通过啊|交流过|交流过啊)[。！!，,、~～\s]*$/.test(t);
+  return /^(?:有|有啊|有的|有呀|有过|有过啊|当时有|当时有啊|当时有呀|后来有|后来有啊|试过|试过啊|当时试过|尝试过|尝试过啊|当时尝试过|沟通过|沟通过啊|交流过|交流过啊)[。！!，,、~～\s]*$/.test(t);
 }
 
 // Once the user has explicitly confirmed that communication happened, remember it
@@ -1641,8 +1835,16 @@ function bareYesContactDetected(text) {
 // from being misread as if communication never happened.
 let q2ActualCommunicationConfirmed = false;
 
+// Q3 is intentionally split into two turns: first establish what the other person
+// actually (or hypothetically) did/said, then ask whether that response was helpful.
+// This prevents the chatbot from evaluating a response the participant has not described yet.
+let q3FollowupMode = null; // 'actual_response', 'actual_help', 'hyp_response', 'hyp_help'
+
 function responseFromOtherDetected(text) {
-  const t = text.trim();
+  const raw = text.trim();
+  // As above, mask pronouns that are the OBJECT of the user's own communication
+  // (e.g. “跟他解释”), so they are not mistaken for the other person's reply.
+  const t = raw.replace(/(?:跟|和|向|对|给)(?:她|他|对方|领导|家属|患者|同事)(?=(?:解释|说明|表达|说|讲|沟通|交流|告诉))/g, '[沟通对象]');
   // Broad detection of the other person's actual reaction/position after communication.
   // Includes verbal replies, refusal, persistence, silence, anger, disagreement, etc.
   if (descriptionDetected(t)) return true;
@@ -1671,13 +1873,125 @@ function noContactDetected(text) {
     || /(?:她|他|对方).{0,6}(?:是)?(?:领导|上级).{0,10}(?:不好说|不方便说|不太方便|不敢说)?/.test(t);
 }
 
-const Q2_DETAILS = '可以具体说说你当时是怎么和对方沟通的吗？比如你说了什么、对方当时怎么回应的。';
-const Q3_FULL = '对方当时是怎么回应你的？对方的回应有没有帮助你处理当时的情况，还是让事情变得更难处理？';
+const Q2_DETAILS = '可以具体说说你当时是怎么和对方沟通的吗？比如你说了什么。';
+const Q3_RESPONSE = '对方当时是怎么回应你的？';
 const Q3_HELPFUL = '对方这样的回应有没有帮助你处理当时的情况，还是让事情变得更难处理？';
-const Q3_HYPOTHETICAL = '如果当时和对方沟通，你觉得对方可能会怎么回应？你觉得这样的回应会有助于处理这件事，还是会让事情变得更难处理？';
-const Q5_FULL = '他们当时是怎么回应你的？他们的回应有没有对你有帮助，还是没有太大帮助？';
-const Q5_HELPFUL = '他们这样的回应对你有帮助吗，还是没有太大帮助？';
-const Q5_HYPOTHETICAL = '如果当时和他们说起这件事，你觉得他们可能会怎么回应？你觉得这样的回应会对你有帮助吗？';
+const Q3_HYPOTHETICAL_RESPONSE = '如果当时和对方沟通，你觉得对方可能会怎么回应？';
+const Q3_HYPOTHETICAL_HELPFUL = '你觉得这样的回应会有助于处理这件事，还是会让事情变得更难处理？';
+const Q4_DIRECT = '你后来有没有跟当时不在场的人聊过这件事？比如家人、朋友、其他科室同事等。';
+
+// If the participant has already made the impact of the other person's response
+// obvious, do not ask a redundant "was that helpful?" question. That can sound
+// mechanical or sarcastic (e.g. after "他根本不听，一直在发火").
+// Return 'negative', 'positive', or null when the impact is genuinely unclear.
+function responseImpactDetected(text) {
+  const t = text.trim();
+
+  const negative = /(?:根本不听|完全不听|不听我(?:说|解释)?|听不进去|不接受|不理解|不理|没理|拒绝|反驳|质疑|继续(?:发火|生气|骂|指责|责怪|抱怨|吵)|一直(?:发火|生气|骂|指责|责怪|抱怨|吵)|还是(?:发火|生气|骂|指责|责怪|不听|不同意|不接受|坚持)|仍然(?:发火|生气|骂|指责|责怪|不听|不同意|不接受|坚持)|依然(?:发火|生气|骂|指责|责怪|不听|不同意|不接受|坚持)|态度(?:很差|不好|恶劣)|骂我|冲我发火|训斥|责备|没有帮助|没帮助|更难处理|更麻烦|变得更糟)/.test(t);
+  if (negative) return 'negative';
+
+  const positive = /(?:听进去了|听我解释|愿意听|理解了|表示理解|接受了|同意了|答应了|配合了|冷静下来|平静下来|不再(?:发火|指责|骂)|道歉了|跟我道歉|问题解决了|事情解决了|有帮助|帮到了|好处理多了|缓和了)/.test(t);
+  if (positive) return 'positive';
+
+  return null;
+}
+
+function q3ImpactTransition(impact) {
+  if (impact === 'negative') {
+    return '听起来对方这样的回应让当时的情况更难处理。' + Q4_DIRECT;
+  }
+  if (impact === 'positive') {
+    return '听起来对方这样的回应对当时处理这件事起到了一些帮助。' + Q4_DIRECT;
+  }
+  return null;
+}
+// Q5 uses the participant's own referent for the person they talked to.
+// Prefer an explicit gendered pronoun (她/他) when the participant uses one;
+// otherwise use the relationship they named (e.g. 同事、朋友、家人) instead of
+// mechanically referring to a single person as “他们”.
+let q5SupportReferent = '对方';
+
+function explicitSingularPronoun(text) {
+  const t = text.trim();
+  if (t.includes('她')) return '她';
+  // Match singular 他 but not the plural 他们.
+  if (/(^|[^他])他(?!们)/.test(t)) return '他';
+  return null;
+}
+
+function inferSupportReferent(text, fallback = '对方') {
+  const t = text.trim();
+  const pronoun = explicitSingularPronoun(t);
+  if (pronoun) return pronoun;
+
+  if (/(?:同事们|几个同事|几位同事|多位同事|家人和朋友|朋友和家人|好几个人|几个人)/.test(t)) return '他们';
+  if (t.includes('护士长')) return '护士长';
+  if (t.includes('主管')) return '主管';
+  if (t.includes('领导')) return '领导';
+  if (t.includes('同事')) return '同事';
+  if (t.includes('朋友')) return '朋友';
+  if (t.includes('家人')) return '家人';
+  if (t.includes('家属')) return '家属';
+  return fallback;
+}
+
+function updateSupportReferentFromResponse(text) {
+  const pronoun = explicitSingularPronoun(text);
+  if (pronoun) q5SupportReferent = pronoun;
+}
+
+function q5ResponseQuestion() {
+  return `${q5SupportReferent}当时是怎么回应你的？`;
+}
+function q5HelpfulQuestion() {
+  return `${q5SupportReferent}这样的回应对你有帮助吗？`;
+}
+function q5HypotheticalResponseQuestion() {
+  const r = q5SupportReferent === '对方' ? '他们' : q5SupportReferent;
+  return `如果当时和${r}说起这件事，你觉得${r}可能会怎么回应？`;
+}
+const Q5_HYPOTHETICAL_HELPFUL = '你觉得这样的回应会对你有帮助吗？';
+
+// Q5 mirrors Q3: once actual social support has been confirmed, keep that state
+// across turns so a later reply such as “她说这种事很常见” can never be
+// misread as if the participant had not actually talked to anyone.
+let q4ActualSupportConfirmed = false;
+let q5FollowupMode = null; // 'actual_response', 'actual_help', 'hyp_response', 'hyp_help'
+
+function explicitSupportImpactDetected(text) {
+  const t = text.trim();
+  if (/(?:很有帮助|有帮助|帮到我|帮了我|让我好受|让我安心|让我放心|缓解了|轻松了一些|感觉好多了)/.test(t)) return 'positive';
+  if (/(?:没有帮助|没帮助|没什么帮助|没有太大帮助|没太大帮助|没什么用|反而更难受|更烦|更有压力)/.test(t)) return 'negative';
+  return null;
+}
+
+function socialSupportResponseDetected(text) {
+  const raw = text.trim();
+
+  // First mask phrases where the participant is describing THEIR OWN act of
+  // talking to someone, e.g. “跟我一起值班的同事说了”“向朋友提过这件事”.
+  // Without this, the substring “同事说了” can be mistaken for the colleague's reply.
+  const t = raw.replace(
+    /(?:跟|和|向|对|给).{0,18}?(?:同事|朋友|家人|领导|主管|护士长|她|他|他们)(?=(?:聊|说|提|谈|讲|沟通|倾诉|解释|说明|告诉))/g,
+    '[倾诉对象]'
+  );
+
+  // Clear evidence that the OTHER PERSON actually responded.
+  if (/(?:她|他|他们|对方|同事|朋友|家人|领导|主管|护士长).{0,12}(?:安慰|劝|开导|支持|鼓励|理解|表示理解|建议|告诉我|让我|叫我|回复|回应|回答|表示|没说什么|没有说什么|沉默|没回应|没有回应)/.test(t)) {
+    return true;
+  }
+
+  // Handle “她说…… / 同事说……” only when there is substantive content
+  // after “说”. Bare “说了/说过” is not enough to establish what the response was.
+  const sayRegex = /(?:她|他|他们|对方|同事|朋友|家人|领导|主管|护士长)说([^，。！？!?]*)/g;
+  let m;
+  while ((m = sayRegex.exec(t)) !== null) {
+    const afterSay = (m[1] || '').trim();
+    if (afterSay && !/^(?:了|过|一下|了下)$/.test(afterSay)) return true;
+  }
+
+  return false;
+}
 
 // Pre-defined scale questions — delivered instantly without API call
 // Format: instruction \n\n statement label \n statement \n [scale lines]
@@ -1720,7 +2034,43 @@ function submitResponse(text) {
   // Deliver next scale question instantly without API call
   const postScaleStage = CONDITION === 'emotion' ? 4 : 3;
 
-  // After Q2 (communication with direct party), deliver Q3 helpfulness from JS
+  // Q3 is a two-step sequence. If the participant has just supplied the other
+  // person's response, ask helpfulness next. If helpfulness was just answered, move to Q4.
+  if (currentStage === 1 && currentQuestion === 3 && q3FollowupMode) {
+    let nextQ = null;
+    if (q3FollowupMode === 'actual_response') {
+      const impact = responseImpactDetected(text);
+      if (impact) {
+        nextQ = q3ImpactTransition(impact);
+        q3FollowupMode = null;
+      } else {
+        nextQ = Q3_HELPFUL;
+        q3FollowupMode = 'actual_help';
+      }
+    } else if (q3FollowupMode === 'hyp_response') {
+      const impact = responseImpactDetected(text);
+      if (impact) {
+        nextQ = q3ImpactTransition(impact);
+        q3FollowupMode = null;
+      } else {
+        nextQ = Q3_HYPOTHETICAL_HELPFUL;
+        q3FollowupMode = 'hyp_help';
+      }
+    } else if (q3FollowupMode === 'actual_help' || q3FollowupMode === 'hyp_help') {
+      q3FollowupMode = null;
+      nextQ = Q4_DIRECT;
+    }
+    if (nextQ) {
+      setTimeout(function() {
+        s.push({ role: 'assistant', content: nextQ });
+        appendMsg('ai', nextQ);
+        updateState(nextQ);
+      }, 700);
+      return;
+    }
+  }
+
+  // After Q2 (communication with direct party), deliver the appropriate first Q3 step from JS
   if (currentStage === 1 && currentQuestion === 2) {
     console.log('[Q3] currentQ:', currentQuestion, '| text:', text.substring(0,30), '| desc:', descriptionDetected(text));
     // If the user only says “yes” (e.g., “有啊”) without details, do not jump to a
@@ -1739,17 +2089,38 @@ function submitResponse(text) {
     // to the hypothetical branch. Interpret this turn as details of that real interaction.
     let q3;
     if (q2ActualCommunicationConfirmed) {
-      if (responseFromOtherDetected(text)) q3 = Q3_HELPFUL;
-      else q3 = Q3_FULL;
+      if (responseFromOtherDetected(text)) {
+        const impact = responseImpactDetected(text);
+        if (impact) {
+          q3 = q3ImpactTransition(impact);
+          q3FollowupMode = null;
+        } else {
+          q3 = Q3_HELPFUL;
+          q3FollowupMode = 'actual_help';
+        }
+      } else {
+        q3 = Q3_RESPONSE;
+        q3FollowupMode = 'actual_response';
+      }
       q2ActualCommunicationConfirmed = false;
     } else if (noContactDetected(text)) {
-      q3 = Q3_HYPOTHETICAL;
+      q3 = Q3_HYPOTHETICAL_RESPONSE;
+      q3FollowupMode = 'hyp_response';
     } else if (actualContactDetected(text) && responseFromOtherDetected(text)) {
-      q3 = Q3_HELPFUL;
+      const impact = responseImpactDetected(text);
+      if (impact) {
+        q3 = q3ImpactTransition(impact);
+        q3FollowupMode = null;
+      } else {
+        q3 = Q3_HELPFUL;
+        q3FollowupMode = 'actual_help';
+      }
     } else if (actualContactDetected(text)) {
-      q3 = Q3_FULL;
+      q3 = Q3_RESPONSE;
+      q3FollowupMode = 'actual_response';
     } else {
-      q3 = Q3_HYPOTHETICAL;
+      q3 = Q3_HYPOTHETICAL_RESPONSE;
+      q3FollowupMode = 'hyp_response';
     }
     setTimeout(function() {
       s.push({ role: 'assistant', content: q3 });
@@ -1759,13 +2130,49 @@ function submitResponse(text) {
     return;
   }
 
-  // After Q4 (social support), always deliver the helpfulness question from JS
+  // After Q4 (social support), establish whether this was an ACTUAL conversation
+  // and whether the participant has already described the other person's response.
   if (currentStage === 1 && currentQuestion === 4) {
-    // User just answered Q4 (social support) — deliver Q5 helpfulness from JS
-    const q5 = noContactDetected(text) ? Q5_HYPOTHETICAL
-             : (actualContactDetected(text) && descriptionDetected(text)) ? Q5_HELPFUL
-             : actualContactDetected(text) ? Q5_FULL
-             : Q5_HYPOTHETICAL;
+    let q5;
+    // Capture how the participant referred to the person they spoke with so the
+    // follow-up can say “同事/朋友/她/他” rather than defaulting to “他们”.
+    q5SupportReferent = inferSupportReferent(text, '对方');
+    if (noContactDetected(text)) {
+      q4ActualSupportConfirmed = false;
+      q5FollowupMode = 'hyp_response';
+      q5 = q5HypotheticalResponseQuestion();
+    } else if (actualContactDetected(text)) {
+      q4ActualSupportConfirmed = true;
+      if (socialSupportResponseDetected(text)) {
+        updateSupportReferentFromResponse(text);
+        const impact = explicitSupportImpactDetected(text);
+        if (impact) {
+          // The participant already stated both the response and whether it helped.
+          q5FollowupMode = null;
+          q4ActualSupportConfirmed = false;
+          q5 = SCALE_Q[7];
+        } else {
+          q5FollowupMode = 'actual_help';
+          q5 = q5HelpfulQuestion();
+        }
+      } else {
+        q5FollowupMode = 'actual_response';
+        q5 = q5ResponseQuestion();
+      }
+    } else {
+      // If the answer is vague but indicates some actual sharing (e.g. “和同事聊了一下”),
+      // preserve the actual branch rather than inventing a hypothetical one.
+      if (/(?:和|跟|向|对).{0,12}(?:同事|朋友|家人|家属|领导|护士长|主管|其他人).{0,8}(?:聊|说|提|谈|讲|沟通|倾诉)/.test(text)
+          || /(?:同事|朋友|家人|家属|领导|护士长|主管).{0,8}(?:聊|说|提|谈|讲|沟通|倾诉)/.test(text)) {
+        q4ActualSupportConfirmed = true;
+        q5FollowupMode = 'actual_response';
+        q5 = q5ResponseQuestion();
+      } else {
+        q4ActualSupportConfirmed = false;
+        q5FollowupMode = 'hyp_response';
+        q5 = q5HypotheticalResponseQuestion();
+      }
+    }
     setTimeout(function() {
       s.push({ role: 'assistant', content: q5 });
       appendMsg('ai', q5);
@@ -1774,13 +2181,48 @@ function submitResponse(text) {
     return;
   }
 
-  // After Q5 follow-up (currentQuestion=5), deliver Q7 directly from SCALE_Q
+  // Q5 is split across turns, just like Q3. Never lose the actual/hypothetical state.
   if (currentStage === 1 && currentQuestion === 5) {
+    let nextQ;
+    if (q5FollowupMode === 'actual_response') {
+      // This turn is the colleague/friend/family member's ACTUAL response.
+      // If the participant now says “她说…” or “他说…”, use that pronoun in
+      // the helpfulness follow-up; otherwise keep the previously named relationship.
+      updateSupportReferentFromResponse(text);
+      const impact = explicitSupportImpactDetected(text);
+      if (impact) {
+        nextQ = SCALE_Q[7];
+        q5FollowupMode = null;
+        q4ActualSupportConfirmed = false;
+        q5SupportReferent = '对方';
+      } else {
+        nextQ = q5HelpfulQuestion();
+        q5FollowupMode = 'actual_help';
+      }
+    } else if (q5FollowupMode === 'actual_help') {
+      nextQ = SCALE_Q[7];
+      q5FollowupMode = null;
+      q4ActualSupportConfirmed = false;
+      q5SupportReferent = '对方';
+    } else if (q5FollowupMode === 'hyp_response') {
+      nextQ = Q5_HYPOTHETICAL_HELPFUL;
+      q5FollowupMode = 'hyp_help';
+    } else if (q5FollowupMode === 'hyp_help') {
+      nextQ = SCALE_Q[7];
+      q5FollowupMode = null;
+    } else if (q4ActualSupportConfirmed) {
+      // Defensive fallback: actual support was previously confirmed, so never ask a
+      // hypothetical question even if the follow-up mode was somehow lost.
+      nextQ = q5HelpfulQuestion();
+      q5FollowupMode = 'actual_help';
+    } else {
+      nextQ = SCALE_Q[7];
+    }
+
     setTimeout(function() {
-      const q7 = SCALE_Q[7];
-      s.push({ role: 'assistant', content: q7 });
-      appendMsg('ai', q7);
-      updateState(q7);
+      s.push({ role: 'assistant', content: nextQ });
+      appendMsg('ai', nextQ);
+      updateState(nextQ);
     }, 800);
     return;
   }
