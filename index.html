@@ -187,7 +187,7 @@
     #chatSubmit:active:not(:disabled) { transform: scale(0.94); }
     #chatSubmit:disabled { background: var(--border); cursor: not-allowed; }
 
-    /* ── Matrix survey widget ── */
+    /* -- Matrix survey widget -- */
     .matrix-card {
       width: 100%;
       background: var(--ai-bg);
@@ -280,7 +280,7 @@
     .matrix-submit:not(:disabled):hover { background: #3D4E61; }
 
 
-    /* ── Single-item scale widget ── */
+    /* -- Single-item scale widget -- */
     .scale-widget {
       margin-top: 14px;
       padding: 12px 14px 16px;
@@ -343,7 +343,7 @@
     .scale-opt:disabled { cursor: default; opacity: 0.55; }
     .scale-opt.selected:disabled { opacity: 1; }
 
-    /* ── Post-chat pages ── */
+    /* -- Post-chat pages -- */
     .eval-body {
       padding: 28px 24px 32px;
       overflow-y: auto;
@@ -454,27 +454,27 @@
 </div>
 
 <script>
-// ── Config ────────────────────────────────────────────────────────────────────
+// -- Config --------------------------------------------------------------------
 const PROXY_URL        = "https://emotion-openai-ynrdrrrkzk.ap-northeast-2.fcapp.run";
 const MODEL            = "gpt-4.1-mini";
-// Lark credentials are stored server-side in the FC proxy — not here.
+// Lark credentials are stored server-side in the FC proxy - not here.
 
 const urlParams = new URLSearchParams(window.location.search);
 // Read participant ID from URL param (?id=XXXX) passed from Qualtrics
 // Falls back to random ID for direct testing
 const participantId = urlParams.get('id') || 'anon_' + Math.random().toString(36).substring(2, 8);
 
-// ── Condition assignment ──────────────────────────────────────────────────────
+// -- Condition assignment ------------------------------------------------------
 const CONDITION = Math.random() < 0.5 ? 'emotion' : 'control';
 console.log('[Study] ID:', participantId, '| Condition:', CONDITION);
 
-// ── Hardcoded opening (fixes unpredictable AI opening messages) ───────────────
+// -- Hardcoded opening (fixes unpredictable AI opening messages) ---------------
 const OPENING_MESSAGE =
 `你好！我是小暖，一个愿意倾听你心声、听你吐槽的伙伴。请你完全放心，你与小暖的所有对话及你的个人信息都将完全匿名和保密，不会与任何人分享。这里是一个安全、支持性的空间，你可以自由、深入地表达自己的感受和想法，不会受到任何评判。为了更好地理解你，在我们的对话中，请你尽可能详细和真实地描述你的问题，分享你的感受和经历。你说的每一句话都只属于你和小暖。
 
 我了解到很多医护人员在工作中会遇到很多压力和困扰。如果你愿意的话，可以跟我说说最近在工作上有没有什么让你压力很大或困扰的事吗？`;
 
-// ── System prompts ────────────────────────────────────────────────────────────
+// -- System prompts ------------------------------------------------------------
 
 const SYSTEM_PROMPT_EMOTION = `你是一名心理支持专员，与医护人员进行一对一的情绪支持对话。你的对话应温和、专业、有同理心，没有任何评判。
 
@@ -831,7 +831,7 @@ b. 情绪深入探索的目标是帮助用户把情绪名称和自己的具体�
 "本次对话到此结束。祝你工作顺利，也记得照顾好自己❤️"
 **非常重要‼️此句之后，立即结束对话，不再生成任何内容，不等待用户回应。**`;
 
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
 const SYSTEM_PROMPT_CONTROL = `你是一名心理支持专员，与医护人员进行一对一的对话。你的对话应温和、专业、有同理心，没有任何评判。
 
@@ -1100,7 +1100,7 @@ Q11："请选择你在多大程度上同意以下陈述："我现在能很容易
 "本次对话到此结束。祝你工作顺利，也记得照顾好自己❤️"
 **非常重要‼️此句之后，立即结束对话，不再生成任何内容，不等待用户回应。**`;
 
-// ── Replace placeholders and init conversation ────────────────────────────────
+// -- Replace placeholders and init conversation --------------------------------
 const activePrompt = (CONDITION === 'emotion' ? SYSTEM_PROMPT_EMOTION : SYSTEM_PROMPT_CONTROL)
   .replace(/PARTICIPANT_ID/g, participantId);
 
@@ -1136,9 +1136,9 @@ let larkRowNum = null;  // row number in Lark, set after first save
 let leasAsked = false;
 let leasResponse = '';
 
-// ── Save to Lark (via FC proxy — no credentials in this file) ────────────────
+// -- Save to Lark (via FC proxy - no credentials in this file) ----------------
 function saveToLark() {
-  // Chain onto previous save — guarantees serial execution, no race condition
+  // Chain onto previous save - guarantees serial execution, no race condition
   larkSaveQueue = larkSaveQueue.then(async function() {
     try {
       const payload = {
@@ -1177,7 +1177,7 @@ function saveToLark() {
 
 
 
-// ── Post-chat evaluation & GAAIS ──────────────────────────────────────────────
+// -- Post-chat evaluation & GAAIS ----------------------------------------------
 const EVAL_QUESTIONS = [
   { id: 'helpful',          text: '整体来说，和小暖的聊天有没有帮你更好地面对一开始提到的问题？', left: '一点帮助也没有', right: '非常有帮助',   conditionOnly: null },
   { id: 'understood',       text: '在描述所遇到的问题时，小暖的回应让您感到被理解的程度有多高？', left: '一点也没有被理解', right: '非常被理解', conditionOnly: null },
@@ -1433,8 +1433,8 @@ async function saveEvalToLark() {
   }
 }
 
-// ── API call ──────────────────────────────────────────────────────────────────
-// ── Embedded survey matrices ──────────────────────────────────────────────────
+// -- API call ------------------------------------------------------------------
+// -- Embedded survey matrices --------------------------------------------------
 const ANXIETY_ITEMS = [
   '我感到烦乱',
   '我感到轻松',
@@ -1595,7 +1595,7 @@ function startPostMatrices() {
       matrixPhase = 0;
       document.getElementById('chatSubmit').disabled = false;
       document.getElementById('chatInput').disabled  = false;
-      // Advance to LEAS/summary stage directly — don't rely on AI trigger phrase
+      // Advance to LEAS/summary stage directly - don't rely on AI trigger phrase
       const SUMMARY_STAGE = CONDITION === 'emotion' ? 5 : 4;
       currentStage = SUMMARY_STAGE;
       currentQuestion = 0;
@@ -1604,9 +1604,9 @@ function startPostMatrices() {
     });
   });
 }
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
-// ── Chat UI ───────────────────────────────────────────────────────────────────
+// -- Chat UI -------------------------------------------------------------------
 function appendMsg(role, text) {
   const log = document.getElementById('chatLog');
   const row = document.createElement('div');
@@ -1640,7 +1640,7 @@ function appendMsg(role, text) {
   log.scrollTop = log.scrollHeight;
 }
 
-// ── Scale tracking ────────────────────────────────────────────────────────────
+// -- Scale tracking ------------------------------------------------------------
 function parseAndSaveScale(text) {
   const match = text.match(/\d+/);
   const val = match ? parseInt(match[0]) : null;
@@ -1674,7 +1674,7 @@ function parseAndSaveScale(text) {
   }
 }
 
-// ── State machine ─────────────────────────────────────────────────────────────
+// -- State machine -------------------------------------------------------------
 function updateState(t) {
   // Set capture flag based on which question the AI just asked
   if (t.includes("可以跟我说说最近在工作上"))                         pendingCapture = 'stress_event';
@@ -2206,7 +2206,7 @@ function socialSupportResponseDetected(text) {
   return false;
 }
 
-// Pre-defined scale questions — delivered instantly without API call
+// Pre-defined scale questions - delivered instantly without API call
 // Format: instruction \n\n statement label \n statement \n [scale lines]
 const SCALE_Q = {
   7:  '谢谢你的分享。为了更好地了解你的情况，接下来我会问你几个简短的问题。\n请根据你此刻的状态回答以下问题。\n这件事此刻让你觉得有多困扰？\n1 ○○○○○○○ 完全不困扰\n2 ●○○○○○○\n3 ●●○○○○○\n4 ●●●○○○○\n5 ●●●●○○○\n6 ●●●●●○○\n7 ●●●●●●● 非常困扰\n请在1-7中选择一个最符合的数字',
@@ -2721,7 +2721,7 @@ document.getElementById('chatInput').addEventListener('input', function() {
   this.style.height = Math.min(this.scrollHeight, 120) + 'px';
 });
 
-// ── Init: read participant ID from URL, start chat immediately ───────────────
+// -- Init: read participant ID from URL, start chat immediately ---------------
 // participantId is already set from URL param at top of script
 // Replace PARTICIPANT_ID placeholder in system prompts
 s[0].content = s[0].content.replace(/PARTICIPANT_ID/g, participantId);
@@ -2730,12 +2730,6 @@ s[1].content = s[1].content.replace(/PARTICIPANT_ID/g, participantId);
 console.log('[Study] participant_id:', participantId, '| condition:', CONDITION);
 appendMsg('ai', OPENING_MESSAGE);
 
-// Do NOT send a partial /save-update on pagehide.
-// A previous version sent only participant_id / condition / duration here; the
-// proxy's full-row updater filled every omitted variable with an empty string,
-// which erased the already-saved study responses when the participant left the
-// page. Duration is already included in every normal snapshot and in the final
-// evaluation save, so no pagehide write is needed.
 </script>
 </body>
 </html>
