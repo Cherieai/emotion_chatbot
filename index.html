@@ -502,9 +502,17 @@ Q1：根据用户的回答，选择以下两种方式之一。
 🔹 情况B（仅当用户已有具体事件时）：用户明确说了某件特定的事发生在某个时间点，且描述了事件经过。则说：
 "能详细说说这件事吗？比如是什么时候、在哪儿发生的，当时有谁在场，具体发生了什么。可以想象你在跟朋友吐槽，想说什么就说什么 😊"
 
-Q2："你当时有没有尝试和对方沟通过你的想法？可以说说细节"
+Q2：这一步【只适用于确实存在明确沟通对象的人际事件】。先根据用户刚刚描述的具体事件判断，事件的核心困难是否来自与某个具体人的互动、冲突、误解、质疑、指责、协作或意见不一致，而且“和这个人沟通”在情境上确实合理。不要因为事件里出现了医院、领导、同事、患者等人物，就自动认为存在“对方”。
 
-⚠️ 理解Q2回答时，必须判断用户是否【实际发生过沟通】，不能只看“有/没有”是否出现在句首，也不能因为句子里出现“沟通”两个字就默认用户已经沟通过。请根据整句话的语义判断。
+- 【人际/沟通型事件】只有满足上述条件时，才问：
+  "你当时有没有尝试和对方沟通过你的想法？可以说说细节"
+  例如：被患者或家属指责、和同事发生分歧、被领导误解、与某人协作不顺等。
+
+- 【非人际/没有自然沟通对象的事件】如果核心问题主要来自工作量、晋升/科研要求、排班、人手不足、制度要求、职业发展、考试、身体健康、睡眠、疲劳、资源不足、不确定性等，就【完全跳过Q2和Q3】。不要问用户“做了什么来应对/处理”“怎么面对”“有没有帮助”等任何可能引导其思考应对方式的问题。直接进入Q4，问：
+  "你有没有和其他人（比如家人、朋友、同事）聊过这件事？"
+  例如“晋升要求很高、下班后还要做科研”属于这一类，即使其中提到医院、科室、同事或领导，也不应询问“对方”或“应对”。
+
+⚠️ 如果选择了【人际/沟通型事件】，理解Q2回答时，必须判断用户是否【实际发生过沟通】，不能只看“有/没有”是否出现在句首，也不能因为句子里出现“沟通”两个字就默认用户已经沟通过。请根据整句话的语义判断。
 - 【没有实际沟通，但沟通本身仍然是可以想象的】例如明确说“没有/没/还没/没有尝试过/没尝试过/没说过”，或“没机会说”“不敢说”“不知道怎么说”“对方是领导，不太方便说”等。此时可以进入假设分支，先问“如果当时和对方沟通，你觉得对方可能会怎么回应？”。
 - 【沟通本身不可行、无法进行，或用户已经明确认为沟通没有意义】必须和普通的“没有沟通”区分开。例如：“无法沟通”“沟通不了”“没法交流”“说不通”“对方根本听不进去”“感觉沟通也没什么用，所以没有尝试过”。这类回答已经说明假设性沟通本身不成立或结果已被用户明确否定，因此【不要】再问“如果当时和对方沟通，对方可能会怎么回应？”，也【不要】问“这样的回应有没有帮助”，因为并不存在一个需要评价的“回应”。系统会简短承接这一沟通障碍并直接进入Q4。
 - 【已经实际沟通过，但未说明回应】只要用户明确表示沟通行为已经发生，就视为【已经实际沟通过】，不要求句子一定以“我”开头，也不要求使用“说了”这样的表达。例如：“有和病人家属沟通，告诉他最近病人很多，请他耐心等待”“有跟她沟通过”“和领导谈过这件事”“我跟她说了”“我提过这件事”“我试着跟他谈了”。即使后面补充“对方比较着急/听不进去/沟通效果不好”，只要用户已经明确说自己实际沟通过，就不能问假设性的“如果当时和对方沟通……”。如果尚未说明对方如何回应，则问实际回应：“对方当时是怎么回应你的？”
@@ -512,7 +520,7 @@ Q2："你当时有没有尝试和对方沟通过你的想法？可以说说细�
 - 如果回答比较模糊，但没有明确证据表明用户【实际开口、表达、沟通、提出或谈过】，优先视为【没有实际沟通】，不要擅自假设已经沟通过。
 - 核心原则：判断的是“沟通行为是否真的发生过”，而不是句子里有没有出现“沟通”这个词；不要重复询问用户已经通过语义明确回答过的信息。
 
-Q3由系统根据Q2的内容分步提问。必须遵守“一次只问一个问题”，不要把“对方如何回应”和“这种回应是否有帮助”合并在同一题里：
+Q3由系统根据Q2的内容分步提问。Q3只存在于【人际/沟通型事件】中。必须遵守“一次只问一个问题”，不要把“对方如何回应”和“这种回应是否有帮助”合并在同一题里：
 - 如果用户实际沟通过，但还没有说明对方如何回应：先只问“对方当时是怎么回应你的？”
 - 当用户说明了对方的回应后，先判断用户是否已经清楚表达了该回应的影响。不要为了完成固定流程而重复询问已经很明显的信息。
   • 如果回应明显是负面的、拒绝性的或使情况更困难（例如对方不听、继续发火、继续指责、拒绝、反驳、辱骂等），不要再问“有没有帮助”。系统会简短承接并直接进入Q4。
@@ -523,12 +531,15 @@ Q3由系统根据Q2的内容分步提问。必须遵守“一次只问一个问�
 - 如果用户明确表示“无法沟通/沟通不了/没法交流/说不通/对方根本听不进去/沟通没用”等，无论是在Q2时说，还是在假设性Q3之后再次强调，都不要继续假设性沟通流程。不要把“沟通不了”当成对方的“回应”。系统会简短承接后直接进入Q4。
 Q3的问题由系统自动发送，你不要自行补问、合并或重复。
 
-Q4："你后来有没有跟当时不在场的人聊过这件事？比如家人、朋友、其他科室同事等。"
+Q4：
+- 如果前面是人际事件，可问："你后来有没有跟当时不在场的人聊过这件事？比如家人、朋友、其他科室同事等。"
+- 如果前面因为没有自然的“对方”而跳过了Q2/Q3，则直接问："你有没有和其他人（比如家人、朋友、同事）聊过这件事？"
 
 Q5由系统根据Q4的内容分步提问。必须遵守“一次只问一个问题”，并根据用户已经说过的信息继续：
 - 如果用户确实和当时不在场的人聊过，但还没有说明对方怎么回应：根据用户提到的人来称呼对方。例如用户说“跟同事聊过”，问“同事当时是怎么回应你的？”；如果用户明确用了“她/他”，则可以用“她/他”来指代。不要默认使用“他们”。
 - 用户说明了对方的实际回应后：如果用户在这一轮明确用了“她/他”，后续可以继续用相同代词；否则沿用用户之前提到的关系称呼，例如“同事这样的回应对你有帮助吗？”。绝对不要再改成假设性的“如果当时和……说起这件事……”。
 - 如果用户在Q4回答中已经同时说明了自己和谁聊过、以及对方怎么回应：不要重复问回应，直接使用最自然且与用户表述一致的称呼询问该回应是否有帮助。
+- Q4中的“聊过”包括自然的倾诉/分享表达，例如“有和家人吐槽过”“跟朋友倾诉过”“和同事聊了一下”“跟家里人说过这件事”。这些都表示【实际已经聊过】，绝对不能再改成“如果当时和家人/朋友说起这件事……”这样的假设性问题；应该直接问实际对方当时怎么回应。
 - 只有用户明确表示没有和任何当时不在场的人聊过这件事时，才进入假设分支。假设问题也尽量沿用用户提到的关系称呼；只有无法判断具体对象时才使用较泛的称呼。
 - 一旦确认用户实际和别人聊过，就必须记住这是【实际发生的交流】，后续不能因为下一条回答只描述了“她说……/他说……”而退回假设分支。
 Q5的问题由系统自动发送，你不要自行补问、合并或重复。
@@ -846,9 +857,17 @@ Q1：根据用户的回答，选择以下两种方式之一。
 🔹 情况B（仅当用户已有具体事件时）：用户明确说了某件特定的事发生在某个时间点，且描述了事件经过。则说：
 "能详细说说这件事吗？比如是什么时候、在哪儿发生的，当时有谁在场，具体发生了什么。可以想象你在跟朋友吐槽，想说什么就说什么 😊"
 
-Q2："你当时有没有尝试和对方沟通过你的想法？可以说说细节"
+Q2：这一步【只适用于确实存在明确沟通对象的人际事件】。先根据用户刚刚描述的具体事件判断，事件的核心困难是否来自与某个具体人的互动、冲突、误解、质疑、指责、协作或意见不一致，而且“和这个人沟通”在情境上确实合理。不要因为事件里出现了医院、领导、同事、患者等人物，就自动认为存在“对方”。
 
-⚠️ 理解Q2回答时，必须判断用户是否【实际发生过沟通】，不能只看“有/没有”是否出现在句首，也不能因为句子里出现“沟通”两个字就默认用户已经沟通过。请根据整句话的语义判断。
+- 【人际/沟通型事件】只有满足上述条件时，才问：
+  "你当时有没有尝试和对方沟通过你的想法？可以说说细节"
+  例如：被患者或家属指责、和同事发生分歧、被领导误解、与某人协作不顺等。
+
+- 【非人际/没有自然沟通对象的事件】如果核心问题主要来自工作量、晋升/科研要求、排班、人手不足、制度要求、职业发展、考试、身体健康、睡眠、疲劳、资源不足、不确定性等，就【完全跳过Q2和Q3】。不要问用户“做了什么来应对/处理”“怎么面对”“有没有帮助”等任何可能引导其思考应对方式的问题。直接进入Q4，问：
+  "你有没有和其他人（比如家人、朋友、同事）聊过这件事？"
+  例如“晋升要求很高、下班后还要做科研”属于这一类，即使其中提到医院、科室、同事或领导，也不应询问“对方”或“应对”。
+
+⚠️ 如果选择了【人际/沟通型事件】，理解Q2回答时，必须判断用户是否【实际发生过沟通】，不能只看“有/没有”是否出现在句首，也不能因为句子里出现“沟通”两个字就默认用户已经沟通过。请根据整句话的语义判断。
 - 【没有实际沟通，但沟通本身仍然是可以想象的】例如明确说“没有/没/还没/没有尝试过/没尝试过/没说过”，或“没机会说”“不敢说”“不知道怎么说”“对方是领导，不太方便说”等。此时可以进入假设分支，先问“如果当时和对方沟通，你觉得对方可能会怎么回应？”。
 - 【沟通本身不可行、无法进行，或用户已经明确认为沟通没有意义】必须和普通的“没有沟通”区分开。例如：“无法沟通”“沟通不了”“没法交流”“说不通”“对方根本听不进去”“感觉沟通也没什么用，所以没有尝试过”。这类回答已经说明假设性沟通本身不成立或结果已被用户明确否定，因此【不要】再问“如果当时和对方沟通，对方可能会怎么回应？”，也【不要】问“这样的回应有没有帮助”，因为并不存在一个需要评价的“回应”。系统会简短承接这一沟通障碍并直接进入Q4。
 - 【已经实际沟通过，但未说明回应】只要用户明确表示沟通行为已经发生，就视为【已经实际沟通过】，不要求句子一定以“我”开头，也不要求使用“说了”这样的表达。例如：“有和病人家属沟通，告诉他最近病人很多，请他耐心等待”“有跟她沟通过”“和领导谈过这件事”“我跟她说了”“我提过这件事”“我试着跟他谈了”。即使后面补充“对方比较着急/听不进去/沟通效果不好”，只要用户已经明确说自己实际沟通过，就不能问假设性的“如果当时和对方沟通……”。如果尚未说明对方如何回应，则问实际回应：“对方当时是怎么回应你的？”
@@ -856,7 +875,7 @@ Q2："你当时有没有尝试和对方沟通过你的想法？可以说说细�
 - 如果回答比较模糊，但没有明确证据表明用户【实际开口、表达、沟通、提出或谈过】，优先视为【没有实际沟通】，不要擅自假设已经沟通过。
 - 核心原则：判断的是“沟通行为是否真的发生过”，而不是句子里有没有出现“沟通”这个词；不要重复询问用户已经通过语义明确回答过的信息。
 
-Q3由系统根据Q2的内容分步提问。必须遵守“一次只问一个问题”，不要把“对方如何回应”和“这种回应是否有帮助”合并在同一题里：
+Q3由系统根据Q2的内容分步提问。Q3只存在于【人际/沟通型事件】中。必须遵守“一次只问一个问题”，不要把“对方如何回应”和“这种回应是否有帮助”合并在同一题里：
 - 如果用户实际沟通过，但还没有说明对方如何回应：先只问“对方当时是怎么回应你的？”
 - 当用户说明了对方的回应后，先判断用户是否已经清楚表达了该回应的影响。不要为了完成固定流程而重复询问已经很明显的信息。
   • 如果回应明显是负面的、拒绝性的或使情况更困难（例如对方不听、继续发火、继续指责、拒绝、反驳、辱骂等），不要再问“有没有帮助”。系统会简短承接并直接进入Q4。
@@ -867,12 +886,15 @@ Q3由系统根据Q2的内容分步提问。必须遵守“一次只问一个问�
 - 如果用户明确表示“无法沟通/沟通不了/没法交流/说不通/对方根本听不进去/沟通没用”等，无论是在Q2时说，还是在假设性Q3之后再次强调，都不要继续假设性沟通流程。不要把“沟通不了”当成对方的“回应”。系统会简短承接后直接进入Q4。
 Q3的问题由系统自动发送，你不要自行补问、合并或重复。
 
-Q4："你后来有没有跟当时不在场的人聊过这件事？比如家人、朋友、其他科室同事等。"
+Q4：
+- 如果前面是人际事件，可问："你后来有没有跟当时不在场的人聊过这件事？比如家人、朋友、其他科室同事等。"
+- 如果前面因为没有自然的“对方”而跳过了Q2/Q3，则直接问："你有没有和其他人（比如家人、朋友、同事）聊过这件事？"
 
 Q5由系统根据Q4的内容分步提问。必须遵守“一次只问一个问题”，并根据用户已经说过的信息继续：
 - 如果用户确实和当时不在场的人聊过，但还没有说明对方怎么回应：根据用户提到的人来称呼对方。例如用户说“跟同事聊过”，问“同事当时是怎么回应你的？”；如果用户明确用了“她/他”，则可以用“她/他”来指代。不要默认使用“他们”。
 - 用户说明了对方的实际回应后：如果用户在这一轮明确用了“她/他”，后续可以继续用相同代词；否则沿用用户之前提到的关系称呼，例如“同事这样的回应对你有帮助吗？”。绝对不要再改成假设性的“如果当时和……说起这件事……”。
 - 如果用户在Q4回答中已经同时说明了自己和谁聊过、以及对方怎么回应：不要重复问回应，直接使用最自然且与用户表述一致的称呼询问该回应是否有帮助。
+- Q4中的“聊过”包括自然的倾诉/分享表达，例如“有和家人吐槽过”“跟朋友倾诉过”“和同事聊了一下”“跟家里人说过这件事”。这些都表示【实际已经聊过】，绝对不能再改成“如果当时和家人/朋友说起这件事……”这样的假设性问题；应该直接问实际对方当时怎么回应。
 - 只有用户明确表示没有和任何当时不在场的人聊过这件事时，才进入假设分支。假设问题也尽量沿用用户提到的关系称呼；只有无法判断具体对象时才使用较泛的称呼。
 - 一旦确认用户实际和别人聊过，就必须记住这是【实际发生的交流】，后续不能因为下一条回答只描述了“她说……/他说……”而退回假设分支。
 Q5的问题由系统自动发送，你不要自行补问、合并或重复。
@@ -1666,10 +1688,10 @@ function updateState(t) {
   if (currentStage === 1) {
     if      (t.includes("工作的哪个方面"))                                  currentQuestion = 1;
     else if (t.includes("描述一下这件具体发生的事吗"))                      currentQuestion = 1;
-    else if ((t.includes("尝试和对方沟通") || t.includes("和对方沟通过") || t.includes("沟通过你的想法") || t.includes("有没有尝试")) && !t.includes("有多困扰")) currentQuestion = 2;  // AI asked Q2
-    else if (t.includes("对方当时是怎么回应你的") || t.includes("对方可能会怎么回应") || t.includes("处理当时的情况") || t.includes("有助于处理这件事")) currentQuestion = 3;  // Q3 step delivered → user will answer Q3
-    else if (t.includes("有没有跟当时不在场的人"))                          currentQuestion = 4;  // AI asked Q4 → user will answer Q4
-    else if (/(?:当时是怎么回应你的|这样的回应对你有帮助吗|如果当时和.+说起这件事|这样的回应会对你有帮助吗)/.test(t)) currentQuestion = 5;  // Q5 step delivered → user will answer Q5
+    else if (t.includes("你当时有没有尝试和对方沟通过你的想法") || t.includes("和对方沟通过你的想法")) { currentQuestion = 2; q2Mode = 'communication'; }  // interpersonal Q2
+    else if (t.includes("对方当时是怎么回应你的") || t.includes("对方可能会怎么回应") || t.includes("处理当时的情况") || t.includes("有助于处理这件事") || t.includes("这样做对你应对这件事有帮助吗")) currentQuestion = 3;  // Q3 step delivered → user will answer Q3
+    else if (t.includes("有没有跟当时不在场的人") || t.includes("有没有和其他人（比如家人、朋友、同事）聊过这件事") || t.includes("有没有和其他人聊过这件事")) currentQuestion = 4;  // AI asked Q4 → user will answer Q4
+    else if (/(?:当时是怎么回应你的|这样的回应对你有帮助吗|如果当时和.+说起这件事|这样的回应会对你有帮助吗|你当时是跟谁聊了这件事|你是说后来有跟别人聊过这件事)/.test(t)) currentQuestion = 5;  // Q5 step delivered → user will answer Q5
     else if (t.includes("有多困扰"))                                        currentQuestion = 7;
     else if (t.includes("很强烈的情绪"))                                    currentQuestion = 8;
     else if (t.includes("我清楚自己现在"))                                  currentQuestion = 9;
@@ -1728,6 +1750,20 @@ let stage3BodyQuestionAsked = false;
 function getStage3Marker(text) {
   const m = text.match(/\[\[S3_(COG|BODY|ACTION|CONTEXT)\]\]/);
   return m ? m[1] : null;
+}
+
+
+function normalizeStage1RoutingReply(reply) {
+  // Safety guard: non-interpersonal events must never be turned into a coping exercise.
+  // If the model emits the retired coping question, skip it and ask Q4 directly.
+  if (typeof reply !== 'string') return reply;
+  if (reply.includes('你当时有没有尝试做些什么来应对或处理这件事') ||
+      reply.includes('有没有做过什么来应对或处理这件事') ||
+      reply.includes('你觉得这样做对你应对这件事有帮助吗')) {
+    console.warn('[Stage1 routing] Replaced retired coping question with Q4.');
+    return Q4_NONINTERPERSONAL;
+  }
+  return reply;
 }
 
 function stripStage3Markers(text) {
@@ -1847,6 +1883,7 @@ function sendToAI(messages) {
     btn.disabled = false; input.disabled = false;
 
     if (rawReply) {
+      rawReply = normalizeStage1RoutingReply(rawReply);
       // Track state using the raw reply (including invisible Stage-3 markers),
       // but never show or store those markers in the participant-facing conversation.
       updateState(rawReply);
@@ -1913,6 +1950,10 @@ function bareYesContactDetected(text) {
   return /^(?:有|有啊|有的|有呀|有过|有过啊|当时有|当时有啊|当时有呀|后来有|后来有啊|试过|试过啊|当时试过|尝试过|尝试过啊|当时尝试过|沟通过|沟通过啊|交流过|交流过啊)[。！!，,、~～\s]*$/.test(t);
 }
 
+// Q2 exists only for genuinely interpersonal events. Non-interpersonal events skip
+// Q2/Q3 entirely and go directly to Q4.
+let q2Mode = null; // 'communication' only
+
 // Once the user has explicitly confirmed that communication happened, remember it
 // across the follow-up turn. This prevents a later detail such as “他还是坚持他的看法”
 // from being misread as if communication never happened.
@@ -1971,12 +2012,31 @@ function noContactDetected(text) {
     || /(?:她|他|对方).{0,6}(?:是)?(?:领导|上级).{0,10}(?:不好说|不方便说|不太方便|不敢说)?/.test(t);
 }
 
+function bareYesCopingDetected(text) {
+  const t = text.trim();
+  return /^(?:有|有啊|有的|有呀|有过|试过|尝试过|做过|有做过|当时有|当时试过|当时做过)[。！!，,、~～\s]*$/.test(t);
+}
+
+function noCopingActionDetected(text) {
+  const t = text.trim();
+  return /^(?:没有|没|还没有|还没|没有做什么|没做什么|什么也没做|没采取什么|没有采取什么|没特别做什么|没有特别做什么)[。！!，,、~～\s]*$/.test(t)
+    || /(?:没有|没|还没|从来没|从未).{0,10}(?:做什么|采取|尝试|试过|应对|处理)/.test(t);
+}
+
+function copingImpactDetected(text) {
+  const t = text.trim();
+  if (/(?:有帮助|有点帮助|挺有用|有用|有效|起作用|缓解了|改善了|好一些|好一点|轻松一些|轻松一点|解决了|处理好了)/.test(t)) return 'positive';
+  if (/(?:没有帮助|没帮助|没什么帮助|没用|没有用|没效果|没有效果|不起作用|没改善|没有改善|反而更|更糟|更麻烦)/.test(t)) return 'negative';
+  return null;
+}
+
 const Q2_DETAILS = '可以具体说说你当时是怎么和对方沟通的吗？比如你说了什么。';
 const Q3_RESPONSE = '对方当时是怎么回应你的？';
 const Q3_HELPFUL = '对方这样的回应有没有帮助你处理当时的情况，还是让事情变得更难处理？';
 const Q3_HYPOTHETICAL_RESPONSE = '如果当时和对方沟通，你觉得对方可能会怎么回应？';
 const Q3_HYPOTHETICAL_HELPFUL = '你觉得这样的回应会有助于处理这件事，还是会让事情变得更难处理？';
 const Q4_DIRECT = '你后来有没有跟当时不在场的人聊过这件事？比如家人、朋友、其他科室同事等。';
+const Q4_NONINTERPERSONAL = '你有没有和其他人（比如家人、朋友、同事）聊过这件事？';
 const Q3_COMMUNICATION_BARRIER_TRANSITION = '听起来当时你觉得很难和对方进行有效沟通。' + Q4_DIRECT;
 
 // If the participant has already made the impact of the other person's response
@@ -2029,7 +2089,12 @@ function inferSupportReferent(text, fallback = '对方') {
   if (t.includes('领导')) return '领导';
   if (t.includes('同事')) return '同事';
   if (t.includes('朋友')) return '朋友';
+  if (t.includes('家里人')) return '家里人';
   if (t.includes('家人')) return '家人';
+  if (t.includes('父母')) return '父母';
+  if (t.includes('妈妈') || t.includes('母亲')) return '妈妈';
+  if (t.includes('爸爸') || t.includes('父亲')) return '爸爸';
+  if (t.includes('伴侣') || t.includes('爱人') || t.includes('对象')) return '伴侣';
   if (t.includes('家属')) return '家属';
   return fallback;
 }
@@ -2055,13 +2120,58 @@ const Q5_HYPOTHETICAL_HELPFUL = '你觉得这样的回应会对你有帮助吗�
 // across turns so a later reply such as “她说这种事很常见” can never be
 // misread as if the participant had not actually talked to anyone.
 let q4ActualSupportConfirmed = false;
-let q5FollowupMode = null; // 'actual_response', 'actual_help', 'hyp_response', 'hyp_help'
+let q5FollowupMode = null; // 'actual_who', 'clarify_contact', 'actual_response', 'actual_help', 'hyp_response', 'hyp_help'
 
 function explicitSupportImpactDetected(text) {
   const t = text.trim();
   if (/(?:很有帮助|有帮助|帮到我|帮了我|让我好受|让我安心|让我放心|缓解了|轻松了一些|感觉好多了)/.test(t)) return 'positive';
   if (/(?:没有帮助|没帮助|没什么帮助|没有太大帮助|没太大帮助|没什么用|反而更难受|更烦|更有压力)/.test(t)) return 'negative';
   return null;
+}
+
+// Q4 asks about disclosure/social support, which is broader than direct-party
+// "communication" in Q2. Use dedicated detection here so natural answers such as
+// “有和家人吐槽过”“跟朋友倾诉过”“和同事说过这事” are treated as ACTUAL sharing,
+// not as hypothetical sharing.
+function socialSupportActualContactDetected(text) {
+  const t = text.trim();
+
+  // Explicit negatives take priority unless the same sentence later clearly says
+  // that sharing DID happen (e.g. “一开始没说，后来还是跟同事聊了”).
+  const hasSharingAction =
+    /(?:跟|和|向|对|给).{0,18}?(?:家人|家里人|朋友|同事|同事们|领导|主管|护士长|伴侣|爱人|对象|室友|亲人|父母|妈妈|母亲|爸爸|父亲|姐妹|兄弟|她|他|他们|别人|其他人).{0,10}?(?:吐槽|倾诉|聊|说|提|谈|讲|告诉|分享|抱怨|诉说|交流|沟通)(?:了|过|一下|了下)?/.test(t)
+    || /(?:家人|家里人|朋友|同事|同事们|领导|主管|护士长|伴侣|爱人|对象|室友|亲人|父母|妈妈|母亲|爸爸|父亲|姐妹|兄弟|她|他|他们|别人|其他人).{0,10}?(?:听我吐槽|听我倾诉|听我说|听我讲)/.test(t)
+    || /(?:吐槽|倾诉|聊|说|提|谈|讲|告诉|分享|抱怨|诉说)(?:了|过).{0,12}?(?:家人|家里人|朋友|同事|领导|主管|护士长|伴侣|爱人|对象|室友|亲人|父母|妈妈|爸爸|她|他|他们)/.test(t);
+
+  if (hasSharingAction) return true;
+
+  // Short affirmative answers to Q4 also mean actual sharing occurred.
+  if (/^(?:有|有啊|有呀|有的|有过|聊过|说过|提过|谈过|讲过|吐槽过|倾诉过|分享过)[。！!，,、~～\s]*$/.test(t)) {
+    return true;
+  }
+
+  // Common affirmative constructions beginning with “有…”.
+  if (/^(?:有|有的|有过|后来有|当时有).{0,8}(?:跟|和|向|对|给)?.{0,18}(?:家人|家里人|朋友|同事|领导|主管|护士长|伴侣|爱人|对象|室友|亲人|父母|妈妈|爸爸|她|他|他们|别人|其他人).{0,10}(?:吐槽|倾诉|聊|说|提|谈|讲|告诉|分享|抱怨|诉说|交流|沟通)/.test(t)) {
+    return true;
+  }
+
+  return false;
+}
+
+function socialSupportNoContactDetected(text) {
+  const t = text.trim();
+
+  // If the same answer clearly reports actual sharing, do not classify it as "no".
+  if (socialSupportActualContactDetected(t)) return false;
+
+  return /^(?:没有|没|还没有|还没|没有过|没聊过|没说过|没提过|没跟别人说|没有跟别人说|谁也没说)[。！!，,\s]*$/.test(t)
+    || /(?:没有|没|还没|从来没|从未).{0,12}(?:跟|和|向|对|给)?.{0,18}(?:家人|家里人|朋友|同事|领导|主管|护士长|伴侣|爱人|对象|室友|亲人|父母|妈妈|爸爸|别人|其他人).{0,10}(?:吐槽|倾诉|聊|说|提|谈|讲|告诉|分享|抱怨|诉说)/.test(t)
+    || /(?:没跟任何人|没有跟任何人|谁都没说|谁也没说|自己消化|自己憋着|自己扛着)/.test(t);
+}
+
+function bareYesSocialSupportDetected(text) {
+  const t = text.trim();
+  return /^(?:有|有啊|有呀|有的|有过)[。！!，,、~～\s]*$/.test(t);
 }
 
 function socialSupportResponseDetected(text) {
@@ -2270,9 +2380,16 @@ function submitResponse(text) {
     }
   }
 
-  // After Q2 (communication with direct party), deliver the appropriate first Q3 step from JS
+  // After Q2, route according to the kind of event. Communication questions only
+  // make sense when the event is genuinely interpersonal. For structural, health,
+  // workload, promotion, research, scheduling, or other non-interpersonal stressors,
+  // use the general coping branch instead.
   if (currentStage === 1 && currentQuestion === 2) {
-    console.log('[Q3] currentQ:', currentQuestion, '| text:', text.substring(0,30), '| desc:', descriptionDetected(text));
+    console.log('[Q2 route] mode:', q2Mode, '| text:', text.substring(0,50));
+
+    // Q2 is reached only for interpersonal events.
+
+    // Default/interpersonal branch: communication with the person directly involved.
     // If the user only says “yes” (e.g., “有啊”) without details, do not jump to a
     // hypothetical scenario. Ask them to describe the actual communication first.
     if (bareYesContactDetected(text)) {
@@ -2304,15 +2421,9 @@ function submitResponse(text) {
       }
       q2ActualCommunicationConfirmed = false;
     } else if (communicationBarrierDetected(text) && !actualContactDetected(text)) {
-      // "无法沟通 / 沟通不了 / 说不通 / 沟通没用" already tells us that a
-      // hypothetical exchange is not meaningful. Skip Q3 entirely rather than asking
-      // the participant to imagine a response to a conversation they say cannot occur.
       q3 = Q3_COMMUNICATION_BARRIER_TRANSITION;
       q3FollowupMode = null;
     } else if (noContactDetected(text)) {
-      // Simple non-communication (e.g. "没有", "没机会说", "没敢说") is
-      // different: communication was not reported as impossible, so a hypothetical
-      // response can still be meaningful.
       q3 = Q3_HYPOTHETICAL_RESPONSE;
       q3FollowupMode = 'hyp_response';
     } else if (actualContactDetected(text) && responseFromOtherDetected(text)) {
@@ -2343,16 +2454,24 @@ function submitResponse(text) {
   // and whether the participant has already described the other person's response.
   if (currentStage === 1 && currentQuestion === 4) {
     let q5;
-    // Capture how the participant referred to the person they spoke with so the
-    // follow-up can say “同事/朋友/她/他” rather than defaulting to “他们”.
+    // Q4 is about whether the participant ACTUALLY talked/vented/shared with someone
+    // who was not present. Do not reuse Q2's direct-party communication detector here:
+    // natural support-seeking language such as “吐槽过/倾诉过/跟家人聊了” must count.
     q5SupportReferent = inferSupportReferent(text, '对方');
-    if (noContactDetected(text)) {
+
+    if (socialSupportNoContactDetected(text)) {
       q4ActualSupportConfirmed = false;
       q5FollowupMode = 'hyp_response';
       q5 = q5HypotheticalResponseQuestion();
-    } else if (actualContactDetected(text)) {
+    } else if (socialSupportActualContactDetected(text)) {
       q4ActualSupportConfirmed = true;
-      if (socialSupportResponseDetected(text)) {
+
+      // If the user only said a bare “有”, first establish who they actually spoke to.
+      // This avoids the unnatural “对方当时是怎么回应你的？” when no referent exists yet.
+      if (bareYesSocialSupportDetected(text)) {
+        q5FollowupMode = 'actual_who';
+        q5 = '你当时是跟谁聊了这件事？';
+      } else if (socialSupportResponseDetected(text)) {
         updateSupportReferentFromResponse(text);
         const impact = explicitSupportImpactDetected(text);
         if (impact) {
@@ -2369,18 +2488,11 @@ function submitResponse(text) {
         q5 = q5ResponseQuestion();
       }
     } else {
-      // If the answer is vague but indicates some actual sharing (e.g. “和同事聊了一下”),
-      // preserve the actual branch rather than inventing a hypothetical one.
-      if (/(?:和|跟|向|对).{0,12}(?:同事|朋友|家人|家属|领导|护士长|主管|其他人).{0,8}(?:聊|说|提|谈|讲|沟通|倾诉)/.test(text)
-          || /(?:同事|朋友|家人|家属|领导|护士长|主管).{0,8}(?:聊|说|提|谈|讲|沟通|倾诉)/.test(text)) {
-        q4ActualSupportConfirmed = true;
-        q5FollowupMode = 'actual_response';
-        q5 = q5ResponseQuestion();
-      } else {
-        q4ActualSupportConfirmed = false;
-        q5FollowupMode = 'hyp_response';
-        q5 = q5HypotheticalResponseQuestion();
-      }
+      // Truly ambiguous answers should not be converted into a hypothetical scenario.
+      // Ask a neutral clarification instead of inventing an unreal conversation.
+      q4ActualSupportConfirmed = false;
+      q5FollowupMode = 'clarify_contact';
+      q5 = '你是说后来有跟别人聊过这件事，还是没有聊过呢？';
     }
     setTimeout(function() {
       s.push({ role: 'assistant', content: q5 });
@@ -2393,7 +2505,30 @@ function submitResponse(text) {
   // Q5 is split across turns, just like Q3. Never lose the actual/hypothetical state.
   if (currentStage === 1 && currentQuestion === 5) {
     let nextQ;
-    if (q5FollowupMode === 'actual_response') {
+    if (q5FollowupMode === 'actual_who') {
+      // Bare “有” at Q4: this turn supplies the real support person.
+      q5SupportReferent = inferSupportReferent(text, '对方');
+      q4ActualSupportConfirmed = true;
+      nextQ = q5ResponseQuestion();
+      q5FollowupMode = 'actual_response';
+    } else if (q5FollowupMode === 'clarify_contact') {
+      // Resolve a genuinely ambiguous Q4 answer without ever fabricating a
+      // hypothetical conversation. Route only after the participant clarifies.
+      q5SupportReferent = inferSupportReferent(text, '对方');
+      if (socialSupportActualContactDetected(text)) {
+        q4ActualSupportConfirmed = true;
+        nextQ = bareYesSocialSupportDetected(text)
+          ? '你当时是跟谁聊了这件事？'
+          : q5ResponseQuestion();
+        q5FollowupMode = bareYesSocialSupportDetected(text) ? 'actual_who' : 'actual_response';
+      } else if (socialSupportNoContactDetected(text)) {
+        q4ActualSupportConfirmed = false;
+        nextQ = q5HypotheticalResponseQuestion();
+        q5FollowupMode = 'hyp_response';
+      } else {
+        nextQ = '你是说后来有跟别人聊过这件事，还是没有聊过呢？';
+      }
+    } else if (q5FollowupMode === 'actual_response') {
       // This turn is the colleague/friend/family member's ACTUAL response.
       // If the participant now says “她说…” or “他说…”, use that pronoun in
       // the helpfulness follow-up; otherwise keep the previously named relationship.
