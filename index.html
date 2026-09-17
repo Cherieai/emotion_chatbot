@@ -535,13 +535,13 @@ Q4：
 - 如果前面是人际事件，可问："你后来有没有跟当时不在场的人聊过这件事？比如家人、朋友、其他科室同事等。"
 - 如果前面因为没有自然的“对方”而跳过了Q2/Q3，则直接问："你有没有和其他人（比如家人、朋友、同事）聊过这件事？"
 
-Q5由系统根据Q4的内容分步提问。必须遵守“一次只问一个问题”，并根据用户已经说过的信息继续：
-- 如果用户确实和当时不在场的人聊过，但还没有说明对方怎么回应：根据用户提到的人来称呼对方。例如用户说“跟同事聊过”，问“同事当时是怎么回应你的？”；如果用户明确用了“她/他”，则可以用“她/他”来指代。不要默认使用“他们”。
-- 用户说明了对方的实际回应后：如果用户在这一轮明确用了“她/他”，后续可以继续用相同代词；否则沿用用户之前提到的关系称呼，例如“同事这样的回应对你有帮助吗？”。绝对不要再改成假设性的“如果当时和……说起这件事……”。
-- 如果用户在Q4回答中已经同时说明了自己和谁聊过、以及对方怎么回应：不要重复问回应，直接使用最自然且与用户表述一致的称呼询问该回应是否有帮助。
-- Q4中的“聊过”包括自然的倾诉/分享表达，例如“有和家人吐槽过”“跟朋友倾诉过”“和同事聊了一下”“跟家里人说过这件事”。这些都表示【实际已经聊过】，绝对不能再改成“如果当时和家人/朋友说起这件事……”这样的假设性问题；应该直接问实际对方当时怎么回应。
-- 只有用户明确表示没有和任何当时不在场的人聊过这件事时，才进入假设分支。假设问题也尽量沿用用户提到的关系称呼；只有无法判断具体对象时才使用较泛的称呼。
-- 一旦确认用户实际和别人聊过，就必须记住这是【实际发生的交流】，后续不能因为下一条回答只描述了“她说……/他说……”而退回假设分支。
+Q5由系统根据Q4的内容分步提问。Q4和Q5的路由由一个独立的语义判断步骤处理，而不是依赖固定关键词。必须遵守“一次只问一个问题”，并根据用户表达的实际含义继续：
+- 根据整句话的语义判断用户是否实际和别人聊过这件事，不要要求用户使用某个特定词语或句式。
+- 如果用户实际聊过，保留用户明确提到的所有对象；如果提到多人，不要遗漏其中任何一方。
+- 如果用户说聊过但没有说明对象，不要猜测是谁，只问“是和谁聊的呢？”。
+- 如果用户已经说明了对方的实际回应，不要重复问回应；如果也已经说明回应是否有帮助，则不要再问帮助程度。
+- 只有当用户明确表示没有和别人聊过时，才进入假设分支。语义不清楚时先澄清，不要自行假设。
+- 一旦确认实际发生过交流，后续始终保持为实际交流，不得退回假设分支。
 Q5的问题由系统自动发送，你不要自行补问、合并或重复。
 
 **极其重要‼️收到Q5最后一个问题的回答后，立即且直接，无任何停顿，严格按顺序问以下评估问题。Q7-Q11不要给任何反馈，只提问就好。**
@@ -611,17 +611,19 @@ Q11："请选择你在多大程度上同意以下陈述："我现在能很容易
 **阶段2：情绪分析**
 【仅执行阶段2，不要执行其他阶段】
 
-结合用户在阶段1中的描述，提出3-5种最可能贴近用户体验的情绪，供用户辨认和选择。可以参考但不限于以下情绪：焦虑、不安、担忧、害怕、恐惧、郁闷、无奈、失望、难过、不满、委屈、羞耻感、孤独感、无力感、怨恨、愤怒、烦躁、痛苦、不受尊重等。
+结合用户在阶段1中的描述，提出3-5种最可能贴近用户体验的情绪，供用户辨认和选择。可以参考但不限于以下情绪：焦虑、不安、担忧、害怕、恐惧、郁闷、无奈、失望、难过、不满、委屈、羞耻感、孤独感、无力感、自我怀疑、怨恨、愤怒、烦躁、痛苦、不受尊重等。
 
 这里的目标不是像报告一样“分析”用户，而是用自然、贴近具体经历的方式，帮助用户看看哪些情绪可能符合自己。必须遵守：
 - 不要使用项目符号、编号、逐条“情绪名称：原因”的报告格式。
-- 用1个简短、连贯的自然段提出3-5种候选情绪，并把每一种情绪轻轻地和用户已经描述过的具体处境联系起来。
+- 用1个简短、连贯的自然段提出3-5种候选情绪。整体要简洁，每个情绪只用一个很短的、来自用户原话的情境线索帮助理解，不要为每个情绪展开一段解释。
+- 每个候选情绪名称都用Markdown粗体标记，例如 **无力感**、**失望**、**焦虑**，便于用户快速看到情绪词；不要把整句话加粗。
 - 只依据用户实际说过的信息，不要补充心理原因，不要替用户下结论。使用“可能”“也许”“听起来有些像”等保留性表达。
+- 对晋升、考核、科研竞争等情境，如果用户的描述确实支持，也可以考虑 **自我怀疑** 或 **害怕/担忧** 等候选情绪，但不能因为是晋升压力就自动加入；仍然必须根据用户实际描述判断。
 - 不要使用“这很正常”“这很自然”“我理解你的感受”“谢谢你的分享”作为固定安慰模板，也不要泛泛地说“面对压力时大家都会……”。
 - 语言要像在和用户一起梳理，而不是在做心理评估。
 
 参考风格（不是固定模板）：
-"我们继续看看刚才那件事里的感受。从你说到的这些情况里，我想到几种可能比较贴近的情绪。你可能会有些【情绪1】，尤其是在【只复述用户已经说过的相关处境】的时候；也可能有【情绪2】，和【相关处境】连在一起；另外，【情绪3】也可能有一点贴近。你觉得这些情绪里哪些符合你的感受？请尽可能把所有符合的都选出来，可以多选。如果你觉得自己还有其他没有提到的感受，也可以告诉我。"
+"我们继续看看刚才那件事里的感受。从你说到的情况里，可能有些 **【情绪1】**，比如【很短的用户已述情境线索】；也可能有 **【情绪2】** 或 **【情绪3】**。你觉得这些情绪里哪些符合你的感受？请尽可能把所有符合的都选出来，可以多选。如果你还有其他没有提到的感受，也可以告诉我。"
 
 ⚠️【阶段2情绪选择的判定规则，非常重要】
 - 上面由你列出的情绪只是候选建议，不代表用户已经选择了它们。
@@ -699,6 +701,7 @@ b. 情绪深入探索的目标是帮助用户把情绪名称和自己的具体�
 
 4）具体情境与强度（affective/context）
 探索目标：帮助用户把这种情绪放回事件中的具体时刻，区分它什么时候最明显、当时发生了什么，以及为什么那个时刻与这种感受有关。
+- 只要用户已经明确指出这种情绪最明显的时刻、条件或触发情境，就视为这一部分已经回答完成，即使回答很简短。例如“在看到同事都做得比我好的时候”“在有很多事情要做的时候”“开会被点名的时候”都已经是有效的具体情境回答。不要因为用户没有继续解释‘当时发生了什么’而再次追问或要求展开；直接进入当前情绪的总结。
 提问时根据前文自然询问这种情绪在哪个时刻最明显或最强烈，并邀请用户在愿意的情况下尽量具体地描述那个时刻发生了什么、当时的情境是什么。不要机械地把“发生了什么、有谁在场、你有什么反应”全部堆在一句里；如果前文已经知道其中一些信息，就只问尚不清楚且有助于理解情绪的部分。
 如果用户说不确定，可以轻柔地邀请他们回想整件事里这种感受最明显的一刻，但不要替用户推断。
 提问末尾加：[[S3_CONTEXT]]
@@ -893,13 +896,13 @@ Q4：
 - 如果前面是人际事件，可问："你后来有没有跟当时不在场的人聊过这件事？比如家人、朋友、其他科室同事等。"
 - 如果前面因为没有自然的“对方”而跳过了Q2/Q3，则直接问："你有没有和其他人（比如家人、朋友、同事）聊过这件事？"
 
-Q5由系统根据Q4的内容分步提问。必须遵守“一次只问一个问题”，并根据用户已经说过的信息继续：
-- 如果用户确实和当时不在场的人聊过，但还没有说明对方怎么回应：根据用户提到的人来称呼对方。例如用户说“跟同事聊过”，问“同事当时是怎么回应你的？”；如果用户明确用了“她/他”，则可以用“她/他”来指代。不要默认使用“他们”。
-- 用户说明了对方的实际回应后：如果用户在这一轮明确用了“她/他”，后续可以继续用相同代词；否则沿用用户之前提到的关系称呼，例如“同事这样的回应对你有帮助吗？”。绝对不要再改成假设性的“如果当时和……说起这件事……”。
-- 如果用户在Q4回答中已经同时说明了自己和谁聊过、以及对方怎么回应：不要重复问回应，直接使用最自然且与用户表述一致的称呼询问该回应是否有帮助。
-- Q4中的“聊过”包括自然的倾诉/分享表达，例如“有和家人吐槽过”“跟朋友倾诉过”“和同事聊了一下”“跟家里人说过这件事”。这些都表示【实际已经聊过】，绝对不能再改成“如果当时和家人/朋友说起这件事……”这样的假设性问题；应该直接问实际对方当时怎么回应。
-- 只有用户明确表示没有和任何当时不在场的人聊过这件事时，才进入假设分支。假设问题也尽量沿用用户提到的关系称呼；只有无法判断具体对象时才使用较泛的称呼。
-- 一旦确认用户实际和别人聊过，就必须记住这是【实际发生的交流】，后续不能因为下一条回答只描述了“她说……/他说……”而退回假设分支。
+Q5由系统根据Q4的内容分步提问。Q4和Q5的路由由一个独立的语义判断步骤处理，而不是依赖固定关键词。必须遵守“一次只问一个问题”，并根据用户表达的实际含义继续：
+- 根据整句话的语义判断用户是否实际和别人聊过这件事，不要要求用户使用某个特定词语或句式。
+- 如果用户实际聊过，保留用户明确提到的所有对象；如果提到多人，不要遗漏其中任何一方。
+- 如果用户说聊过但没有说明对象，不要猜测是谁，只问“是和谁聊的呢？”。
+- 如果用户已经说明了对方的实际回应，不要重复问回应；如果也已经说明回应是否有帮助，则不要再问帮助程度。
+- 只有当用户明确表示没有和别人聊过时，才进入假设分支。语义不清楚时先澄清，不要自行假设。
+- 一旦确认实际发生过交流，后续始终保持为实际交流，不得退回假设分支。
 Q5的问题由系统自动发送，你不要自行补问、合并或重复。
 
 **极其重要‼️收到Q5最后一个问题的回答后，立即且直接，无任何停顿，严格按顺序问以下评估问题。Q7-Q11不要给任何反馈，只提问就好。**
@@ -1629,6 +1632,7 @@ function appendMsg(role, text) {
     renderScaleWidget(bubble, leftLabel || '完全不困扰', rightLabel || '非常困扰');
   } else {
     const formatted = text
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
       .replace(/\n/g, '<br>')
       .replace(/([1-7]\s+[●○]+)/g, '<br>$1')
       .replace(/^<br>/, '');
@@ -1781,12 +1785,21 @@ function classifyStage3Question(text) {
   if (/脑海.{0,16}(?:想法|想到|冒出)/.test(text)) return 'COG';
   if (/(?:身体|外在).{0,20}(?:变化|感觉|表现)/.test(text)) return 'BODY';
   if (/(?:想做什么|想说什么|想避开|想躲开)/.test(text)) return 'ACTION';
-  if (/(?:最明显|最强烈).{0,14}(?:时候|时刻)|哪个时刻.{0,12}(?:明显|强烈)/.test(text)) return 'CONTEXT';
+  if (/(?:最明显|最强烈).{0,14}(?:时候|时刻)|哪个时刻.{0,12}(?:明显|强烈)|(?:那时|当时|那个时候).{0,14}(?:发生了什么|是什么情况)|(?:具体|详细).{0,10}(?:说说|描述).{0,18}(?:时刻|时候|情境)/.test(text)) return 'CONTEXT';
   return null;
 }
 
 function stage3ReplyHasNextQuestion(text) {
   return !!classifyStage3Question(text) || text.includes('我们再来评估一下');
+}
+
+function stage3ContextAnswerIsSufficient(text) {
+  const t = String(text || '').trim();
+  if (!t) return false;
+  if (/^(?:不知道|不确定|想不起来|记不清|没有特别|没什么特别)[。！!，,、~～\s]*$/.test(t)) return false;
+  if (/(?:在|当|每当|尤其是|特别是).{1,28}(?:时候|时|那一刻|情况下)/.test(t)) return true;
+  if (/^(?:看到|听到|想到|遇到|碰到|被|工作|开会|值班|下班|考试|晋升|考核).{2,40}$/.test(t)) return true;
+  return t.length >= 6;
 }
 
 function expectedStage3NextQuestion() {
@@ -1832,7 +1845,7 @@ function getStage3RepairInstruction() {
   } else if (currentQuestion === 3) {
     stateRule = '用户刚刚已经回答了当前情绪的行为/动机问题。下一步只能进入具体情境问题。绝对不要换一种说法再次询问想做什么、想说什么或想避开什么。';
   } else if (currentQuestion === 4) {
-    stateRule = '用户刚刚已经回答了当前情绪的具体情境问题，因此这个情绪的探索已经完成。绝对不要再问认知、身体/外在表现、行为/动机或具体情境。先总结这个情绪；如果还有阶段2已选择但未探索的情绪，用“接下来我们来聊聊XX。”过渡，并直接从下一个情绪的认知问题开始；如果已全部完成，则按系统提示进入结束该阶段的逻辑。';
+    stateRule = '用户刚刚已经回答了当前情绪的具体情境问题，因此这个情绪的探索已经完成。像“在看到同事都做得比我好的时候”“在有很多事情要做的时候”这类简短的触发情境也算完整回答。绝对不要再问认知、身体/外在表现、行为/动机或具体情境，也不要要求用户把这个时刻再说具体一点。先总结这个情绪；如果还有阶段2已选择但未探索的情绪，用“接下来我们来聊聊XX。”过渡，并直接从下一个情绪的认知问题开始；如果已全部完成，则按系统提示进入结束该阶段的逻辑。';
   }
 
   return `你刚才的阶段3回复出现了漏问、重复或顺序错误。请重新生成这一条回复。\n${stateRule}\n1. 先用一句简短、具体、贴合用户刚才内容的回应；不要使用“我理解”“这很正常”“这很自然”“谢谢你的分享”等固定同理模板，也不要替用户解释其心理状态；\n2. 严格按照上面的当前进度，只继续尚未完成的下一步；同一个情绪下每一种探索内容最多问一次。问题本身可以用“如果愿意，可以尽量具体地说说”等方式鼓励充分表达，但用户回答后不要围绕同一方面追加追问；\n3. 不要使用固定模板。措辞必须结合当前情绪、事件、人物关系和用户刚才的回答，像自然中文对话；\n4. 不要重复用户已经明确回答过的信息，不要预设用户一定有身体反应或想做的事情，也不要用“冲动/倾向”等研究术语直接问用户；\n5. 如果需要提出认知问题，原则上给1-2个很短、自然的例子帮助理解；例子必须同时贴合当前具体情境和当前情绪的核心体验；引出例子时直接用“比如‘……’或‘……’”，不要用“比如你会不会想……”；\n6. 如果需要提出身体/外在表现问题，可以中性地点到呼吸、心跳、语气、表情等方面，但不要预设具体变化，也不要使用“脸红”“呼吸急促”“心跳加快”等具体反应作为示例；措辞要自然，不要说“语气里有什么特别的表现”；\n7. 如果提出阶段3问题，按系统提示在回复末尾加对应内部标记 [[S3_COG]]、[[S3_BODY]]、[[S3_ACTION]] 或 [[S3_CONTEXT]]。\n只重新生成这一条回复，不要解释这些规则。`;
@@ -2072,138 +2085,186 @@ function q3ImpactTransition(impact) {
 // Prefer an explicit gendered pronoun (她/他) when the participant uses one;
 // otherwise use the relationship they named (e.g. 同事、朋友、家人) instead of
 // mechanically referring to a single person as “他们”.
-let q5SupportReferent = '对方';
+let q5SupportReferent = '其他人';
+let q5SupportPeople = [];
+let q4ActualSupportConfirmed = false;
+let q5FollowupMode = null; // 'actual_who', 'clarify_contact', 'actual_response', 'actual_help', 'hyp_response', 'hyp_help'
+let q5ResponseAlreadyDescribed = false;
+let q5HelpfulnessAlreadyDescribed = false;
 
-function explicitSingularPronoun(text) {
-  const t = text.trim();
-  if (t.includes('她')) return '她';
-  // Match singular 他 but not the plural 他们.
-  if (/(^|[^他])他(?!们)/.test(t)) return '他';
-  return null;
+function setSupportPeople(people) {
+  q5SupportPeople = Array.isArray(people)
+    ? people.map(x => String(x || '').trim()).filter(Boolean)
+    : [];
+
+  if (q5SupportPeople.length >= 2) {
+    q5SupportReferent = q5SupportPeople.join('和');
+  } else if (q5SupportPeople.length === 1) {
+    q5SupportReferent = q5SupportPeople[0];
+  } else {
+    q5SupportReferent = '其他人';
+  }
 }
 
-function inferSupportReferent(text, fallback = '对方') {
-  const t = text.trim();
-  const pronoun = explicitSingularPronoun(t);
-  if (pronoun) return pronoun;
-
-  if (/(?:同事们|几个同事|几位同事|多位同事|家人和朋友|朋友和家人|好几个人|几个人)/.test(t)) return '他们';
-  if (t.includes('护士长')) return '护士长';
-  if (t.includes('主管')) return '主管';
-  if (t.includes('领导')) return '领导';
-  if (t.includes('同事')) return '同事';
-  if (t.includes('朋友')) return '朋友';
-  if (t.includes('家里人')) return '家里人';
-  if (t.includes('家人')) return '家人';
-  if (t.includes('父母')) return '父母';
-  if (t.includes('妈妈') || t.includes('母亲')) return '妈妈';
-  if (t.includes('爸爸') || t.includes('父亲')) return '爸爸';
-  if (t.includes('伴侣') || t.includes('爱人') || t.includes('对象')) return '伴侣';
-  if (t.includes('家属')) return '家属';
-  return fallback;
+function mergeSupportPeople(people) {
+  const merged = [...q5SupportPeople];
+  for (const person of (Array.isArray(people) ? people : [])) {
+    const clean = String(person || '').trim();
+    if (clean && !merged.includes(clean)) merged.push(clean);
+  }
+  setSupportPeople(merged);
 }
 
-function updateSupportReferentFromResponse(text) {
-  const pronoun = explicitSingularPronoun(text);
-  if (pronoun) q5SupportReferent = pronoun;
+function supportReferentIsMultiple(ref) {
+  return q5SupportPeople.length >= 2 || /(?:和|、)/.test(String(ref || ''));
 }
 
 function q5ResponseQuestion() {
-  return `${q5SupportReferent}当时是怎么回应你的？`;
+  return supportReferentIsMultiple(q5SupportReferent)
+    ? `${q5SupportReferent}当时分别是怎么回应你的？`
+    : `${q5SupportReferent}当时是怎么回应你的？`;
 }
+
 function q5HelpfulQuestion() {
-  return `${q5SupportReferent}这样的回应对你有帮助吗？`;
+  return supportReferentIsMultiple(q5SupportReferent)
+    ? '这些回应对你有帮助吗？'
+    : `${q5SupportReferent}这样的回应对你有帮助吗？`;
 }
+
 function q5HypotheticalResponseQuestion() {
-  const r = q5SupportReferent === '对方' ? '他们' : q5SupportReferent;
+  const r = q5SupportPeople.length ? q5SupportReferent : '其他人';
   return `如果当时和${r}说起这件事，你觉得${r}可能会怎么回应？`;
 }
+
 const Q5_HYPOTHETICAL_HELPFUL = '你觉得这样的回应会对你有帮助吗？';
 
-// Q5 mirrors Q3: once actual social support has been confirmed, keep that state
-// across turns so a later reply such as “她说这种事很常见” can never be
-// misread as if the participant had not actually talked to anyone.
-let q4ActualSupportConfirmed = false;
-let q5FollowupMode = null; // 'actual_who', 'clarify_contact', 'actual_response', 'actual_help', 'hyp_response', 'hyp_help'
+function showSemanticRoutingIndicator() {
+  const btn = document.getElementById('chatSubmit');
+  const input = document.getElementById('chatInput');
+  if (btn) btn.disabled = true;
+  if (input) input.disabled = true;
 
-function explicitSupportImpactDetected(text) {
-  const t = text.trim();
-  if (/(?:很有帮助|有帮助|帮到我|帮了我|让我好受|让我安心|让我放心|缓解了|轻松了一些|感觉好多了)/.test(t)) return 'positive';
-  if (/(?:没有帮助|没帮助|没什么帮助|没有太大帮助|没太大帮助|没什么用|反而更难受|更烦|更有压力)/.test(t)) return 'negative';
-  return null;
+  const log = document.getElementById('chatLog');
+  if (log && !document.getElementById('semanticRoutingIndicator')) {
+    const row = document.createElement('div');
+    row.className = 'typing-row';
+    row.id = 'semanticRoutingIndicator';
+    row.innerHTML = '<div class="typing-label">小暖</div><div class="typing-bubble"><span></span><span></span><span></span></div>';
+    log.appendChild(row);
+    log.scrollTop = log.scrollHeight;
+  }
 }
 
-// Q4 asks about disclosure/social support, which is broader than direct-party
-// "communication" in Q2. Use dedicated detection here so natural answers such as
-// “有和家人吐槽过”“跟朋友倾诉过”“和同事说过这事” are treated as ACTUAL sharing,
-// not as hypothetical sharing.
-function socialSupportActualContactDetected(text) {
-  const t = text.trim();
-
-  // Explicit negatives take priority unless the same sentence later clearly says
-  // that sharing DID happen (e.g. “一开始没说，后来还是跟同事聊了”).
-  const hasSharingAction =
-    /(?:跟|和|向|对|给).{0,18}?(?:家人|家里人|朋友|同事|同事们|领导|主管|护士长|伴侣|爱人|对象|室友|亲人|父母|妈妈|母亲|爸爸|父亲|姐妹|兄弟|她|他|他们|别人|其他人).{0,10}?(?:吐槽|倾诉|聊|说|提|谈|讲|告诉|分享|抱怨|诉说|交流|沟通)(?:了|过|一下|了下)?/.test(t)
-    || /(?:家人|家里人|朋友|同事|同事们|领导|主管|护士长|伴侣|爱人|对象|室友|亲人|父母|妈妈|母亲|爸爸|父亲|姐妹|兄弟|她|他|他们|别人|其他人).{0,10}?(?:听我吐槽|听我倾诉|听我说|听我讲)/.test(t)
-    || /(?:吐槽|倾诉|聊|说|提|谈|讲|告诉|分享|抱怨|诉说)(?:了|过).{0,12}?(?:家人|家里人|朋友|同事|领导|主管|护士长|伴侣|爱人|对象|室友|亲人|父母|妈妈|爸爸|她|他|他们)/.test(t);
-
-  if (hasSharingAction) return true;
-
-  // Short affirmative answers to Q4 also mean actual sharing occurred.
-  if (/^(?:有|有啊|有呀|有的|有过|聊过|说过|提过|谈过|讲过|吐槽过|倾诉过|分享过)[。！!，,、~～\s]*$/.test(t)) {
-    return true;
-  }
-
-  // Common affirmative constructions beginning with “有…”.
-  if (/^(?:有|有的|有过|后来有|当时有).{0,8}(?:跟|和|向|对|给)?.{0,18}(?:家人|家里人|朋友|同事|领导|主管|护士长|伴侣|爱人|对象|室友|亲人|父母|妈妈|爸爸|她|他|他们|别人|其他人).{0,10}(?:吐槽|倾诉|聊|说|提|谈|讲|告诉|分享|抱怨|诉说|交流|沟通)/.test(t)) {
-    return true;
-  }
-
-  return false;
+function hideSemanticRoutingIndicator() {
+  document.getElementById('semanticRoutingIndicator')?.remove();
+  const btn = document.getElementById('chatSubmit');
+  const input = document.getElementById('chatInput');
+  if (btn) btn.disabled = false;
+  if (input) input.disabled = false;
 }
 
-function socialSupportNoContactDetected(text) {
-  const t = text.trim();
+function parseClassifierJson(raw) {
+  const cleaned = String(raw || '')
+    .replace(/^```(?:json)?\s*/i, '')
+    .replace(/\s*```$/i, '')
+    .trim();
 
-  // If the same answer clearly reports actual sharing, do not classify it as "no".
-  if (socialSupportActualContactDetected(t)) return false;
-
-  return /^(?:没有|没|还没有|还没|没有过|没聊过|没说过|没提过|没跟别人说|没有跟别人说|谁也没说)[。！!，,\s]*$/.test(t)
-    || /(?:没有|没|还没|从来没|从未).{0,12}(?:跟|和|向|对|给)?.{0,18}(?:家人|家里人|朋友|同事|领导|主管|护士长|伴侣|爱人|对象|室友|亲人|父母|妈妈|爸爸|别人|其他人).{0,10}(?:吐槽|倾诉|聊|说|提|谈|讲|告诉|分享|抱怨|诉说)/.test(t)
-    || /(?:没跟任何人|没有跟任何人|谁都没说|谁也没说|自己消化|自己憋着|自己扛着)/.test(t);
+  try {
+    return JSON.parse(cleaned);
+  } catch (e) {
+    const first = cleaned.indexOf('{');
+    const last = cleaned.lastIndexOf('}');
+    if (first >= 0 && last > first) {
+      return JSON.parse(cleaned.slice(first, last + 1));
+    }
+    throw e;
+  }
 }
 
-function bareYesSocialSupportDetected(text) {
-  const t = text.trim();
-  return /^(?:有|有啊|有呀|有的|有过)[。！!，,、~～\s]*$/.test(t);
+function normalizeSocialSupportClassification(obj) {
+  const shared = ['yes', 'no', 'unclear'].includes(obj?.shared) ? obj.shared : 'unclear';
+  const people = Array.isArray(obj?.people)
+    ? obj.people.map(x => String(x || '').trim()).filter(Boolean)
+    : [];
+
+  return {
+    shared,
+    people,
+    response_described: obj?.response_described === true,
+    helpfulness_described: obj?.helpfulness_described === true
+  };
 }
 
-function socialSupportResponseDetected(text) {
-  const raw = text.trim();
+async function classifySocialSupportTurn(text, phase, knownPeople = []) {
+  const systemPrompt = `你是一个只用于研究问卷内部路由的中文语义分类器。你的任务是判断用户一句自然中文回答的实际含义，而不是生成聊天回复。不要依赖固定关键词或特定句式，要根据整句话、否定、时态、人物关系和上下文做语义判断。
 
-  // First mask phrases where the participant is describing THEIR OWN act of
-  // talking to someone, e.g. “跟我一起值班的同事说了”“向朋友提过这件事”.
-  // Without this, the substring “同事说了” can be mistaken for the colleague's reply.
-  const t = raw.replace(
-    /(?:跟|和|向|对|给).{0,18}?(?:同事|朋友|家人|领导|主管|护士长|她|他|他们)(?=(?:聊|说|提|谈|讲|沟通|倾诉|解释|说明|告诉))/g,
-    '[倾诉对象]'
-  );
+只返回一个JSON对象，不要加解释、Markdown或其他文字：
+{
+  "shared": "yes" | "no" | "unclear",
+  "people": ["用户明确提到的交流对象1", "对象2"],
+  "response_described": true | false,
+  "helpfulness_described": true | false
+}
 
-  // Clear evidence that the OTHER PERSON actually responded.
-  if (/(?:她|他|他们|对方|同事|朋友|家人|领导|主管|护士长).{0,12}(?:安慰|劝|开导|支持|鼓励|理解|表示理解|建议|告诉我|让我|叫我|回复|回应|回答|表示|没说什么|没有说什么|沉默|没回应|没有回应)/.test(t)) {
-    return true;
+字段含义：
+- shared：用户是否实际和其他人聊过这件事。只根据实际发生的交流判断；假设、打算、想过但没做不算yes。
+- people：只记录用户明确提到的交流对象，尽量保留用户自己的称呼；如果提到多人，全部保留；没有明确提到则返回空数组。绝对不要猜测人物。
+- response_described：用户是否已经描述了交流对象实际或假设会如何回应。仅仅说自己“和某人聊过/说过”不算描述了对方回应。
+- helpfulness_described：用户是否已经明确表达这些回应对自己有没有帮助、有没有让情况更好/更糟。不要从回应内容自行推断。
+
+不同阶段的注意事项：
+- q4：重点判断有没有实际聊过、和谁聊过，以及同一句中是否已经包含对方回应或帮助程度。
+- who：已知用户之前确认聊过；重点从当前回答中识别交流对象，不要因为当前回答没有再次出现“聊过”就改判为no。
+- actual_response：已知实际交流已经发生；重点判断当前回答是否描述了对方回应，以及是否同时说明回应有没有帮助。
+- hypothetical_response：用户此前没有实际聊过；重点判断当前回答是否给出了一个假设回应，以及是否同时评价了这个假设回应有没有帮助。如果用户只是说不知道、无法想象或没有给出任何回应内容，则response_described=false。
+- clarify：重新根据当前回答判断是否实际聊过；如果确认聊过，也提取所有明确人物。
+
+保持保守：信息不够就用unclear或false，不要补充用户没说过的内容。`;
+
+  const userPayload = {
+    phase,
+    known_people: Array.isArray(knownPeople) ? knownPeople : [],
+    user_text: String(text || '')
+  };
+
+  const response = await fetch(PROXY_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: MODEL,
+      temperature: 0,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: JSON.stringify(userPayload, null, 2) }
+      ]
+    })
+  });
+
+  if (!response.ok) throw new Error(`Semantic classifier HTTP ${response.status}`);
+  const data = await response.json();
+  const raw = data.choices?.[0]?.message?.content;
+  if (!raw) throw new Error('Semantic classifier returned no content');
+
+  const parsed = normalizeSocialSupportClassification(parseClassifierJson(raw));
+  console.log('[Social support classifier]', phase, '|', text, '|', parsed);
+  return parsed;
+}
+
+async function safeClassifySocialSupportTurn(text, phase, knownPeople = []) {
+  showSemanticRoutingIndicator();
+  try {
+    return await classifySocialSupportTurn(text, phase, knownPeople);
+  } catch (err) {
+    console.warn('[Social support classifier] failed:', err);
+    return {
+      shared: 'unclear',
+      people: [],
+      response_described: false,
+      helpfulness_described: false
+    };
+  } finally {
+    hideSemanticRoutingIndicator();
   }
-
-  // Handle “她说…… / 同事说……” only when there is substantive content
-  // after “说”. Bare “说了/说过” is not enough to establish what the response was.
-  const sayRegex = /(?:她|他|他们|对方|同事|朋友|家人|领导|主管|护士长)说([^，。！？!?]*)/g;
-  let m;
-  while ((m = sayRegex.exec(t)) !== null) {
-    const afterSay = (m[1] || '').trim();
-    if (afterSay && !/^(?:了|过|一下|了下)$/.test(afterSay)) return true;
-  }
-
-  return false;
 }
 
 // Pre-defined scale questions — delivered instantly without API call
@@ -2307,7 +2368,7 @@ function injectFinalSummaryDistressRule() {
   });
 }
 
-function submitResponse(text) {
+async function submitResponse(text) {
   userMsgCount++;
   // Capture response to whichever question was last asked. Keep the field name
   // locally so we can launch the another-event scales immediately afterward.
@@ -2343,6 +2404,13 @@ function submitResponse(text) {
   if (leasAsked && !leasResponse) {
     leasResponse = text;
     console.log('[LEAS] Response captured:', leasResponse.substring(0, 80));
+  }
+
+  if (CONDITION === 'emotion' && currentStage === 3 && currentQuestion === 4 && stage3ContextAnswerIsSufficient(text)) {
+    s.push({
+      role: 'system',
+      content: `【阶段3具体情境已回答完成】用户刚刚已经给出了当前情绪的具体时刻、条件或触发情境：${text}。即使回答只有一句或一个“在……的时候”的短语，也必须视为这一部分已经完成。不要再次询问什么时候最明显、当时发生了什么、能否更具体，也不要围绕这个触发情境追加追问。现在按阶段3规则直接总结当前情绪，并进入下一个已选择情绪或该阶段的结束逻辑。`
+    });
   }
 
   // Save snapshot on every user response (overwrites same Lark row)
@@ -2497,32 +2565,27 @@ function submitResponse(text) {
     return;
   }
 
-  // After Q4 (social support), establish whether this was an ACTUAL conversation
-  // and whether the participant has already described the other person's response.
+  // After Q4, use semantic classification rather than keyword matching.
   if (currentStage === 1 && currentQuestion === 4) {
+    const cls = await safeClassifySocialSupportTurn(text, 'q4', []);
     let q5;
-    // Q4 is about whether the participant ACTUALLY talked/vented/shared with someone
-    // who was not present. Do not reuse Q2's direct-party communication detector here:
-    // natural support-seeking language such as “吐槽过/倾诉过/跟家人聊了” must count.
-    q5SupportReferent = inferSupportReferent(text, '对方');
 
-    if (socialSupportNoContactDetected(text)) {
+    setSupportPeople(cls.people);
+    q5ResponseAlreadyDescribed = cls.response_described;
+    q5HelpfulnessAlreadyDescribed = cls.helpfulness_described;
+
+    if (cls.shared === 'no') {
       q4ActualSupportConfirmed = false;
       q5FollowupMode = 'hyp_response';
       q5 = q5HypotheticalResponseQuestion();
-    } else if (socialSupportActualContactDetected(text)) {
+    } else if (cls.shared === 'yes') {
       q4ActualSupportConfirmed = true;
 
-      // If the user only said a bare “有”, first establish who they actually spoke to.
-      // This avoids the unnatural “对方当时是怎么回应你的？” when no referent exists yet.
-      if (bareYesSocialSupportDetected(text)) {
+      if (q5SupportPeople.length === 0) {
         q5FollowupMode = 'actual_who';
-        q5 = '你当时是跟谁聊了这件事？';
-      } else if (socialSupportResponseDetected(text)) {
-        updateSupportReferentFromResponse(text);
-        const impact = explicitSupportImpactDetected(text);
-        if (impact) {
-          // The participant already stated both the response and whether it helped.
+        q5 = '是和谁聊的呢？';
+      } else if (q5ResponseAlreadyDescribed) {
+        if (q5HelpfulnessAlreadyDescribed) {
           q5FollowupMode = null;
           q4ActualSupportConfirmed = false;
           q5 = SCALE_Q[7];
@@ -2535,57 +2598,95 @@ function submitResponse(text) {
         q5 = q5ResponseQuestion();
       }
     } else {
-      // Truly ambiguous answers should not be converted into a hypothetical scenario.
-      // Ask a neutral clarification instead of inventing an unreal conversation.
       q4ActualSupportConfirmed = false;
       q5FollowupMode = 'clarify_contact';
       q5 = '你是说后来有跟别人聊过这件事，还是没有聊过呢？';
     }
+
     setTimeout(function() {
       s.push({ role: 'assistant', content: q5 });
       appendMsg('ai', q5);
       updateState(q5);
-    }, 700);
+    }, 300);
     return;
   }
 
-  // Q5 is split across turns, just like Q3. Never lose the actual/hypothetical state.
+  // Q5 stays structurally fixed, but semantic classification determines what the
+  // participant has already conveyed so we do not repeat or invent information.
   if (currentStage === 1 && currentQuestion === 5) {
     let nextQ;
+
     if (q5FollowupMode === 'actual_who') {
-      // Bare “有” at Q4: this turn supplies the real support person.
-      q5SupportReferent = inferSupportReferent(text, '对方');
+      const cls = await safeClassifySocialSupportTurn(text, 'who', q5SupportPeople);
+      mergeSupportPeople(cls.people);
+      q5ResponseAlreadyDescribed = q5ResponseAlreadyDescribed || cls.response_described;
+      q5HelpfulnessAlreadyDescribed = q5HelpfulnessAlreadyDescribed || cls.helpfulness_described;
       q4ActualSupportConfirmed = true;
-      nextQ = q5ResponseQuestion();
-      q5FollowupMode = 'actual_response';
+
+      if (q5SupportPeople.length === 0) {
+        nextQ = '是和谁聊的呢？';
+        q5FollowupMode = 'actual_who';
+      } else if (q5ResponseAlreadyDescribed) {
+        if (q5HelpfulnessAlreadyDescribed) {
+          nextQ = SCALE_Q[7];
+          q5FollowupMode = null;
+          q4ActualSupportConfirmed = false;
+        } else {
+          nextQ = q5HelpfulQuestion();
+          q5FollowupMode = 'actual_help';
+        }
+      } else {
+        nextQ = q5ResponseQuestion();
+        q5FollowupMode = 'actual_response';
+      }
     } else if (q5FollowupMode === 'clarify_contact') {
-      // Resolve a genuinely ambiguous Q4 answer without ever fabricating a
-      // hypothetical conversation. Route only after the participant clarifies.
-      q5SupportReferent = inferSupportReferent(text, '对方');
-      if (socialSupportActualContactDetected(text)) {
+      const cls = await safeClassifySocialSupportTurn(text, 'clarify', q5SupportPeople);
+      mergeSupportPeople(cls.people);
+      q5ResponseAlreadyDescribed = cls.response_described;
+      q5HelpfulnessAlreadyDescribed = cls.helpfulness_described;
+
+      if (cls.shared === 'yes') {
         q4ActualSupportConfirmed = true;
-        nextQ = bareYesSocialSupportDetected(text)
-          ? '你当时是跟谁聊了这件事？'
-          : q5ResponseQuestion();
-        q5FollowupMode = bareYesSocialSupportDetected(text) ? 'actual_who' : 'actual_response';
-      } else if (socialSupportNoContactDetected(text)) {
+        if (q5SupportPeople.length === 0) {
+          nextQ = '是和谁聊的呢？';
+          q5FollowupMode = 'actual_who';
+        } else if (q5ResponseAlreadyDescribed) {
+          if (q5HelpfulnessAlreadyDescribed) {
+            nextQ = SCALE_Q[7];
+            q5FollowupMode = null;
+            q4ActualSupportConfirmed = false;
+          } else {
+            nextQ = q5HelpfulQuestion();
+            q5FollowupMode = 'actual_help';
+          }
+        } else {
+          nextQ = q5ResponseQuestion();
+          q5FollowupMode = 'actual_response';
+        }
+      } else if (cls.shared === 'no') {
         q4ActualSupportConfirmed = false;
         nextQ = q5HypotheticalResponseQuestion();
         q5FollowupMode = 'hyp_response';
       } else {
         nextQ = '你是说后来有跟别人聊过这件事，还是没有聊过呢？';
+        q5FollowupMode = 'clarify_contact';
       }
     } else if (q5FollowupMode === 'actual_response') {
-      // This turn is the colleague/friend/family member's ACTUAL response.
-      // If the participant now says “她说…” or “他说…”, use that pronoun in
-      // the helpfulness follow-up; otherwise keep the previously named relationship.
-      updateSupportReferentFromResponse(text);
-      const impact = explicitSupportImpactDetected(text);
-      if (impact) {
+      const cls = await safeClassifySocialSupportTurn(text, 'actual_response', q5SupportPeople);
+      mergeSupportPeople(cls.people);
+      q5ResponseAlreadyDescribed = q5ResponseAlreadyDescribed || cls.response_described;
+      q5HelpfulnessAlreadyDescribed = q5HelpfulnessAlreadyDescribed || cls.helpfulness_described;
+
+      // The participant was directly asked for the other person's response. If they
+      // cannot or do not provide one, do not keep probing; move on.
+      if (!q5ResponseAlreadyDescribed) {
         nextQ = SCALE_Q[7];
         q5FollowupMode = null;
         q4ActualSupportConfirmed = false;
-        q5SupportReferent = '对方';
+      } else if (q5HelpfulnessAlreadyDescribed) {
+        nextQ = SCALE_Q[7];
+        q5FollowupMode = null;
+        q4ActualSupportConfirmed = false;
       } else {
         nextQ = q5HelpfulQuestion();
         q5FollowupMode = 'actual_help';
@@ -2594,16 +2695,28 @@ function submitResponse(text) {
       nextQ = SCALE_Q[7];
       q5FollowupMode = null;
       q4ActualSupportConfirmed = false;
-      q5SupportReferent = '对方';
+      setSupportPeople([]);
+      q5ResponseAlreadyDescribed = false;
+      q5HelpfulnessAlreadyDescribed = false;
     } else if (q5FollowupMode === 'hyp_response') {
-      nextQ = Q5_HYPOTHETICAL_HELPFUL;
-      q5FollowupMode = 'hyp_help';
+      const cls = await safeClassifySocialSupportTurn(text, 'hypothetical_response', q5SupportPeople);
+      q5ResponseAlreadyDescribed = cls.response_described;
+      q5HelpfulnessAlreadyDescribed = cls.helpfulness_described;
+
+      if (!q5ResponseAlreadyDescribed || q5HelpfulnessAlreadyDescribed) {
+        nextQ = SCALE_Q[7];
+        q5FollowupMode = null;
+      } else {
+        nextQ = Q5_HYPOTHETICAL_HELPFUL;
+        q5FollowupMode = 'hyp_help';
+      }
     } else if (q5FollowupMode === 'hyp_help') {
       nextQ = SCALE_Q[7];
       q5FollowupMode = null;
+      setSupportPeople([]);
+      q5ResponseAlreadyDescribed = false;
+      q5HelpfulnessAlreadyDescribed = false;
     } else if (q4ActualSupportConfirmed) {
-      // Defensive fallback: actual support was previously confirmed, so never ask a
-      // hypothetical question even if the follow-up mode was somehow lost.
       nextQ = q5HelpfulQuestion();
       q5FollowupMode = 'actual_help';
     } else {
@@ -2614,7 +2727,7 @@ function submitResponse(text) {
       s.push({ role: 'assistant', content: nextQ });
       appendMsg('ai', nextQ);
       updateState(nextQ);
-    }, 800);
+    }, 300);
     return;
   }
 
