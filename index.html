@@ -490,7 +490,11 @@ const SYSTEM_PROMPT_EMOTION = `你是一名心理支持专员，与医护人员�
 
 **请严格按以下顺序提问：**
 
-Q1：根据用户的回答，选择以下两种方式之一。
+Q1：先判断用户是否实际提到任何工作上的压力、困扰或不舒服的经历。不要把“没有”“最近没有”“想不到有什么”等回答硬套进“举个具体例子”的分支。
+
+- 如果用户明确表示最近没有这样的工作经历，系统会先用一个中性的、范围稍宽的问题询问以前是否有过类似的工作经历。你不要自行追问具体例子。
+- 如果用户再次明确表示以前也没有，不要虚构或强迫其提供事件。系统会结束事件相关流程。
+- 只有当用户确实提到了某种工作压力、困扰、反复模式或具体事件时，才继续下面的A/B判断。
 
 ⚠️ 判断规则：用户的回答中是否包含一个有明确时间点（如"上周"、"昨天"、"上个月某天"）的具体事件经过？
 - 如果**没有**明确时间点和事件经过 → 选情况A（这是大多数情况下的正确选择）
@@ -614,16 +618,24 @@ Q11："请选择你在多大程度上同意以下陈述："我现在能很容易
 结合用户在阶段1中的描述，提出3-5种最可能贴近用户体验的情绪，供用户辨认和选择。可以参考但不限于以下情绪：焦虑、不安、担忧、害怕、恐惧、郁闷、无奈、失望、难过、不满、委屈、羞耻感、孤独感、无力感、自我怀疑、怨恨、愤怒、烦躁、痛苦、不受尊重等。
 
 这里的目标不是像报告一样“分析”用户，而是用自然、贴近具体经历的方式，帮助用户看看哪些情绪可能符合自己。必须遵守：
-- 不要使用项目符号、编号、逐条“情绪名称：原因”的报告格式。
-- 用1个简短、连贯的自然段提出3-5种候选情绪。整体要简洁，每个情绪只用一个很短的、来自用户原话的情境线索帮助理解，不要为每个情绪展开一段解释。
-- 每个候选情绪名称都用Markdown粗体标记，例如 **无力感**、**失望**、**焦虑**，便于用户快速看到情绪词；不要把整句话加粗。
-- 只依据用户实际说过的信息，不要补充心理原因，不要替用户下结论。使用“可能”“也许”“听起来有些像”等保留性表达。
+- 用项目符号列出3-5种候选情绪，让用户可以快速看清不同的情绪词。不要编号。
+- 每个项目保持简短：先用Markdown粗体标出情绪名称，例如 **无力感**、**失望**、**焦虑**，然后只用一句很短、来自用户实际描述的情境线索说明为什么这个情绪可能符合。不要把整句话加粗，也不要展开成长段分析。
+- 整体语气仍然要自然、试探性，不要像评估报告。可以先用一句很短的过渡语，再列出项目符号，最后直接询问哪些情绪符合用户的感受。
+- 只依据用户实际说过的信息，不要补充心理原因，不要替用户下结论。可以使用“可能”“也许”等保留性表达，但不要把解释写成抽象的“可能和……有关”“可能与……有关”“与……有关”这种报告式句型。要把用户提到的具体情境自然地写进一句话里，让人一眼看懂为什么这个情绪可能贴近当时的体验。
 - 对晋升、考核、科研竞争等情境，如果用户的描述确实支持，也可以考虑 **自我怀疑** 或 **害怕/担忧** 等候选情绪，但不能因为是晋升压力就自动加入；仍然必须根据用户实际描述判断。
 - 不要使用“这很正常”“这很自然”“我理解你的感受”“谢谢你的分享”作为固定安慰模板，也不要泛泛地说“面对压力时大家都会……”。
 - 语言要像在和用户一起梳理，而不是在做心理评估。
 
-参考风格（不是固定模板）：
-"我们继续看看刚才那件事里的感受。从你说到的情况里，可能有些 **【情绪1】**，比如【很短的用户已述情境线索】；也可能有 **【情绪2】** 或 **【情绪3】**。你觉得这些情绪里哪些符合你的感受？请尽可能把所有符合的都选出来，可以多选。如果你还有其他没有提到的感受，也可以告诉我。"
+参考格式（不是固定内容，但格式必须保持）：
+我们继续看看刚才那件事里的感受。从你说到的情况里，可能有：
+
+- **【情绪1】**：【很短的用户已述情境线索】时，可能会有些【该情绪】。
+- **【情绪2】**：在【很短的用户已述情境线索】的情况下，也许会让人更容易感到【该情绪】。
+- **【情绪3】**：【很短的用户已述情境线索】，可能会带来一些【该情绪】。
+
+你觉得这些情绪里哪些符合你的感受？请尽可能把所有符合的都选出来，可以多选。如果你还有其他没有提到的感受，也可以告诉我。
+
+格式要求：候选情绪必须各占一行，并且每一行都以“- **情绪名称**：”开始。不要把多个候选情绪写在同一个自然段里。
 
 ⚠️【阶段2情绪选择的判定规则，非常重要】
 - 上面由你列出的情绪只是候选建议，不代表用户已经选择了它们。
@@ -655,9 +667,13 @@ b. 情绪深入探索的目标是帮助用户把情绪名称和自己的具体�
 
 ⚠️ 阶段3最重要的语言原则：
 - 下面列出的是每一步**要探索的信息和目的**，不是固定台词或模板。每次提问都必须结合当前情绪、具体事件、人物关系，以及用户刚才实际说了什么来组织自然的中文。
-- 阶段3可以有支持性，但支持必须来自用户刚刚说过的具体内容。回应时优先简短反映用户说到的处境、想法或体验，而不是直接给情绪贴标签或使用泛化的安慰。
-- 不要反复使用“我理解……”“这很正常”“这很自然”“谢谢你的分享”“听起来你一定……”等固定同理模板。除非用户自己的话明确支持，否则不要替他们判断某种反应是“正常/自然的”，也不要夸大或解释他们的心理状态。
-- 每次用户回答后，最多用1句简短、具体、贴合刚才内容的回应，然后直接进入下一个计划中的探索问题。不要额外增加新的追问来深挖同一个方面。
+- 阶段3的语气可以参考一位成熟、温和、善于倾听的心理咨询师在简短支持性对话中的回应方式：先让用户感到自己的体验被真正听见和接住，再自然进入下一项探索。这里只借鉴倾听和情绪验证的语气，不进行诊断、治疗解释或解决问题的建议。
+- 用户每次分享了与情绪有关的内容后，在进入下一题前，先给1句简短但有内容的情绪验证或共情回应。必要时可以有2句，但不要写成长段。不要只说“嗯，明白了”“好的”“知道了”这类很轻、可能让人觉得被敷衍的话，也不要直接跳过回应。
+- 好的验证不是把用户原话换一种说法再重复一遍，而是自然地回应这段体验对人来说可能有多难、其中的压力、拉扯、失落、害怕或辛苦之处。可以适度概括用户已经表达出来的情境与感受之间的联系，让回应听起来像真正理解了这个人的处境，而不是在做心理分析。
+- 如果需要比用户原话多走半步，可以使用“听起来……”“像是……”“可能……”等较为开放的表达，把它作为对用户体验的理解，而不是断言隐藏的原因或动机。所有理解都必须紧扣用户已经说过的内容，不凭空增加经历、心理原因或结论。
+- 例如，用户说“我担心自己跟不上同事”时，可以自然回应类似“身边的人都在往前走，自己又担心被落下，这种感觉确实挺让人悬着的。”；用户说“我想逃避现实”时，可以回应类似“听起来那一刻这些事情真的压得你很累，很想先从里面退开一下。”；用户说“在看到同事都做得比我好的时候”时，可以回应类似“这种对比一下摆在眼前，心里确实很容易不好受。”这些只是语气示例，不要固定套用。
+- 不要反复使用“我理解……”“这很正常”“这很自然”“谢谢你的分享”等固定同理模板，也不要把回应写成研究报告、心理学解释或对用户回答质量的评价。
+- 不要用“你刚才提到……”“你刚才说……”“你说的是……”机械复述用户原句；也不要说“这个想法挺具体的”“你说得很清楚”“说得很详细”“表达得很好”等评价回答本身的话。
 - 不要只是把[情绪]名称塞进固定句式里。如果某种说法放在当前情绪或情境里听起来别扭、重复、带有预设，必须自然改写。
 - 不要用“冲动”“倾向”等研究术语直接问用户，也不要预设用户一定有身体反应、行为反应、想法或想做的事情。
 - 如果用户已经在前面的回答中明确提供了某一步需要的信息，简短回应后直接进入还没有探索的内容，不要机械重复。
@@ -677,7 +693,7 @@ b. 情绪深入探索的目标是帮助用户把情绪名称和自己的具体�
 原则上在这个问题里给1-2个很短的可能想法作为例子，帮助用户理解你在问什么。例子必须根据当前事件和当前情绪即时生成：先判断这个情绪在当前事件中的核心体验，再检查每个例子是否真的体现**这个情绪**，而不只是符合事件本身。如果例子更像其他情绪，删掉并重新生成。只有实在无法生成自然且贴切的例子时，才可以不举例。引出例子时直接自然地说“比如‘……’或‘……’”即可，不要说“比如你会不会想……”这类带预设的句式。例子不得照搬固定示例，也不要在例子后再追加“你当时自己是怎么想的？”等重复追问。
 提问末尾加：[[S3_COG]]
 
-收到回答后：先简短回应。如果整个阶段3还没有询问过身体/外在表现，则自然进入第2步；如果已经问过，则自然进入第3步。不要停在单纯回应上。
+收到回答后：只要用户已经给出了一个实际想法，无论长短，认知部分就视为完成。先用1句自然、有分量的情绪验证回应用户刚才表达的体验，语气参考上面的咨询师式倾听原则；不要机械复述原句，也不要评价回答本身。然后直接进入下一项。如果整个阶段3还没有询问过身体/外在表现，则自然进入第2步；如果已经问过，则自然进入第3步。绝对不要再问“还有其他想法吗”“还能想到什么”“除此之外还有什么念头”等第二个认知问题，也不要因为用户回答较短而继续追问认知。不要停在单纯回应上。
 
 2）生理与外在表现（physiological / expressive）
 这一部分在整个阶段3中**只针对整体情绪体验问一次**，不要绑定在某一个具体情绪上，也不要对每个情绪重复询问。
@@ -688,7 +704,7 @@ b. 情绪深入探索的目标是帮助用户把情绪名称和自己的具体�
 - 措辞必须自然。不要使用“语气里有什么特别的表现”这类生硬说法；根据上下文可以自然地说“语气有没有变化”“说话的语气有没有和平时不一样”等，但不要固定套用某一句。
 提问末尾加：[[S3_BODY]]
 
-收到回答后：简短回应，然后在同一条消息里自然进入第3步。不要继续追问身体反应，也不要只回应后停住。
+收到回答后：先用1句自然、有分量的情绪验证回应用户刚才描述的体验，语气参考上面的咨询师式倾听原则；不要机械复述身体反应，也不要评价回答本身。然后在同一条消息里自然进入第3步。不要继续追问身体反应，也不要只回应后停住。
 
 3）行为/动机（motivational / action tendency）
 探索目标：帮助用户注意这种情绪是否让他们特别想做什么、说什么，或者想避开什么。这里是在回顾当时自然出现的反应，不是让用户制定下一步行动，也不是给建议。
@@ -697,7 +713,7 @@ b. 情绪深入探索的目标是帮助用户把情绪名称和自己的具体�
 如需举例，最多给1-2个，并且必须根据当前情绪和具体事件即时生成；如果不需要例子就不要硬加。
 提问末尾加：[[S3_ACTION]]
 
-收到回答后：简短回应，然后在同一条消息里自然进入第4步。**第3步到此已经完成；之后不要再以任何措辞重复询问用户想做什么、想说什么或想避开什么。**
+收到回答后：先用1句自然、有分量的情绪验证回应用户刚才表达的体验，语气参考上面的咨询师式倾听原则；不要机械复述用户想做、想说或想避开的内容，也不要评价回答本身。然后在同一条消息里自然进入第4步。**第3步到此已经完成；之后不要再以任何措辞重复询问用户想做什么、想说什么或想避开什么。**
 
 4）具体情境与强度（affective/context）
 探索目标：帮助用户把这种情绪放回事件中的具体时刻，区分它什么时候最明显、当时发生了什么，以及为什么那个时刻与这种感受有关。
@@ -851,7 +867,11 @@ const SYSTEM_PROMPT_CONTROL = `你是一名心理支持专员，与医护人员�
 
 **请严格按以下顺序提问：**
 
-Q1：根据用户的回答，选择以下两种方式之一。
+Q1：先判断用户是否实际提到任何工作上的压力、困扰或不舒服的经历。不要把“没有”“最近没有”“想不到有什么”等回答硬套进“举个具体例子”的分支。
+
+- 如果用户明确表示最近没有这样的工作经历，系统会先用一个中性的、范围稍宽的问题询问以前是否有过类似的工作经历。你不要自行追问具体例子。
+- 如果用户再次明确表示以前也没有，不要虚构或强迫其提供事件。系统会结束事件相关流程。
+- 只有当用户确实提到了某种工作压力、困扰、反复模式或具体事件时，才继续下面的A/B判断。
 
 ⚠️ 判断规则：用户的回答中是否包含一个有明确时间点（如"上周"、"昨天"、"上个月某天"）的具体事件经过？
 - 如果**没有**明确时间点和事件经过 → 选情况A（这是大多数情况下的正确选择）
@@ -1115,6 +1135,7 @@ let s = [
 
 let currentStage = 1;
 let currentQuestion = 0;
+let initialStressorFallbackAsked = false;
 let scales = {
   distress_level_1: null, emotion_identify_reverse_1: null, emotion_identify_1: null,
   emotion_describe_hard_1: null, emotion_describe_easy_1: null,
@@ -1577,8 +1598,20 @@ function startPreMatrices() {
       matrixPhase = 0;
       document.getElementById('chatSubmit').disabled = false;
       document.getElementById('chatInput').disabled  = false;
-      // Ensure we're in stage 2 before proceeding
-      if (currentStage < 2) { currentStage = 2; currentQuestion = 0; }
+      // Enter Stage 2 deterministically before asking the model for the next reply.
+      currentStage = 2;
+      currentQuestion = 0;
+      if (CONDITION === 'emotion') {
+        s.push({
+          role: 'system',
+          content: '【当前流程状态：阶段2情绪分析】前测状态量表已经完成。下一条助手回复必须且只能执行阶段2：基于阶段1内容列出3-5个候选情绪（项目符号、情绪词加粗），并询问用户哪些情绪符合。绝对不要进入阶段3、阶段4、阶段5，不要询问其他类似经历。'
+        });
+      } else {
+        s.push({
+          role: 'system',
+          content: '【当前流程状态：Control阶段2生活状态了解】前测状态量表已经完成。下一条助手回复必须且只能开始Control阶段2，不要跳到后测或最终总结。'
+        });
+      }
       console.log('[PreMatrix] Complete, stage:', currentStage);
 
       submitResponse('量表已完成，可以继续了');
@@ -1603,6 +1636,12 @@ function startPostMatrices() {
       const SUMMARY_STAGE = CONDITION === 'emotion' ? 5 : 4;
       currentStage = SUMMARY_STAGE;
       currentQuestion = 0;
+      s.push({
+        role: 'system',
+        content: CONDITION === 'emotion'
+          ? '【当前流程状态：阶段5】后测状态量表已经完成。现在只能执行阶段5：先询问另一件类似经历；不要返回阶段2、阶段3或阶段4。'
+          : '【当前流程状态：Control阶段4】后测状态量表已经完成。现在只能执行Control阶段4的迁移问题与最终总结。'
+      });
       console.log('[PostMatrix] Stage advanced to summary stage:', currentStage);
       submitResponse('量表已完成，请继续');
     });
@@ -1632,6 +1671,9 @@ function appendMsg(role, text) {
     renderScaleWidget(bubble, leftLabel || '完全不困扰', rightLabel || '非常困扰');
   } else {
     const formatted = text
+      .split(/\r?\n/)
+      .map(function(line) { return /^\s*-\s+/.test(line) ? line.replace(/^\s*-\s+/, '• ') : line; })
+      .join('\n')
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
       .replace(/\n/g, '<br>')
       .replace(/([1-7]\s+[●○]+)/g, '<br>$1')
@@ -1680,12 +1722,15 @@ function parseAndSaveScale(text) {
 
 // State machine
 function updateState(t) {
-  // Set capture flag based on which question the AI just asked
-  if (t.includes("可以跟我说说最近在工作上"))                         pendingCapture = 'stress_event';
-  if (t.includes("能详细说说这件事吗") || t.includes("可以举个具体的例子吗")) pendingCapture = 'specific_event';
-  if (t.includes("你觉得这些情绪里哪些符合你的感受") || t.includes("请尽可能把所有符合的都选出来")) pendingCapture = 'selected_emotions';
-  else if (t.includes("别的让你困扰或有压力的经历") || t.includes("其他类似的经历") || t.includes("任何让你困扰或者有压力的经历")) pendingCapture = 'another_event';
-  else if (t.includes("在这件事中，你有什么感受或情绪"))                   pendingCapture = 'another_emotion';
+  // Set capture flags only when the corresponding stage is actually active.
+  // This prevents a malformed AI reply from silently advancing the study flow.
+  if (currentStage === 1 && (t.includes("可以跟我说说最近在工作上") || t.includes("如果最近没有，能不能回想一下以前在工作中") || t.includes("你是说最近没有这样的工作经历"))) pendingCapture = 'stress_event';
+  if (currentStage === 1 && (t.includes("能详细说说这件事吗") || t.includes("可以举个具体的例子吗"))) pendingCapture = 'specific_event';
+  if (CONDITION === 'emotion' && currentStage === 2 && (t.includes("你觉得这些情绪里哪些符合你的感受") || t.includes("请尽可能把所有符合的都选出来"))) pendingCapture = 'selected_emotions';
+
+  const summaryStage = CONDITION === 'emotion' ? 5 : 4;
+  if (currentStage === summaryStage && (t.includes("别的让你困扰或有压力的经历") || t.includes("其他类似的经历") || t.includes("任何让你困扰或者有压力的经历"))) pendingCapture = 'another_event';
+  else if (currentStage === summaryStage && t.includes("在这件事中，你有什么感受或情绪")) pendingCapture = 'another_emotion';
 
   // Global: always fire on chat end regardless of stage
   if (t.includes("本次对话到此结束")) {
@@ -1699,7 +1744,7 @@ function updateState(t) {
     else if (t.includes("你当时有没有尝试和对方沟通过你的想法") || t.includes("和对方沟通过你的想法")) { currentQuestion = 2; q2Mode = 'communication'; }  // interpersonal Q2
     else if (t.includes("对方当时是怎么回应你的") || t.includes("对方可能会怎么回应") || t.includes("处理当时的情况") || t.includes("有助于处理这件事") || t.includes("这样做对你应对这件事有帮助吗")) currentQuestion = 3;  // Q3 step delivered → user will answer Q3
     else if (t.includes("有没有跟当时不在场的人") || t.includes("有没有和其他人（比如家人、朋友、同事）聊过这件事") || t.includes("有没有和其他人聊过这件事")) currentQuestion = 4;  // AI asked Q4 → user will answer Q4
-    else if (/(?:当时是怎么回应你的|这样的回应对你有帮助吗|如果当时和.+说起这件事|这样的回应会对你有帮助吗|你当时是跟谁聊了这件事|你是说后来有跟别人聊过这件事)/.test(t)) currentQuestion = 5;  // Q5 step delivered → user will answer Q5
+    else if (/(?:是和谁聊的呢|当时(?:分别)?是怎么回应你的|这样的回应对你有帮助吗|这些回应对你有帮助吗|如果当时和.+说起这件事|这样的回应会对你有帮助吗|你当时是跟谁聊了这件事|你是说后来有跟别人聊过这件事)/.test(t)) currentQuestion = 5;  // Q5 step delivered → user will answer Q5
     else if (t.includes("有多困扰"))                                        currentQuestion = 7;
     else if (t.includes("很强烈的情绪"))                                    currentQuestion = 8;
     else if (t.includes("我清楚自己现在"))                                  currentQuestion = 9;
@@ -1710,7 +1755,15 @@ function updateState(t) {
   }
   if (CONDITION === 'emotion') {
     if (currentStage === 2) {
-      if (t.includes("我们来聊聊")) { currentStage = 3; currentQuestion = 0; }
+      if (t.includes("我们来聊聊")) {
+        currentStage = 3;
+        const firstStage3Question = classifyStage3Question(t);
+        if (firstStage3Question === 'COG') currentQuestion = 1;
+        else if (firstStage3Question === 'BODY') { currentQuestion = 2; stage3BodyQuestionAsked = true; }
+        else if (firstStage3Question === 'ACTION') currentQuestion = 3;
+        else if (firstStage3Question === 'CONTEXT') currentQuestion = 4;
+        else currentQuestion = 0;
+      }
     } else if (currentStage === 3) {
       if      (t.includes("我们再来评估一下"))                      { currentStage = 4; currentQuestion = 1; }
       else if (t.includes("[[S3_COG]]"))                           currentQuestion = 1;
@@ -1782,7 +1835,7 @@ function classifyStage3Question(text) {
   const marker = getStage3Marker(text);
   if (marker) return marker;
   // Semantic fallbacks in case the model omits the internal marker.
-  if (/脑海.{0,16}(?:想法|想到|冒出)/.test(text)) return 'COG';
+  if (/(?:脑海|脑子|心里).{0,24}(?:想法|想到|冒出|念头)|(?:还有|其他|别的).{0,12}(?:想法|念头)|(?:还能|还会).{0,12}(?:想到|想些什么|有什么想法)/.test(text)) return 'COG';
   if (/(?:身体|外在).{0,20}(?:变化|感觉|表现)/.test(text)) return 'BODY';
   if (/(?:想做什么|想说什么|想避开|想躲开)/.test(text)) return 'ACTION';
   if (/(?:最明显|最强烈).{0,14}(?:时候|时刻)|哪个时刻.{0,12}(?:明显|强烈)|(?:那时|当时|那个时候).{0,14}(?:发生了什么|是什么情况)|(?:具体|详细).{0,10}(?:说说|描述).{0,18}(?:时刻|时候|情境)/.test(text)) return 'CONTEXT';
@@ -1809,9 +1862,63 @@ function expectedStage3NextQuestion() {
   return null;
 }
 
+function shouldRepairStage2EmotionFormat(text) {
+  if (CONDITION !== 'emotion' || currentStage !== 2 || typeof text !== 'string') return false;
+
+  // While currentStage===2, the ONLY valid assistant reply is the Stage-2
+  // candidate-emotion list followed by the emotion-selection question.
+  // This prevents the model from accidentally jumping straight to a later stage
+  // (for example the another-event question) after the pre-measures.
+  const hasSelectionQuestion =
+    text.includes('你觉得这些情绪里哪些符合你的感受') ||
+    text.includes('请尽可能把所有符合的都选出来');
+  if (!hasSelectionQuestion) return true;
+
+  const bulletLines = text.split(/\r?\n/).filter(function(line) {
+    return /^\s*[-•]\s+\*\*[^*]+\*\*\s*[：:]/.test(line);
+  });
+  return bulletLines.length < 3;
+}
+
+function getStage2FormatRepairInstruction() {
+  return `【当前流程状态：阶段2情绪分析。不得跳到阶段3、阶段4或阶段5。】你刚才的回复没有严格执行阶段2。请只重新生成这一条阶段2回复，并严格使用下面的版式：
+1. 先用一句很短的自然过渡语。
+2. 接着列出3-5个候选情绪，每个情绪必须单独一行，格式必须是：- **情绪名称**：一句很短、只基于用户实际描述的说明。说明要自然、具体地把用户提到的情境写进去，不要使用“可能和……有关”“可能与……有关”“与……有关”这种抽象、报告式的句型。
+3. 每个候选情绪都必须用Markdown粗体标出情绪名称。
+4. 不要把多个候选情绪合并在同一个自然段里。
+5. 列表之后，再单独一段询问：你觉得这些情绪里哪些符合你的感受？请尽可能把所有符合的都选出来，可以多选。如果你还有其他没有提到的感受，也可以告诉我。
+6. 保持原来候选情绪的语义，不要新增没有依据的心理解释。
+只输出修改后的参与者可见回复，不要解释格式规则。`;
+}
+
+function stage3AcknowledgementNeedsRepair(text) {
+  if (typeof text !== 'string') return false;
+
+  if (/(?:这个|这|你的)?(?:想法|回答|描述|表达).{0,8}(?:挺|很|比较)?(?:具体|清楚|详细|完整|好)|(?:说|讲|描述|表达)得.{0,6}(?:很|挺|比较)?(?:具体|清楚|详细|完整|好)/.test(text)) {
+    return true;
+  }
+
+  if ([1, 2, 3].includes(currentQuestion) && /(?:你刚才|刚才你|你前面|前面你).{0,18}(?:提到|说到|说了|说|表达)|(?:你提到的|你说的).{0,12}(?:想法|担心|感受|情况|反应)/.test(text)) {
+    return true;
+  }
+
+  if ([1, 2, 3].includes(currentQuestion) && /^(?:嗯[，,。\s]*)?(?:明白了|知道了|好的)[。！!，,\s]*(?:那|接下来|当|你|这种|如果)/.test(text.trim())) {
+    return true;
+  }
+
+  return false;
+}
+
 function shouldRepairStage3Reply(text) {
   if (CONDITION !== 'emotion' || currentStage !== 3) return false;
+
+  // A Stage-5 transfer/generalization question is never valid while Stage 3 is
+  // active. Stage 3 must finish first, then the post emotion-awareness ratings
+  // and post matrices must be completed before Stage 5 can begin.
+  if (/(?:其他类似的经历|别的让你困扰或有压力的经历|任何让你困扰或者有压力的经历)/.test(text)) return true;
+
   if (text.includes('我们再来评估一下')) return false;
+  if (stage3AcknowledgementNeedsRepair(text)) return true;
 
   const asked = classifyStage3Question(text);
 
@@ -1848,7 +1955,7 @@ function getStage3RepairInstruction() {
     stateRule = '用户刚刚已经回答了当前情绪的具体情境问题，因此这个情绪的探索已经完成。像“在看到同事都做得比我好的时候”“在有很多事情要做的时候”这类简短的触发情境也算完整回答。绝对不要再问认知、身体/外在表现、行为/动机或具体情境，也不要要求用户把这个时刻再说具体一点。先总结这个情绪；如果还有阶段2已选择但未探索的情绪，用“接下来我们来聊聊XX。”过渡，并直接从下一个情绪的认知问题开始；如果已全部完成，则按系统提示进入结束该阶段的逻辑。';
   }
 
-  return `你刚才的阶段3回复出现了漏问、重复或顺序错误。请重新生成这一条回复。\n${stateRule}\n1. 先用一句简短、具体、贴合用户刚才内容的回应；不要使用“我理解”“这很正常”“这很自然”“谢谢你的分享”等固定同理模板，也不要替用户解释其心理状态；\n2. 严格按照上面的当前进度，只继续尚未完成的下一步；同一个情绪下每一种探索内容最多问一次。问题本身可以用“如果愿意，可以尽量具体地说说”等方式鼓励充分表达，但用户回答后不要围绕同一方面追加追问；\n3. 不要使用固定模板。措辞必须结合当前情绪、事件、人物关系和用户刚才的回答，像自然中文对话；\n4. 不要重复用户已经明确回答过的信息，不要预设用户一定有身体反应或想做的事情，也不要用“冲动/倾向”等研究术语直接问用户；\n5. 如果需要提出认知问题，原则上给1-2个很短、自然的例子帮助理解；例子必须同时贴合当前具体情境和当前情绪的核心体验；引出例子时直接用“比如‘……’或‘……’”，不要用“比如你会不会想……”；\n6. 如果需要提出身体/外在表现问题，可以中性地点到呼吸、心跳、语气、表情等方面，但不要预设具体变化，也不要使用“脸红”“呼吸急促”“心跳加快”等具体反应作为示例；措辞要自然，不要说“语气里有什么特别的表现”；\n7. 如果提出阶段3问题，按系统提示在回复末尾加对应内部标记 [[S3_COG]]、[[S3_BODY]]、[[S3_ACTION]] 或 [[S3_CONTEXT]]。\n只重新生成这一条回复，不要解释这些规则。`;
+  return `你刚才的阶段3回复出现了漏问、重复或顺序错误。请重新生成这一条回复。\n${stateRule}\n1. 在进入下一题前，先给1句自然、有内容的情绪验证，让用户感到自己的体验被听见和接住。语气参考一位成熟、温和、善于倾听的心理咨询师在简短支持性对话中的回应方式，但不要诊断、治疗解释或给解决问题的建议。不要只说“嗯，明白了”“好的”“知道了”这类很轻的回应，也不要机械复述用户原话。好的验证可以自然回应这段体验里的压力、辛苦、拉扯、失落或害怕，并可以在有依据时适度概括情境和感受之间的联系；如果比用户原话多走半步，用“听起来……”“像是……”“可能……”等开放措辞，不要把推测说成事实。不要用“你刚才提到……”“你刚才说……”“你说的是……”来重复用户原话；也不要评价回答本身的形式或质量，禁止说“这个想法挺具体的”“你说得很清楚”“说得很详细”“表达得很好”等。不要使用“我理解”“这很正常”“这很自然”“谢谢你的分享”等固定同理模板；\n2. 严格按照上面的当前进度，只继续尚未完成的下一步；同一个情绪下每一种探索内容最多问一次。用户已经给出一个实际想法后，认知部分立即完成，禁止再问“还有其他想法吗”“还能想到什么”“还有什么念头”等第二个认知问题。问题本身可以用“如果愿意，可以尽量具体地说说”等方式鼓励充分表达，但用户回答后不要围绕同一方面追加追问；\n3. 不要使用固定模板。措辞必须结合当前情绪、事件、人物关系和用户刚才的回答，像自然中文对话；\n4. 不要重复用户已经明确回答过的信息，不要预设用户一定有身体反应或想做的事情，也不要用“冲动/倾向”等研究术语直接问用户；\n5. 如果需要提出认知问题，原则上给1-2个很短、自然的例子帮助理解；例子必须同时贴合当前具体情境和当前情绪的核心体验；引出例子时直接用“比如‘……’或‘……’”，不要用“比如你会不会想……”；\n6. 如果需要提出身体/外在表现问题，可以中性地点到呼吸、心跳、语气、表情等方面，但不要预设具体变化，也不要使用“脸红”“呼吸急促”“心跳加快”等具体反应作为示例；措辞要自然，不要说“语气里有什么特别的表现”；\n7. 如果提出阶段3问题，按系统提示在回复末尾加对应内部标记 [[S3_COG]]、[[S3_BODY]]、[[S3_ACTION]] 或 [[S3_CONTEXT]]。\n只重新生成这一条回复，不要解释这些规则。`;
 }
 
 function sendToAI(messages) {
@@ -1875,13 +1982,10 @@ function sendToAI(messages) {
 
     let rawReply = data.choices[0].message.content;
 
-    // If an intermediate emotion-reflection turn contains only acknowledgement and
-    // forgets the next question, ask the model to regenerate the turn naturally.
-    // This avoids inserting a canned JS fallback question.
-    if (shouldRepairStage3Reply(rawReply)) {
+    if (shouldRepairStage2EmotionFormat(rawReply)) {
       const repairMessages = messages.concat([
         { role: 'assistant', content: rawReply },
-        { role: 'system', content: getStage3RepairInstruction() }
+        { role: 'system', content: getStage2FormatRepairInstruction() }
       ]);
       try {
         const repaired = await callModel(repairMessages);
@@ -1889,7 +1993,28 @@ function sendToAI(messages) {
           rawReply = repaired.choices[0].message.content;
         }
       } catch (repairErr) {
-        console.warn('[Stage3 repair]', repairErr);
+        console.warn('[Stage2 format repair]', repairErr);
+      }
+    }
+
+    // If an intermediate emotion-reflection turn contains only acknowledgement and
+    // forgets the next question, ask the model to regenerate the turn naturally.
+    // This avoids inserting a canned JS fallback question.
+    if (shouldRepairStage3Reply(rawReply)) {
+      for (let attempt = 1; attempt <= 3 && shouldRepairStage3Reply(rawReply); attempt++) {
+        const repairMessages = messages.concat([
+          { role: 'assistant', content: rawReply },
+          { role: 'system', content: getStage3RepairInstruction() }
+        ]);
+        try {
+          const repaired = await callModel(repairMessages);
+          if (repaired.choices?.[0]?.message?.content) {
+            rawReply = repaired.choices[0].message.content;
+          }
+        } catch (repairErr) {
+          console.warn('[Stage3 repair]', repairErr);
+          break;
+        }
       }
     }
 
@@ -1919,52 +2044,77 @@ function sendToAI(messages) {
   });
 }
 
-// Pre-defined Q5 follow-up (always delivered from JS after Q4 to prevent AI from skipping it)
 
-// Detect what the user has ALREADY told us, so we do not ask a question
-// that has effectively already been answered.
-function descriptionDetected(text) {
-  const raw = text.trim();
-  // Mask pronouns that are clearly the OBJECT of the user's communication, e.g.
-  // “跟他解释”“向她说明”. Without this, “他解释” inside “跟他解释” can be
-  // misread as if HE explained something back to the user.
-  const t = raw.replace(/(?:跟|和|向|对|给)(?:她|他|对方|领导|家属|患者|同事)(?=(?:解释|说明|表达|说|讲|沟通|交流|告诉))/g, '[沟通对象]');
-  // Detect whether the user has already described the OTHER PERSON'S actual response.
-  // Avoid treating “我跟她说了” as if “她说了...” were the other person's response.
-  if (/(?:她|他|对方|领导)(?:回复|回应|回答|表示|告诉我|让我|叫我|道歉|拒绝|同意|答应|解释|批评|骂我|不听|不理|没理|沉默|没有回应|没回应)/.test(t)) return true;
+const INITIAL_STRESSOR_FALLBACK = '如果最近没有，能不能回想一下以前在工作中有没有哪件让你觉得有些困扰或压力的事？不一定是很大的事。';
+const INITIAL_STRESSOR_CLARIFY = '你是说最近没有这样的工作经历，还是有一些困扰但一时想不到具体的例子呢？';
+const INITIAL_STRESSOR_END = '明白了。既然最近和以前都没有想到这样的工作经历，我们就不勉强回想具体事件。这次对话先到这里，感谢你的参与。';
+const SPECIFIC_EVENT_PROMPT_A = '可以举个具体的例子吗？比如最近有没有哪件让你印象比较深的事，简单说说是什么时候、在哪儿发生的，当时有谁在场，发生了什么。可以想象你在跟朋友吐槽，想说什么就说什么 😊';
+const SPECIFIC_EVENT_PROMPT_B = '能详细说说这件事吗？比如是什么时候、在哪儿发生的，当时有谁在场，具体发生了什么。可以想象你在跟朋友吐槽，想说什么就说什么 😊';
 
-  // Handle “她说...” / “他说...” etc. Only count it as a response if there is
-  // substantive content after “说”, not merely the phrase “我跟她说了”.
-  const sayRegex = /(?:她|他|对方|领导)说([^，。！？!?]*)/g;
-  let m;
-  while ((m = sayRegex.exec(t)) !== null) {
-    const afterSay = (m[1] || '').trim();
-    if (afterSay && afterSay !== '了') return true;
+function normalizeInitialStressorClassification(obj) {
+  const hasStressor = ['yes', 'no', 'unclear'].includes(obj?.has_stressor)
+    ? obj.has_stressor
+    : 'unclear';
+  return {
+    has_stressor: hasStressor,
+    specific_event_described: obj?.specific_event_described === true
+  };
+}
+
+async function classifyInitialStressorTurn(text, phase) {
+  const systemPrompt = `你是一个只用于研究问卷内部路由的中文语义分类器。你的任务是判断用户对“最近工作上有没有让你压力很大或困扰的事”这类问题的实际含义。不要生成聊天回复，也不要依赖固定关键词或特定句式，要根据整句话的语义判断。
+
+只返回一个JSON对象，不要加解释、Markdown或其他文字：
+{
+  "has_stressor": "yes" | "no" | "unclear",
+  "specific_event_described": true | false
+}
+
+字段含义：
+- has_stressor：用户是否实际提到了任何工作上的压力、困扰、让人不舒服的经历、反复模式或具体事件。明确表示没有、最近没有、想不到任何这样的经历时判为no；如果用户确实描述了压力来源或困扰，即使很笼统，也判为yes；信息不足或语义矛盾时判为unclear。
+- specific_event_described：用户是否已经描述了一件发生在相对明确时间点的具体事件经过，而不是笼统问题、长期状态或反复模式。只有同时有具体事件和足够的发生经过时才为true。
+
+阶段说明：
+- initial：用户刚回答“最近工作上有没有什么让你压力很大或困扰的事”。
+- fallback：用户之前表示最近没有，因此现在回答的是“以前在工作中有没有哪件让你觉得有些困扰或压力的事”。
+
+重要：
+- “没有”“最近没有”“暂时想不到”“好像没有”应根据整体语义判断是否为no，不要因为问题期待一个事件就强行判为yes。
+- 如果用户说“没有特别大的，但有一件……”并继续描述事情，则应判为yes。
+- 不要推测用户没有明确说出的经历。`;
+
+  const response = await fetch(PROXY_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: MODEL,
+      temperature: 0,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: JSON.stringify({ phase, user_text: String(text || '') }, null, 2) }
+      ]
+    })
+  });
+
+  if (!response.ok) throw new Error(`Initial stressor classifier HTTP ${response.status}`);
+  const data = await response.json();
+  const raw = data.choices?.[0]?.message?.content;
+  if (!raw) throw new Error('Initial stressor classifier returned no content');
+  const parsed = normalizeInitialStressorClassification(parseClassifierJson(raw));
+  console.log('[Initial stressor classifier]', phase, '|', text, '|', parsed);
+  return parsed;
+}
+
+async function safeClassifyInitialStressorTurn(text, phase) {
+  showSemanticRoutingIndicator();
+  try {
+    return await classifyInitialStressorTurn(text, phase);
+  } catch (err) {
+    console.warn('[Initial stressor classifier] failed:', err);
+    return { has_stressor: 'unclear', specific_event_described: false };
+  } finally {
+    hideSemanticRoutingIndicator();
   }
-  return false;
-}
-
-function actualContactDetected(text) {
-  const t = text.trim();
-  // Clear evidence that the USER actually communicated. Mentioning communication
-  // as difficult/useless does not count unless an actual communication action is stated.
-  return /(?:我|当时我|后来我|最后我)(?:已经|曾经|后来|最后|还是)*(?:跟|和|向|对).{0,10}(?:说了|提了|讲了|聊了|谈了|沟通了|交流了|表达了|说明了|解释了|反映了|提过|说过|讲过|聊过|谈过|沟通过|交流过|表达过|反映过)/.test(t)
-    || /(?:^|[，。；;！!?\s])(?:我)?(?:已经|曾经|后来|最后|还是)*(?:跟|和|向|对).{0,10}(?:说了|提了|讲了|聊了|谈了|沟通了|交流了|表达了|说明了|解释了|反映了|提过|说过|讲过|聊过|谈过|沟通过|交流过|表达过|反映过)/.test(t)
-    || /(?:^|[，。；;！!?\s])我(?:已经|曾经|后来|最后|还是)?(?:说了|提了|讲了|聊了|谈了|沟通了|交流了|表达了|说明了|解释了|反映了|说过|提过|讲过|聊过|谈过|沟通过|交流过|表达过|反映过)/.test(t)
-    || /(?:已经|曾经|后来|最后|还是)(?:沟通过|交流过|说过|提过|讲过|聊过|谈过|表达过|反映过)/.test(t)
-    || /^(?:有|有啊|有呀|有的|有过|当时有|当时有啊|当时有呀|后来有|后来有啊|试过|当时试过|尝试过|当时尝试过|沟通过|交流过|说过|提过)[。！!，,\s]*$/.test(t)
-    || /(?:^|[，。；;！!?\s])(?:我)?(?:试着|尝试|尝试着|尝试过|试过).{0,8}(?:跟|和|向|对)?.{0,8}(?:说|沟通|交流|表达|谈|聊|提|解释|说明|告诉)/.test(t)
-    || /(?:沟通过|交流过|谈过|聊过).{0,8}(?:但|不过|可是|然而).{0,8}(?:没用|没有用|没什么用)/.test(t)
-    // Positive constructions beginning with “有…”, e.g. “有和病人家属沟通，告诉他……”.
-    || /^(?:有|有的|有过|当时有|后来有)[，,、\s]*(?:和|跟|向|对).{0,16}(?:沟通过|沟通了|交流过|交流了|谈过|谈了|聊过|聊了|说过|说了|解释过|解释了|说明过|说明了|表达过|表达了|提过|提了|告诉过|告诉了|告诉)/.test(t)
-    || /^(?:有|有的|有过|当时有|后来有).{0,20}(?:沟通过|沟通了|交流过|交流了|谈过|谈了|聊过|聊了|说过|说了|解释过|解释了|说明过|说明了|表达过|表达了|提过|提了)/.test(t);
-}
-
-function bareYesContactDetected(text) {
-  const t = text.trim();
-  // User clearly answers “yes” to Q2 but gives no usable details yet.
-  // Examples: “有”, “有啊”, “有的”, “有过”, “试过”, “尝试过”.
-  return /^(?:有|有啊|有的|有呀|有过|有过啊|当时有|当时有啊|当时有呀|后来有|后来有啊|试过|试过啊|当时试过|尝试过|尝试过啊|当时尝试过|沟通过|沟通过啊|交流过|交流过啊)[。！!，,、~～\s]*$/.test(t);
 }
 
 // Q2 exists only for genuinely interpersonal events. Non-interpersonal events skip
@@ -1981,73 +2131,9 @@ let q2ActualCommunicationConfirmed = false;
 // This prevents the chatbot from evaluating a response the participant has not described yet.
 let q3FollowupMode = null; // 'actual_response', 'actual_help', 'hyp_response', 'hyp_help'
 
-function responseFromOtherDetected(text) {
-  const raw = text.trim();
-  // As above, mask pronouns that are the OBJECT of the user's own communication
-  // (e.g. “跟他解释”), so they are not mistaken for the other person's reply.
-  const t = raw.replace(/(?:跟|和|向|对|给)(?:她|他|对方|领导|家属|患者|同事)(?=(?:解释|说明|表达|说|讲|沟通|交流|告诉))/g, '[沟通对象]');
-  // Broad detection of the other person's actual reaction/position after communication.
-  // Includes verbal replies, refusal, persistence, silence, anger, disagreement, etc.
-  if (descriptionDetected(t)) return true;
-  return /(?:她|他|对方|家属|患者|领导|同事).{0,16}(?:还是|仍然|依然|继续|坚持|不同意|不接受|不理解|不听|听不进去|不理|没理|没说|没有说|沉默|不说话|发火|生气|骂|拒绝|答应|同意|道歉|解释|反驳|质疑|回应|回复|表示|态度|比较着急|很着急)/.test(t)
-    || /(?:还是|仍然|依然|继续).{0,12}(?:不听|听不进去|不理|坚持|骂|发火|质疑|反驳|不同意|不接受)/.test(t)
-    || /(?:没说什么|没有说什么|没回应|没有回应|沉默了|不说话)/.test(t);
-}
-
-// Distinguish "no communication happened" from "communication itself was not
-// realistically possible or was already judged futile". In the latter case, a
-// hypothetical Q3 ("if you communicated, how would they respond?") is illogical,
-// because the participant has just said that meaningful communication could not occur.
-function communicationBarrierDetected(text) {
-  const t = text.trim();
-
-  return /(?:无法|没法|不能|根本无法|根本没法|根本不能|没办法|根本没办法).{0,8}(?:沟通|交流|对话|正常沟通|正常交流)/.test(t)
-    || /(?:沟通|交流|对话).{0,8}(?:不了|进行不了|没法进行|无法进行|不下去|根本进行不下去)/.test(t)
-    || /(?:说不通|讲不通|根本说不通|根本讲不通)/.test(t)
-    || /(?:沟通|交流).{0,8}(?:没用|没有用|没什么用|也没用|也没有用|不起作用|没意义|没有意义|解决不了|不会有用)/.test(t)
-    || /(?:怎么|无论怎么).{0,8}(?:说|解释|沟通|交流).{0,10}(?:都)?(?:没用|没有用|不听|听不进去|说不通|讲不通)/.test(t)
-    || /(?:对方|他|她|患者|家属).{0,10}(?:听不懂|听不明白|根本不听|听不进去|无法交流|没法交流|不能交流|无法沟通|没法沟通|不能沟通)/.test(t);
-}
-
-function noContactDetected(text) {
-  const t = text.trim();
-
-  // A clear later statement that communication actually happened takes priority.
-  // Example: “一开始不敢说，但后来我还是跟她说了。”
-  if (actualContactDetected(t)) return false;
-
-  // Explicit or indirect statements that communication did NOT actually happen.
-  // These patterns work regardless of whether “没有” appears at the beginning or end.
-  return /^(?:没有|没|还没有|还没|尚未|没有过|没试过|没尝试过)[。！!，,\s]*$/.test(t)
-    || /(?:没有|没|还没|尚未|未曾|从来没|从未).{0,12}(?:尝试|试过|沟通|交流|说|提|讲|告诉|表达|聊|谈|开口)/.test(t)
-    || /(?:没有|没|还没|尚未|未曾|从来没|从未).{0,12}(?:尝试过|试过)/.test(t)
-    || /(?:不敢|没敢|不太敢|不好意思|不方便|不太方便|不知道怎么|不知道如何|不知道该怎么|不知道要怎么|开不了口|没法|无法).{0,10}(?:说|沟通|交流|提|讲|告诉|表达|开口|聊|谈)/.test(t)
-    || /(?:不太好|不好|很难|比较难|不容易|没法|无法).{0,6}(?:沟通|交流|开口|说)/.test(t)
-    || /(?:沟通|交流).{0,8}(?:没用|没有用|没什么用|也没用|也没有用|不起作用|没意义|没有意义|没必要|解决不了|不会有用)/.test(t)
-    || /(?:觉得|感觉|认为).{0,12}(?:不好沟通|不太好沟通|很难沟通|比较难沟通|不好说|不太好说|没法沟通|无法沟通|沟通没用|沟通也没什么用)/.test(t)
-    || /(?:没机会|没有机会|找不到机会|一直没机会).{0,8}(?:说|沟通|交流|提|讲|表达|开口)/.test(t)
-    || /(?:她|他|对方).{0,6}(?:是)?(?:领导|上级).{0,10}(?:不好说|不方便说|不太方便|不敢说)?/.test(t);
-}
-
-function bareYesCopingDetected(text) {
-  const t = text.trim();
-  return /^(?:有|有啊|有的|有呀|有过|试过|尝试过|做过|有做过|当时有|当时试过|当时做过)[。！!，,、~～\s]*$/.test(t);
-}
-
-function noCopingActionDetected(text) {
-  const t = text.trim();
-  return /^(?:没有|没|还没有|还没|没有做什么|没做什么|什么也没做|没采取什么|没有采取什么|没特别做什么|没有特别做什么)[。！!，,、~～\s]*$/.test(t)
-    || /(?:没有|没|还没|从来没|从未).{0,10}(?:做什么|采取|尝试|试过|应对|处理)/.test(t);
-}
-
-function copingImpactDetected(text) {
-  const t = text.trim();
-  if (/(?:有帮助|有点帮助|挺有用|有用|有效|起作用|缓解了|改善了|好一些|好一点|轻松一些|轻松一点|解决了|处理好了)/.test(t)) return 'positive';
-  if (/(?:没有帮助|没帮助|没什么帮助|没用|没有用|没效果|没有效果|不起作用|没改善|没有改善|反而更|更糟|更麻烦)/.test(t)) return 'negative';
-  return null;
-}
 
 const Q2_DETAILS = '可以具体说说你当时是怎么和对方沟通的吗？比如你说了什么。';
+const Q2_CLARIFY = '你是说当时有和对方实际沟通过，还是没有实际沟通过？';
 const Q3_RESPONSE = '对方当时是怎么回应你的？';
 const Q3_HELPFUL = '对方这样的回应有没有帮助你处理当时的情况，还是让事情变得更难处理？';
 const Q3_HYPOTHETICAL_RESPONSE = '如果当时和对方沟通，你觉得对方可能会怎么回应？';
@@ -2056,28 +2142,16 @@ const Q4_DIRECT = '你后来有没有跟当时不在场的人聊过这件事？�
 const Q4_NONINTERPERSONAL = '你有没有和其他人（比如家人、朋友、同事）聊过这件事？';
 const Q3_COMMUNICATION_BARRIER_TRANSITION = '听起来当时你觉得很难和对方进行有效沟通。' + Q4_DIRECT;
 
-// If the participant has already made the impact of the other person's response
-// obvious, do not ask a redundant "was that helpful?" question. That can sound
-// mechanical or sarcastic (e.g. after "他根本不听，一直在发火").
-// Return 'negative', 'positive', or null when the impact is genuinely unclear.
-function responseImpactDetected(text) {
-  const t = text.trim();
-
-  const negative = /(?:根本不听|完全不听|不听我(?:说|解释)?|听不进去|不接受|不理解|不理|没理|拒绝|反驳|质疑|继续(?:发火|生气|骂|指责|责怪|抱怨|吵)|一直(?:发火|生气|骂|指责|责怪|抱怨|吵)|还是(?:发火|生气|骂|指责|责怪|不听|不同意|不接受|坚持)|仍然(?:发火|生气|骂|指责|责怪|不听|不同意|不接受|坚持)|依然(?:发火|生气|骂|指责|责怪|不听|不同意|不接受|坚持)|态度(?:很差|不好|恶劣)|骂我|冲我发火|训斥|责备|没有帮助|没帮助|更难处理|更麻烦|变得更糟)/.test(t);
-  if (negative) return 'negative';
-
-  const positive = /(?:听进去了|听我解释|愿意听|理解了|表示理解|接受了|同意了|答应了|配合了|冷静下来|平静下来|不再(?:发火|指责|骂)|道歉了|跟我道歉|问题解决了|事情解决了|有帮助|帮到了|好处理多了|缓和了)/.test(t);
-  if (positive) return 'positive';
-
-  return null;
-}
 
 function q3ImpactTransition(impact) {
-  if (impact === 'negative') {
+  if (impact === 'negative' || impact === 'unhelpful') {
     return '听起来对方这样的回应让当时的情况更难处理。' + Q4_DIRECT;
   }
-  if (impact === 'positive') {
+  if (impact === 'positive' || impact === 'helpful') {
     return '听起来对方这样的回应对当时处理这件事起到了一些帮助。' + Q4_DIRECT;
+  }
+  if (impact === 'mixed') {
+    return '听起来对方的回应既有一些帮助，也带来了一些困难。' + Q4_DIRECT;
   }
   return null;
 }
@@ -2091,6 +2165,16 @@ let q4ActualSupportConfirmed = false;
 let q5FollowupMode = null; // 'actual_who', 'clarify_contact', 'actual_response', 'actual_help', 'hyp_response', 'hyp_help'
 let q5ResponseAlreadyDescribed = false;
 let q5HelpfulnessAlreadyDescribed = false;
+let q5ClearlyUnhelpfulResponse = false;
+
+function resetQ5RoutingState() {
+  q5FollowupMode = null;
+  q4ActualSupportConfirmed = false;
+  setSupportPeople([]);
+  q5ResponseAlreadyDescribed = false;
+  q5HelpfulnessAlreadyDescribed = false;
+  q5ClearlyUnhelpfulResponse = false;
+}
 
 function setSupportPeople(people) {
   q5SupportPeople = Array.isArray(people)
@@ -2191,7 +2275,8 @@ function normalizeSocialSupportClassification(obj) {
     shared,
     people,
     response_described: obj?.response_described === true,
-    helpfulness_described: obj?.helpfulness_described === true
+    helpfulness_described: obj?.helpfulness_described === true,
+    clearly_unhelpful_response: obj?.clearly_unhelpful_response === true
   };
 }
 
@@ -2203,14 +2288,18 @@ async function classifySocialSupportTurn(text, phase, knownPeople = []) {
   "shared": "yes" | "no" | "unclear",
   "people": ["用户明确提到的交流对象1", "对象2"],
   "response_described": true | false,
-  "helpfulness_described": true | false
+  "helpfulness_described": true | false,
+  "clearly_unhelpful_response": true | false
 }
 
 字段含义：
 - shared：用户是否实际和其他人聊过这件事。只根据实际发生的交流判断；假设、打算、想过但没做不算yes。
 - people：只记录用户明确提到的交流对象，尽量保留用户自己的称呼；如果提到多人，全部保留；没有明确提到则返回空数组。绝对不要猜测人物。
 - response_described：用户是否已经描述了交流对象实际或假设会如何回应。仅仅说自己“和某人聊过/说过”不算描述了对方回应。
-- helpfulness_described：用户是否已经明确表达这些回应对自己有没有帮助、有没有让情况更好/更糟。不要从回应内容自行推断。
+- helpfulness_described：用户是否已经明确表达这些回应对自己有没有帮助、有没有让情况更好/更糟。不要把“安慰了我”“听我说了”“给了建议”等积极或中性的回应内容自动当成用户已经评价了帮助程度。
+- clearly_unhelpful_response：只有当回应本身已经明确表达不理解、拒绝、责怪、否定、嘲讽、忽视、发火、让情况更糟等明显负面的反应，以至于继续追问“这样的回应会有帮助吗”在日常对话中会显得突兀、反问或讽刺时，才设为true。普通的“安慰了我”“听我说了”“给了建议”等不能设为true，因为这些回应是否真的有帮助仍需由用户判断。
+
+Q5的帮助程度问题需要根据语义自然地使用：如果回应是积极、中性或效果不明确，就明确询问是否有帮助；如果用户已经明确评价了帮助程度，或者回应本身已经明显属于上述 clearly_unhelpful_response，则不要再机械追问“有帮助吗”。
 
 不同阶段的注意事项：
 - q4：重点判断有没有实际聊过、和谁聊过，以及同一句中是否已经包含对方回应或帮助程度。
@@ -2260,7 +2349,94 @@ async function safeClassifySocialSupportTurn(text, phase, knownPeople = []) {
       shared: 'unclear',
       people: [],
       response_described: false,
-      helpfulness_described: false
+      helpfulness_described: false,
+      clearly_unhelpful_response: false
+    };
+  } finally {
+    hideSemanticRoutingIndicator();
+  }
+}
+
+
+function normalizeDirectCommunicationClassification(obj) {
+  const communication = ['yes', 'no', 'unclear'].includes(obj?.communication)
+    ? obj.communication
+    : 'unclear';
+  const responseEffect = ['helpful', 'unhelpful', 'mixed', 'unclear'].includes(obj?.response_effect)
+    ? obj.response_effect
+    : 'unclear';
+
+  return {
+    communication,
+    barrier: obj?.barrier === true,
+    communication_details_described: obj?.communication_details_described === true,
+    response_described: obj?.response_described === true,
+    response_effect: responseEffect
+  };
+}
+
+async function classifyDirectCommunicationTurn(text, phase) {
+  const systemPrompt = `你是一个只用于研究问卷内部路由的中文语义分类器。你的任务是根据用户整句话的实际含义，判断“与事件中直接相关的对方沟通”这一部分目前已经发生了什么。你不是聊天机器人，不要生成回复，也不要依赖固定关键词、正则表达式或特定句式。
+
+只返回一个JSON对象，不要加解释、Markdown或其他文字：
+{
+  "communication": "yes" | "no" | "unclear",
+  "barrier": true | false,
+  "communication_details_described": true | false,
+  "response_described": true | false,
+  "response_effect": "helpful" | "unhelpful" | "mixed" | "unclear"
+}
+
+字段含义：
+- communication：用户是否【实际已经】和事件中直接相关的对方沟通过。根据当前问题的上下文理解简短回答；如果用户明确肯定沟通过，即使没有再次说“沟通”这个词，也应判为yes。假设、打算、想过但没做不算yes。
+- barrier：用户是否表达了沟通本身基本无法进行、没有现实可行性，或认为根本无法形成有效沟通。单纯“没有沟通”不等于barrier。
+- communication_details_described：用户是否提供了任何实际沟通的具体内容或过程，而不只是一个简短的“有/试过”。如果同一句已经描述了对方的反应，也算提供了实际沟通细节。
+- response_described：用户是否已经描述了对方实际或假设的回应、态度、反应或立场。不要要求必须是完整引语；“对方不理解”“对方还是坚持原来的看法”这类内容也属于回应。
+- response_effect：只有在回应对处理当时情况的作用已经很清楚时才判断。明确理解、配合、接受等可判helpful；明确不理解、不听、拒绝、发火、忽视、使事情更难等可判unhelpful；同时有帮助和困难可判mixed；信息不足则unclear。不要凭空推断。
+
+不同阶段：
+- q2：刚刚问的是“你当时有没有尝试和对方沟通过你的想法？”。重点判断实际沟通是否发生，以及同一句里是否已经包含沟通细节或对方回应。特别注意：如果回答先肯定“有/有的/试过”等，再描述对方态度或反应，这表示实际沟通已经发生，绝不能进入假设性分支。
+- q2_details：前一轮已经确认实际沟通过。当前回答即使没有再次出现“沟通/说过”等词，也要在这个已知前提下判断它是否包含沟通细节或对方回应；不要因为当前句子省略主语或动词而改判为no。
+- actual_response：已知实际沟通已经发生。重点判断当前回答是否已经描述对方实际回应，以及回应的作用是否已经明显。
+- hypothetical_response：已知此前没有实际沟通，现在用户是在回答“如果沟通，对方可能会怎么回应”。重点判断是否给出了一个假设回应。如果用户拒绝这个假设前提、表示根本无法沟通或无法想象有效沟通，可设barrier=true。
+
+保持保守：不确定就用unclear或false，但绝不能把已经明确发生的实际沟通错误改成假设沟通。`;
+
+  const response = await fetch(PROXY_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: MODEL,
+      temperature: 0,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: JSON.stringify({ phase, user_text: String(text || '') }, null, 2) }
+      ]
+    })
+  });
+
+  if (!response.ok) throw new Error(`Direct communication classifier HTTP ${response.status}`);
+  const data = await response.json();
+  const raw = data.choices?.[0]?.message?.content;
+  if (!raw) throw new Error('Direct communication classifier returned no content');
+
+  const parsed = normalizeDirectCommunicationClassification(parseClassifierJson(raw));
+  console.log('[Direct communication classifier]', phase, '|', text, '|', parsed);
+  return parsed;
+}
+
+async function safeClassifyDirectCommunicationTurn(text, phase) {
+  showSemanticRoutingIndicator();
+  try {
+    return await classifyDirectCommunicationTurn(text, phase);
+  } catch (err) {
+    console.warn('[Direct communication classifier] failed:', err);
+    return {
+      communication: 'unclear',
+      barrier: false,
+      communication_details_described: false,
+      response_described: false,
+      response_effect: 'unclear'
     };
   } finally {
     hideSemanticRoutingIndicator();
@@ -2387,6 +2563,14 @@ async function submitResponse(text) {
         role: 'system',
         content: `【阶段2实际情绪选择，必须严格遵守】用户对情绪选择问题的原始回答是：${textData.selected_emotions}。阶段3只能探索用户在这条回答中明确选择、说出或认可的情绪。绝对不要把阶段2由助手建议、但用户没有选择的任何情绪当成“其他已选择情绪”。如果用户这里只明确选择了一个情绪，那么探索完这个情绪后，不得说“接下来聊其他可能感受到的情绪”或询问“还想先聊哪一个”；只能按单一情绪完成后的逻辑，询问用户是否还有其他关于这件事的感受或情绪想继续聊。`
       });
+      if (CONDITION === 'emotion') {
+        currentStage = 3;
+        currentQuestion = 0;
+        s.push({
+          role: 'system',
+          content: '【当前流程状态：阶段3情绪探索】用户刚刚已经完成阶段2的情绪选择。下一条助手回复必须从阶段3开始，只探索用户实际选择的情绪。不得跳到阶段4或阶段5。'
+        });
+      }
     }
     pendingCapture = null;
   }
@@ -2415,6 +2599,42 @@ async function submitResponse(text) {
 
   // Save snapshot on every user response (overwrites same Lark row)
   saveToLark();
+
+  // Route the opening stressor question semantically. A clear “no” must never be
+  // turned into “please give a specific example.” Ask one neutral past-event fallback;
+  // if the participant still reports no relevant work experience, end this event-based flow.
+  if (currentStage === 1 && currentQuestion === 0 && capturedField === 'stress_event') {
+    const phase = initialStressorFallbackAsked ? 'fallback' : 'initial';
+    const cls = await safeClassifyInitialStressorTurn(text, phase);
+    let nextQ = null;
+
+    if (cls.has_stressor === 'yes') {
+      nextQ = cls.specific_event_described ? SPECIFIC_EVENT_PROMPT_B : SPECIFIC_EVENT_PROMPT_A;
+      pendingCapture = 'specific_event';
+    } else if (cls.has_stressor === 'no') {
+      if (!initialStressorFallbackAsked) {
+        initialStressorFallbackAsked = true;
+        nextQ = INITIAL_STRESSOR_FALLBACK;
+        pendingCapture = 'stress_event';
+      } else {
+        nextQ = INITIAL_STRESSOR_END;
+      }
+    } else {
+      nextQ = INITIAL_STRESSOR_CLARIFY;
+      pendingCapture = 'stress_event';
+    }
+
+    setTimeout(function() {
+      s.push({ role: 'assistant', content: nextQ });
+      appendMsg('ai', nextQ);
+      if (nextQ === INITIAL_STRESSOR_END) {
+        setTimeout(showContinueButton, 600);
+      } else {
+        updateState(nextQ);
+      }
+    }, 300);
+    return;
+  }
 
   // Transfer/generalization measure. If the participant explicitly says there is
   // no other similar event, the transfer task is not applicable. Skip all four
@@ -2451,40 +2671,54 @@ async function submitResponse(text) {
   // Deliver next scale question instantly without API call
   const postScaleStage = CONDITION === 'emotion' ? 4 : 3;
 
-  // Q3 is a two-step sequence. If the participant has just supplied the other
-  // person's response, ask helpfulness next. If helpfulness was just answered, move to Q4.
+  // Q3 is a two-step sequence. Semantic classification is used so natural
+  // Chinese responses are interpreted by meaning rather than by fixed word lists.
   if (currentStage === 1 && currentQuestion === 3 && q3FollowupMode) {
     let nextQ = null;
+
     if (q3FollowupMode === 'actual_response') {
-      const impact = responseImpactDetected(text);
-      if (impact) {
-        nextQ = q3ImpactTransition(impact);
-        q3FollowupMode = null;
-      } else {
-        nextQ = Q3_HELPFUL;
-        q3FollowupMode = 'actual_help';
-      }
-    } else if (q3FollowupMode === 'hyp_response') {
-      // The participant may reject the hypothetical itself (e.g. "沟通不了").
-      // That is a communication barrier, not a hypothetical "response" from the other
-      // person. Never refer to it as "这样的回应"; acknowledge the barrier and move on.
-      if (communicationBarrierDetected(text)) {
+      const cls = await safeClassifyDirectCommunicationTurn(text, 'actual_response');
+
+      if (cls.response_described) {
+        if (cls.response_effect !== 'unclear') {
+          nextQ = q3ImpactTransition(cls.response_effect);
+          q3FollowupMode = null;
+        } else {
+          nextQ = Q3_HELPFUL;
+          q3FollowupMode = 'actual_help';
+        }
+      } else if (cls.barrier) {
         nextQ = Q3_COMMUNICATION_BARRIER_TRANSITION;
         q3FollowupMode = null;
       } else {
-        const impact = responseImpactDetected(text);
-        if (impact) {
-          nextQ = q3ImpactTransition(impact);
+        nextQ = Q3_RESPONSE;
+        q3FollowupMode = 'actual_response';
+      }
+
+    } else if (q3FollowupMode === 'hyp_response') {
+      const cls = await safeClassifyDirectCommunicationTurn(text, 'hypothetical_response');
+
+      if (cls.barrier) {
+        nextQ = Q3_COMMUNICATION_BARRIER_TRANSITION;
+        q3FollowupMode = null;
+      } else if (cls.response_described) {
+        if (cls.response_effect !== 'unclear') {
+          nextQ = q3ImpactTransition(cls.response_effect);
           q3FollowupMode = null;
         } else {
           nextQ = Q3_HYPOTHETICAL_HELPFUL;
           q3FollowupMode = 'hyp_help';
         }
+      } else {
+        nextQ = Q4_DIRECT;
+        q3FollowupMode = null;
       }
+
     } else if (q3FollowupMode === 'actual_help' || q3FollowupMode === 'hyp_help') {
       q3FollowupMode = null;
       nextQ = Q4_DIRECT;
     }
+
     if (nextQ) {
       setTimeout(function() {
         s.push({ role: 'assistant', content: nextQ });
@@ -2495,36 +2729,23 @@ async function submitResponse(text) {
     }
   }
 
-  // After Q2, route according to the kind of event. Communication questions only
-  // make sense when the event is genuinely interpersonal. For structural, health,
-  // workload, promotion, research, scheduling, or other non-interpersonal stressors,
-  // use the general coping branch instead.
+  // Q2 is asked only for genuinely interpersonal events. Route the user's
+  // answer by semantic meaning so actual communication is never turned into a
+  // hypothetical scenario simply because the wording is short or conversational.
   if (currentStage === 1 && currentQuestion === 2) {
-    console.log('[Q2 route] mode:', q2Mode, '| text:', text.substring(0,50));
+    const phase = q2ActualCommunicationConfirmed ? 'q2_details' : 'q2';
+    const cls = await safeClassifyDirectCommunicationTurn(text, phase);
+    console.log('[Q2 semantic route]', phase, '|', cls);
 
-    // Q2 is reached only for interpersonal events.
+    let q3 = null;
 
-    // Default/interpersonal branch: communication with the person directly involved.
-    // If the user only says “yes” (e.g., “有啊”) without details, do not jump to a
-    // hypothetical scenario. Ask them to describe the actual communication first.
-    if (bareYesContactDetected(text)) {
-      q2ActualCommunicationConfirmed = true;
-      setTimeout(function() {
-        s.push({ role: 'assistant', content: Q2_DETAILS });
-        appendMsg('ai', Q2_DETAILS);
-        // Keep currentQuestion at 2 so the next user reply supplies details of the ACTUAL communication.
-      }, 700);
-      return;
-    }
-
-    // If an earlier turn already confirmed that communication happened, never fall back
-    // to the hypothetical branch. Interpret this turn as details of that real interaction.
-    let q3;
     if (q2ActualCommunicationConfirmed) {
-      if (responseFromOtherDetected(text)) {
-        const impact = responseImpactDetected(text);
-        if (impact) {
-          q3 = q3ImpactTransition(impact);
+      // The previous turn already established that real communication happened.
+      // Interpret this turn within that fact, even if the user only describes the
+      // other person's reaction and does not repeat the communication verb.
+      if (cls.response_described) {
+        if (cls.response_effect !== 'unclear') {
+          q3 = q3ImpactTransition(cls.response_effect);
           q3FollowupMode = null;
         } else {
           q3 = Q3_HELPFUL;
@@ -2535,28 +2756,47 @@ async function submitResponse(text) {
         q3FollowupMode = 'actual_response';
       }
       q2ActualCommunicationConfirmed = false;
-    } else if (communicationBarrierDetected(text) && !actualContactDetected(text)) {
+
+    } else if (cls.communication === 'yes') {
+      // A clear affirmative answer means actual communication happened. Never ask
+      // “如果当时和对方沟通...” after this branch.
+      if (!cls.communication_details_described && !cls.response_described) {
+        q2ActualCommunicationConfirmed = true;
+        setTimeout(function() {
+          s.push({ role: 'assistant', content: Q2_DETAILS });
+          appendMsg('ai', Q2_DETAILS);
+        }, 700);
+        return;
+      }
+
+      if (cls.response_described) {
+        if (cls.response_effect !== 'unclear') {
+          q3 = q3ImpactTransition(cls.response_effect);
+          q3FollowupMode = null;
+        } else {
+          q3 = Q3_HELPFUL;
+          q3FollowupMode = 'actual_help';
+        }
+      } else {
+        q3 = Q3_RESPONSE;
+        q3FollowupMode = 'actual_response';
+      }
+
+    } else if (cls.barrier) {
       q3 = Q3_COMMUNICATION_BARRIER_TRANSITION;
       q3FollowupMode = null;
-    } else if (noContactDetected(text)) {
+
+    } else if (cls.communication === 'no') {
       q3 = Q3_HYPOTHETICAL_RESPONSE;
       q3FollowupMode = 'hyp_response';
-    } else if (actualContactDetected(text) && responseFromOtherDetected(text)) {
-      const impact = responseImpactDetected(text);
-      if (impact) {
-        q3 = q3ImpactTransition(impact);
-        q3FollowupMode = null;
-      } else {
-        q3 = Q3_HELPFUL;
-        q3FollowupMode = 'actual_help';
-      }
-    } else if (actualContactDetected(text)) {
-      q3 = Q3_RESPONSE;
-      q3FollowupMode = 'actual_response';
+
     } else {
-      q3 = Q3_HYPOTHETICAL_RESPONSE;
-      q3FollowupMode = 'hyp_response';
+      // If the meaning is genuinely ambiguous, clarify the factual state instead of
+      // guessing that no communication happened and launching a hypothetical branch.
+      q3 = Q2_CLARIFY;
+      q3FollowupMode = null;
     }
+
     setTimeout(function() {
       s.push({ role: 'assistant', content: q3 });
       appendMsg('ai', q3);
@@ -2573,6 +2813,7 @@ async function submitResponse(text) {
     setSupportPeople(cls.people);
     q5ResponseAlreadyDescribed = cls.response_described;
     q5HelpfulnessAlreadyDescribed = cls.helpfulness_described;
+    q5ClearlyUnhelpfulResponse = cls.clearly_unhelpful_response;
 
     if (cls.shared === 'no') {
       q4ActualSupportConfirmed = false;
@@ -2585,10 +2826,9 @@ async function submitResponse(text) {
         q5FollowupMode = 'actual_who';
         q5 = '是和谁聊的呢？';
       } else if (q5ResponseAlreadyDescribed) {
-        if (q5HelpfulnessAlreadyDescribed) {
-          q5FollowupMode = null;
-          q4ActualSupportConfirmed = false;
+        if (q5HelpfulnessAlreadyDescribed || q5ClearlyUnhelpfulResponse) {
           q5 = SCALE_Q[7];
+          resetQ5RoutingState();
         } else {
           q5FollowupMode = 'actual_help';
           q5 = q5HelpfulQuestion();
@@ -2602,6 +2842,12 @@ async function submitResponse(text) {
       q5FollowupMode = 'clarify_contact';
       q5 = '你是说后来有跟别人聊过这件事，还是没有聊过呢？';
     }
+
+    // From this point onward the participant is answering Q5. Set the state
+    // explicitly instead of inferring it from the wording of the generated question.
+    // This keeps the routing stable for natural variants such as "是和谁聊的呢？"
+    // or multi-person wording such as "家人和朋友当时分别是怎么回应你的？".
+    currentQuestion = 5;
 
     setTimeout(function() {
       s.push({ role: 'assistant', content: q5 });
@@ -2621,16 +2867,16 @@ async function submitResponse(text) {
       mergeSupportPeople(cls.people);
       q5ResponseAlreadyDescribed = q5ResponseAlreadyDescribed || cls.response_described;
       q5HelpfulnessAlreadyDescribed = q5HelpfulnessAlreadyDescribed || cls.helpfulness_described;
+      q5ClearlyUnhelpfulResponse = q5ClearlyUnhelpfulResponse || cls.clearly_unhelpful_response;
       q4ActualSupportConfirmed = true;
 
       if (q5SupportPeople.length === 0) {
         nextQ = '是和谁聊的呢？';
         q5FollowupMode = 'actual_who';
       } else if (q5ResponseAlreadyDescribed) {
-        if (q5HelpfulnessAlreadyDescribed) {
+        if (q5HelpfulnessAlreadyDescribed || q5ClearlyUnhelpfulResponse) {
           nextQ = SCALE_Q[7];
-          q5FollowupMode = null;
-          q4ActualSupportConfirmed = false;
+          resetQ5RoutingState();
         } else {
           nextQ = q5HelpfulQuestion();
           q5FollowupMode = 'actual_help';
@@ -2644,6 +2890,7 @@ async function submitResponse(text) {
       mergeSupportPeople(cls.people);
       q5ResponseAlreadyDescribed = cls.response_described;
       q5HelpfulnessAlreadyDescribed = cls.helpfulness_described;
+      q5ClearlyUnhelpfulResponse = cls.clearly_unhelpful_response;
 
       if (cls.shared === 'yes') {
         q4ActualSupportConfirmed = true;
@@ -2651,10 +2898,9 @@ async function submitResponse(text) {
           nextQ = '是和谁聊的呢？';
           q5FollowupMode = 'actual_who';
         } else if (q5ResponseAlreadyDescribed) {
-          if (q5HelpfulnessAlreadyDescribed) {
+          if (q5HelpfulnessAlreadyDescribed || q5ClearlyUnhelpfulResponse) {
             nextQ = SCALE_Q[7];
-            q5FollowupMode = null;
-            q4ActualSupportConfirmed = false;
+            resetQ5RoutingState();
           } else {
             nextQ = q5HelpfulQuestion();
             q5FollowupMode = 'actual_help';
@@ -2676,6 +2922,7 @@ async function submitResponse(text) {
       mergeSupportPeople(cls.people);
       q5ResponseAlreadyDescribed = q5ResponseAlreadyDescribed || cls.response_described;
       q5HelpfulnessAlreadyDescribed = q5HelpfulnessAlreadyDescribed || cls.helpfulness_described;
+      q5ClearlyUnhelpfulResponse = q5ClearlyUnhelpfulResponse || cls.clearly_unhelpful_response;
 
       // The participant was directly asked for the other person's response. If they
       // cannot or do not provide one, do not keep probing; move on.
@@ -2683,39 +2930,35 @@ async function submitResponse(text) {
         nextQ = SCALE_Q[7];
         q5FollowupMode = null;
         q4ActualSupportConfirmed = false;
-      } else if (q5HelpfulnessAlreadyDescribed) {
+      } else if (q5HelpfulnessAlreadyDescribed || q5ClearlyUnhelpfulResponse) {
         nextQ = SCALE_Q[7];
-        q5FollowupMode = null;
-        q4ActualSupportConfirmed = false;
+        resetQ5RoutingState();
       } else {
         nextQ = q5HelpfulQuestion();
         q5FollowupMode = 'actual_help';
       }
     } else if (q5FollowupMode === 'actual_help') {
       nextQ = SCALE_Q[7];
-      q5FollowupMode = null;
-      q4ActualSupportConfirmed = false;
-      setSupportPeople([]);
-      q5ResponseAlreadyDescribed = false;
-      q5HelpfulnessAlreadyDescribed = false;
+      resetQ5RoutingState();
     } else if (q5FollowupMode === 'hyp_response') {
       const cls = await safeClassifySocialSupportTurn(text, 'hypothetical_response', q5SupportPeople);
       q5ResponseAlreadyDescribed = cls.response_described;
       q5HelpfulnessAlreadyDescribed = cls.helpfulness_described;
+      q5ClearlyUnhelpfulResponse = cls.clearly_unhelpful_response;
 
-      if (!q5ResponseAlreadyDescribed || q5HelpfulnessAlreadyDescribed) {
+      if (!q5ResponseAlreadyDescribed) {
         nextQ = SCALE_Q[7];
         q5FollowupMode = null;
+      } else if (q5HelpfulnessAlreadyDescribed || q5ClearlyUnhelpfulResponse) {
+        nextQ = SCALE_Q[7];
+        resetQ5RoutingState();
       } else {
         nextQ = Q5_HYPOTHETICAL_HELPFUL;
         q5FollowupMode = 'hyp_help';
       }
     } else if (q5FollowupMode === 'hyp_help') {
       nextQ = SCALE_Q[7];
-      q5FollowupMode = null;
-      setSupportPeople([]);
-      q5ResponseAlreadyDescribed = false;
-      q5HelpfulnessAlreadyDescribed = false;
+      resetQ5RoutingState();
     } else if (q4ActualSupportConfirmed) {
       nextQ = q5HelpfulQuestion();
       q5FollowupMode = 'actual_help';
@@ -2752,6 +2995,14 @@ async function submitResponse(text) {
       }, 600);
       return;
     }
+  }
+
+  // After the fifth post emotion-awareness rating, parseAndSaveScale() has already
+  // scheduled the post anxiety/stress matrices. Do not ask the model for another
+  // reply here, or it can jump to Stage 5 before those matrices are completed.
+  if (currentStage === postScaleStage && currentQuestion === 5) {
+    saveToLark();
+    return;
   }
 
   // Save after every user response (overwrite mode)
