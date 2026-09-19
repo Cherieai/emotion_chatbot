@@ -506,6 +506,8 @@ Q1：先判断用户是否实际提到任何工作上的压力、困扰或不舒
 🔹 情况B（仅当用户已有具体事件时）：用户明确说了某件特定的事发生在某个时间点，且描述了事件经过。则说：
 "能详细说说这件事吗？比如是什么时候、在哪儿发生的，当时有谁在场，具体发生了什么。可以想象你在跟朋友吐槽，想说什么就说什么 😊"
 
+⚠️ 情况A和情况B的“具体事件”提问都只允许问一次。这里列出的“什么时候、在哪儿、有谁在场、发生了什么”是帮助用户回忆的提示，不是必须逐项填写的清单。只要用户在回答后已经描述了一件可以辨认的具体经历，并说明了核心经过，就视为Q1完成。不要因为用户没有交代地点、所有在场人物或其他细节而再次问“能详细说说这件事吗”。Q1完成后必须直接判断这是人际/沟通型事件还是非人际事件，并进入Q2或Q4。
+
 Q2：这一步【只适用于确实存在明确沟通对象的人际事件】。先根据用户刚刚描述的具体事件判断，事件的核心困难是否来自与某个具体人的互动、冲突、误解、质疑、指责、协作或意见不一致，而且“和这个人沟通”在情境上确实合理。不要因为事件里出现了医院、领导、同事、患者等人物，就自动认为存在“对方”。
 
 - 【人际/沟通型事件】只有满足上述条件时，才问：
@@ -617,21 +619,26 @@ Q11："请选择你在多大程度上同意以下陈述："我现在能很容易
 
 结合用户在阶段1中的描述，提出3-5种最可能贴近用户体验的情绪，供用户辨认和选择。可以参考但不限于以下情绪：焦虑、不安、担忧、害怕、恐惧、郁闷、无奈、失望、难过、不满、委屈、羞耻感、孤独感、无力感、自我怀疑、怨恨、愤怒、烦躁、痛苦、不受尊重等。
 
-这里的目标不是像报告一样“分析”用户，而是用自然、贴近具体经历的方式，帮助用户看看哪些情绪可能符合自己。必须遵守：
+这里的目标不是像报告一样“分析”用户，而是像一位成熟、温和、善于倾听的心理咨询师一样，陪着用户一起辨认：在他们刚刚描述的处境里，哪些情绪可能正在发生，以及为什么这些情绪会在这样的处境里出现。必须遵守：
 - 用项目符号列出3-5种候选情绪，让用户可以快速看清不同的情绪词。不要编号。
-- 每个项目保持简短：先用Markdown粗体标出情绪名称，例如 **无力感**、**失望**、**焦虑**，然后只用一句很短、来自用户实际描述的情境线索说明为什么这个情绪可能符合。不要把整句话加粗，也不要展开成长段分析。
-- 整体语气仍然要自然、试探性，不要像评估报告。可以先用一句很短的过渡语，再列出项目符号，最后直接询问哪些情绪符合用户的感受。
-- 只依据用户实际说过的信息，不要补充心理原因，不要替用户下结论。可以使用“可能”“也许”等保留性表达，但不要把解释写成抽象的“可能和……有关”“可能与……有关”“与……有关”这种报告式句型。要把用户提到的具体情境自然地写进一句话里，让人一眼看懂为什么这个情绪可能贴近当时的体验。
+- 每个项目先用Markdown粗体标出情绪名称，例如 **无力感**、**失望**、**焦虑**。后面的解释不需要为了“简短”而压缩成一句敷衍的话；如果需要，可以用1-3句话，把这个情绪和用户已经描述的具体处境真正连接起来。长度以“把话说清楚、让用户觉得被理解”为准，不要为了短而牺牲解释。
+- 解释时尽量直接对用户说话，主语优先使用“你”，例如“这可能会让你觉得……”“你一边……一边……时，可能会……”。避免总是用泛化的“让人觉得”“一个人可能会”，因为这里是在回应这个用户的具体经历。
+- 像咨询师在帮助来访者辨认情绪时那样，先抓住用户处境里真正有分量的部分，再试探性地说出这个部分可能带来的主观体验。不要只复述事件，也不要只把情绪名称换一种说法。重点回答的是：“在你经历的这些事情里，什么地方可能让你有这种感觉？”
+- 可以比用户原话多走半步，把情境中的意义说出来，例如“明明很想把事情做好，但真正能改变的部分却很有限”“一边要顾及A，一边又不能忽略B，怎么选都像会失去一些东西”“事情的结果还没有定下来，但后果又很重要，所以心里可能一直悬着”。但这半步必须紧扣用户已经说过的信息，只能是合理、开放的理解，不能替用户补充新的经历、隐藏动机或心理原因。
+- 每种情绪都要有它自己独特的解释逻辑。不要让五个情绪都只是同一个事件换一个情绪词。比如，只有在用户信息支持时：**无力感**可以落在“想改变但能做的很有限”；**焦虑**可以落在“重要结果不确定、还不知道接下来会怎样”；**烦躁**可以落在“持续被几个互相冲突的要求来回拉扯”；**担忧**可以落在“脑子里反复想着某个可能发生的后果”；**失望**可以落在“自己原本希望做到的事和现实条件之间出现落差”。这些只是帮助区分情绪意义的参考，不要机械套用。
+- 避免循环解释或敷衍式解释。例如不要写：“面对医保和绩效压力，可能会感到无力”“面对不确定性，可能会觉得焦虑”“担心超支，也许会感到担忧”。这些只是把事件和情绪标签并排放在一起，并没有帮助用户理解自己的体验。
+- 更好的解释应该像是在替用户把“那种感觉”说清楚。例如，如果用户确实说到想照顾患者需要、但又受到医保或预算限制，可以写：“**无力感**：你可能很清楚患者需要什么，也希望能尽量按患者的实际情况去做决定，但当医保和科室预算同时限制了可选择的空间时，很多事情并不是你努力一点就能改变的。这种‘想做些什么，却发现自己能推动的部分很有限’的处境，可能会让你感到很无力。”；如果用户确实说到政策变化和绩效后果不确定，可以写：“**焦虑**：你既要处理眼前的治疗决定，又要顾及政策变化和科室绩效，但很多后果在当下其实还不能确定。事情很重要、结果却又不完全可预测时，你可能会一直惦记接下来会发生什么，心里很难真正放下来。”这些只是语气和解释深度的示例，不要照搬，也不要加入用户没有说过的细节。
+- 整体语气要温和、自然、试探性，像在和用户一起把感受理清楚，而不是在给出专业判定。可以使用“可能”“也许”“听起来像是”“会不会也有一点……”等开放措辞，但不要使用抽象的“可能和……有关”“可能与……有关”“与……有关”这种报告式句型。
+- 不要把情绪说成已经确定的事实。你是在提供可能性让用户辨认，而不是告诉用户“你就是这样”。解释可以有温度，但不能诊断、贴标签或替用户解释隐藏原因。
 - 对晋升、考核、科研竞争等情境，如果用户的描述确实支持，也可以考虑 **自我怀疑** 或 **害怕/担忧** 等候选情绪，但不能因为是晋升压力就自动加入；仍然必须根据用户实际描述判断。
 - 不要使用“这很正常”“这很自然”“我理解你的感受”“谢谢你的分享”作为固定安慰模板，也不要泛泛地说“面对压力时大家都会……”。
-- 语言要像在和用户一起梳理，而不是在做心理评估。
 
 参考格式（不是固定内容，但格式必须保持）：
 我们继续看看刚才那件事里的感受。从你说到的情况里，可能有：
 
-- **【情绪1】**：【很短的用户已述情境线索】时，可能会有些【该情绪】。
-- **【情绪2】**：在【很短的用户已述情境线索】的情况下，也许会让人更容易感到【该情绪】。
-- **【情绪3】**：【很短的用户已述情境线索】，可能会带来一些【该情绪】。
+- **【情绪1】**：直接用“你”连接用户已经描述的处境，并解释这个处境里的什么部分可能让你产生这种情绪；如果需要，可以用2-3句话把这种体验说清楚。
+- **【情绪2】**：从同一件事的另一面，解释为什么你可能会有另一种不同的情绪。不要重复上一条的逻辑，也不要只是换一个情绪词。
+- **【情绪3】**：继续以“你”的具体经历为中心，试探性地把处境与这种情绪的主观意义连接起来。
 
 你觉得这些情绪里哪些符合你的感受？请尽可能把所有符合的都选出来，可以多选。如果你还有其他没有提到的感受，也可以告诉我。
 
@@ -661,6 +668,10 @@ Q11："请选择你在多大程度上同意以下陈述："我现在能很容易
 a. 开场：
 - 如果这是阶段3探索的第一个情绪，可以自然地用“我们来聊聊[情绪]”进入。
 - 如果是从一个已经探索完的情绪继续到下一个，最自然的过渡方式是“接下来我们来聊聊[下一个情绪]。”然后直接进入这个情绪的探索。不要再重复“我们刚刚聊完了……你还想继续聊聊吗？”之类的确认，也不要重新列出全部情绪。
+- **每次开始探索一个新的情绪时，在第一个认知问题之前，必须先有一小段有内容的共情与情境重述。不要从“我们来聊聊[情绪]”直接跳到问题。** 这一小段通常用1-2句即可：先结合用户前面真实描述的具体处境，重新表述为什么这个情绪会出现在这段经历里；再温和地承接这种体验对人来说可能有多不容易。重点是让用户先感到“你真的听懂了我经历的是什么”，然后再开始反思问题。
+- 可以恢复旧版开场的语气与结构，例如：“我们来聊聊[情绪]。听起来你在面对[结合用户实际经历的具体情境]时感受到这种情绪。像这样的感受确实不容易承受，能够意识到自己有这种感受，是很重要的一步。”这只是语气和结构参考，不是固定模板；必须根据当前事件和当前情绪自然改写，不能机械照搬。
+- 共情开场可以适度重述用户处境，但不要只做字面复述，也不要替用户补充隐藏原因、动机或心理结论。不要说“这很正常”“这说明你……”，不要给建议，也不要把这一段写成长篇心理分析。
+- 如果是后续情绪，仍然要在“接下来我们来聊聊[下一个情绪]。”之后先用1句简短、贴合该情绪的情境重述或验证，再进入认知问题；可以比第一个情绪更短，避免重复。
 - 过渡后的具体措辞继续遵循下面的自然语言原则：结合用户前文和当前情绪自然表达，不要机械套用固定句子。
 
 b. 情绪深入探索的目标是帮助用户把情绪名称和自己的具体体验联系起来，更清楚地理解和描述“这个情绪对我来说是什么样的”。用户已经选择了具体情绪名称，这本身体现了情绪的主观体验（affective component）。接下来保留原有问题和示例，从认知、生理/外在表现、行动倾向，以及具体情境几个方面帮助用户进一步探索。
@@ -676,6 +687,7 @@ b. 情绪深入探索的目标是帮助用户把情绪名称和自己的具体�
 - 不要用“你刚才提到……”“你刚才说……”“你说的是……”机械复述用户原句；也不要说“这个想法挺具体的”“你说得很清楚”“说得很详细”“表达得很好”等评价回答本身的话。
 - 不要只是把[情绪]名称塞进固定句式里。如果某种说法放在当前情绪或情境里听起来别扭、重复、带有预设，必须自然改写。
 - 不要用“冲动”“倾向”等研究术语直接问用户，也不要预设用户一定有身体反应、行为反应、想法或想做的事情。
+- **不要把用户报告的睡眠、身体感觉或外在表现解释成某个情绪造成的生理反应，也不要用这些表现去证明某个情绪“已经影响到了身体”。** 例如不要说“失眠是身体对这种无力感的一种反应”“这说明这份压力已经影响到了你的休息和恢复”“心跳快说明焦虑已经影响到身体”。这些说法带有未经用户确认的因果或临床解释。这里的任务只是接住用户描述的体验，而不是解释它为什么发生。更自然的回应可以是“连晚上都很难睡着，听起来那段时间确实很难真正放松下来”或“睡不好本身就很消耗人”，然后自然进入下一项探索。
 - 如果用户已经在前面的回答中明确提供了某一步需要的信息，简短回应后直接进入还没有探索的内容，不要机械重复。
 - **同一个情绪下，每一种探索内容最多问一次。** 尤其是行为/动机问题，用户回答过“想做什么、说什么或避开什么”后，后面绝对不要再以不同措辞重复询问这一内容。
 - 在提出下一题前，先回看当前情绪已经问过并得到回答的内容，只进入尚未探索的下一项。顺序为：认知 →（整个阶段3尚未问过时才问一次整体身体/外在表现）→ 行为/动机 → 具体情境。完成具体情境后，这个情绪的探索已经结束，不得再回到认知、身体或行为/动机问题。
@@ -689,6 +701,7 @@ b. 情绪深入探索的目标是帮助用户把情绪名称和自己的具体�
 
 1）认知（cognitive）
 探索目标：帮助用户注意这种情绪出现时，当时脑海里最直接冒出的具体想法。
+**如果这是刚开始探索这个情绪的第一个问题，必须先完成上面的共情开场，再提出认知问题；不要直接从“我们来聊聊[情绪]”接到认知提问。认知问题本身的结构保持不变。**
 问法要自然、具体、容易理解，并给用户充分表达的空间。可以采用“当时这种感受出现的时候，你脑海里最直接会冒出什么想法？如果愿意，可以尽量具体地说说。”这一类自然表达作为风格参考，但不要固定使用某一句模板，也不要再问“这些想法是怎样和当时的情境联系起来的”之类抽象问题。
 原则上在这个问题里给1-2个很短的可能想法作为例子，帮助用户理解你在问什么。例子必须根据当前事件和当前情绪即时生成：先判断这个情绪在当前事件中的核心体验，再检查每个例子是否真的体现**这个情绪**，而不只是符合事件本身。如果例子更像其他情绪，删掉并重新生成。只有实在无法生成自然且贴切的例子时，才可以不举例。引出例子时直接自然地说“比如‘……’或‘……’”即可，不要说“比如你会不会想……”这类带预设的句式。例子不得照搬固定示例，也不要在例子后再追加“你当时自己是怎么想的？”等重复追问。
 提问末尾加：[[S3_COG]]
@@ -704,7 +717,7 @@ b. 情绪深入探索的目标是帮助用户把情绪名称和自己的具体�
 - 措辞必须自然。不要使用“语气里有什么特别的表现”这类生硬说法；根据上下文可以自然地说“语气有没有变化”“说话的语气有没有和平时不一样”等，但不要固定套用某一句。
 提问末尾加：[[S3_BODY]]
 
-收到回答后：先用1句自然、有分量的情绪验证回应用户刚才描述的体验，语气参考上面的咨询师式倾听原则；不要机械复述身体反应，也不要评价回答本身。然后在同一条消息里自然进入第3步。不要继续追问身体反应，也不要只回应后停住。
+收到回答后：先用1句自然、有分量的情绪验证回应用户刚才描述的体验，语气参考上面的咨询师式倾听原则；不要机械复述身体反应，也不要评价回答本身。**尤其不要把睡眠问题、身体感觉或外在表现直接归因于当前情绪，不要说“X是身体对这种情绪的反应”“这说明这种情绪已经影响到你的身体/休息/恢复”等。** 如果用户说“会失眠”，可以回应类似“连晚上都很难睡着，听起来那段时间确实很难真正放松下来”或“睡不好本身就很消耗人”，但不要解释失眠是由无力感、焦虑或压力造成的。然后在同一条消息里自然进入第3步。不要继续追问身体反应，也不要只回应后停住。
 
 3）行为/动机（motivational / action tendency）
 探索目标：帮助用户注意这种情绪是否让他们特别想做什么、说什么，或者想避开什么。这里是在回顾当时自然出现的反应，不是让用户制定下一步行动，也不是给建议。
@@ -882,6 +895,8 @@ Q1：先判断用户是否实际提到任何工作上的压力、困扰或不舒
 
 🔹 情况B（仅当用户已有具体事件时）：用户明确说了某件特定的事发生在某个时间点，且描述了事件经过。则说：
 "能详细说说这件事吗？比如是什么时候、在哪儿发生的，当时有谁在场，具体发生了什么。可以想象你在跟朋友吐槽，想说什么就说什么 😊"
+
+⚠️ 情况A和情况B的“具体事件”提问都只允许问一次。这里列出的“什么时候、在哪儿、有谁在场、发生了什么”是帮助用户回忆的提示，不是必须逐项填写的清单。只要用户在回答后已经描述了一件可以辨认的具体经历，并说明了核心经过，就视为Q1完成。不要因为用户没有交代地点、所有在场人物或其他细节而再次问“能详细说说这件事吗”。Q1完成后必须直接判断这是人际/沟通型事件还是非人际事件，并进入Q2或Q4。
 
 Q2：这一步【只适用于确实存在明确沟通对象的人际事件】。先根据用户刚刚描述的具体事件判断，事件的核心困难是否来自与某个具体人的互动、冲突、误解、质疑、指责、协作或意见不一致，而且“和这个人沟通”在情境上确实合理。不要因为事件里出现了医院、领导、同事、患者等人物，就自动认为存在“对方”。
 
@@ -1147,12 +1162,46 @@ let scales = {
 let larkRowNumber = null;
 let larkSaveQueue = Promise.resolve();
 const startTime = new Date();  // used for duration calculation
+const stageTimes = {
+  stage1_start:       startTime,   // page load = Stage 1 start
+  pre_measure_start:  null,        // set when pre-matrices begin
+  stage2_start:       null,        // set when pre-matrices complete (Stage 2 begins)
+  post_measure_start: null,        // set when post-matrices begin
+  another_start:      null,        // set when LEAS question is asked
+  another_end:        null,        // set when another_emotion is captured
+};
 
 function toBeijingTime(date) {
   // UTC+8, formatted as YYYY-MM-DD HH:MM:SS
   const bjt = new Date(date.getTime() + 8 * 60 * 60 * 1000);
   return bjt.toISOString().replace('T', ' ').slice(0, 19) + ' (BJT)';
 }
+
+function getDurationSnapshot() {
+  const now = new Date();
+  const elapsedSeconds = function(start, end) {
+    if (!start) return null;
+    return Math.round(((end || now) - start) / 1000);
+  };
+
+  return {
+    duration: elapsedSeconds(startTime, null),
+    stage1_duration: elapsedSeconds(stageTimes.stage1_start, stageTimes.pre_measure_start),
+    pre_measure_duration: stageTimes.pre_measure_start
+      ? elapsedSeconds(stageTimes.pre_measure_start, stageTimes.stage2_start)
+      : null,
+    emotion_duration: stageTimes.stage2_start
+      ? elapsedSeconds(stageTimes.stage2_start, stageTimes.post_measure_start)
+      : null,
+    post_measure_duration: stageTimes.post_measure_start
+      ? elapsedSeconds(stageTimes.post_measure_start, stageTimes.another_start)
+      : null,
+    another_event_duration: stageTimes.another_start
+      ? elapsedSeconds(stageTimes.another_start, stageTimes.another_end)
+      : null
+  };
+}
+
 let postMatricesStarted = false;  // guard: startPostMatrices fires only once
 let userMsgCount = 0;
 let textData = { stress_event: '', specific_event: '', selected_emotions: '', another_event: '', another_emotion: '' };
@@ -1169,7 +1218,7 @@ function saveToLark() {
       const payload = {
         participant_id: participantId,
         condition: CONDITION,
-        duration: Math.round((new Date() - startTime) / 1000),
+        ...getDurationSnapshot(),
         ...scales,
         state_anxiety_pre_1: matrixData.state_anxiety_pre[0], state_anxiety_pre_2: matrixData.state_anxiety_pre[1], state_anxiety_pre_3: matrixData.state_anxiety_pre[2], state_anxiety_pre_4: matrixData.state_anxiety_pre[3], state_anxiety_pre_5: matrixData.state_anxiety_pre[4],
         state_stress_pre_1:  matrixData.state_stress_pre[0],  state_stress_pre_2:  matrixData.state_stress_pre[1],  state_stress_pre_3:  matrixData.state_stress_pre[2],  state_stress_pre_4:  matrixData.state_stress_pre[3],  state_stress_pre_5:  matrixData.state_stress_pre[4],
@@ -1180,16 +1229,16 @@ function saveToLark() {
         specific_event:    textData.specific_event,
         selected_emotions: textData.selected_emotions,
         another_event:     textData.another_event || leasResponse,
-      another_emotion:   textData.another_emotion,
+        another_emotion:   textData.another_emotion,
       };
       if (larkRowNumber) {
         payload.row_number = larkRowNumber;
-        const resp = await fetch(PROXY_URL + '/save-update', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        const resp = await fetch(PROXY_URL + '/save-update', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), keepalive: true });
         const data = await resp.json().catch(function() { return {}; });
         if (!resp.ok) throw new Error('Lark /save-update failed: HTTP ' + resp.status + ' ' + JSON.stringify(data));
         console.log('[Save] Updated row', larkRowNumber);
       } else {
-        const resp = await fetch(PROXY_URL + '/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        const resp = await fetch(PROXY_URL + '/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), keepalive: true });
         const data = await resp.json().catch(function() { return {}; });
         if (!resp.ok) throw new Error('Lark /save failed: HTTP ' + resp.status + ' ' + JSON.stringify(data));
         if (!data.rowNumber) throw new Error('Lark /save returned no rowNumber: ' + JSON.stringify(data));
@@ -1420,7 +1469,7 @@ async function saveEvalToLark() {
     const payload = {
       participant_id: participantId,
       condition: CONDITION,
-      duration: Math.round((new Date() - startTime) / 1000),
+      ...getDurationSnapshot(),
       ...scales,
       state_anxiety_pre_1: matrixData.state_anxiety_pre[0], state_anxiety_pre_2: matrixData.state_anxiety_pre[1], state_anxiety_pre_3: matrixData.state_anxiety_pre[2], state_anxiety_pre_4: matrixData.state_anxiety_pre[3], state_anxiety_pre_5: matrixData.state_anxiety_pre[4],
       state_stress_pre_1:  matrixData.state_stress_pre[0],  state_stress_pre_2:  matrixData.state_stress_pre[1],  state_stress_pre_3:  matrixData.state_stress_pre[2],  state_stress_pre_4:  matrixData.state_stress_pre[3],  state_stress_pre_5:  matrixData.state_stress_pre[4],
@@ -1585,6 +1634,7 @@ function renderMatrix(items, title, storageKey, btnLabel, onComplete) {
 
 function startPreMatrices() {
   console.log('[Matrix] startPreMatrices called');
+  stageTimes.pre_measure_start = new Date();
   matrixPhase = 1;
   document.getElementById('chatSubmit').disabled = true;
   document.getElementById('chatInput').disabled  = true;
@@ -1614,15 +1664,22 @@ function startPreMatrices() {
       }
       console.log('[PreMatrix] Complete, stage:', currentStage);
 
+      stageTimes.stage2_start = new Date();
       submitResponse('量表已完成，可以继续了');
     });
   });
 }
 
 function startPostMatrices() {
+  stageTimes.post_measure_start = new Date();
   matrixPhase = 3;
   document.getElementById('chatSubmit').disabled = true;
   document.getElementById('chatInput').disabled  = true;
+
+  const postMatrixIntro = '下面请根据你**此刻**的状态回答下面的问题：';
+  s.push({ role: 'assistant', content: postMatrixIntro });
+  appendMsg('ai', postMatrixIntro);
+
   renderMatrix(ANXIETY_ITEMS, '问卷 1/2：状态焦虑', 'state_anxiety_post', '下一题 →', function() {
     document.getElementById('matrixSlot').innerHTML = '';
     matrixPhase = 4;
@@ -1740,7 +1797,7 @@ function updateState(t) {
   }
   if (currentStage === 1) {
     if      (t.includes("工作的哪个方面"))                                  currentQuestion = 1;
-    else if (t.includes("描述一下这件具体发生的事吗"))                      currentQuestion = 1;
+    else if (t.includes("描述一下这件具体发生的事吗") || t.includes("可以举个具体的例子吗") || t.includes("能详细说说这件事吗")) currentQuestion = 1;
     else if (t.includes("你当时有没有尝试和对方沟通过你的想法") || t.includes("和对方沟通过你的想法")) { currentQuestion = 2; q2Mode = 'communication'; }  // interpersonal Q2
     else if (t.includes("对方当时是怎么回应你的") || t.includes("对方可能会怎么回应") || t.includes("处理当时的情况") || t.includes("有助于处理这件事") || t.includes("这样做对你应对这件事有帮助吗")) currentQuestion = 3;  // Q3 step delivered → user will answer Q3
     else if (t.includes("有没有跟当时不在场的人") || t.includes("有没有和其他人（比如家人、朋友、同事）聊过这件事") || t.includes("有没有和其他人聊过这件事")) currentQuestion = 4;  // AI asked Q4 → user will answer Q4
@@ -1783,7 +1840,10 @@ function updateState(t) {
       else if (t.includes("能很容易地描述"))                        currentQuestion = 5;
       else if (t.includes("谢谢你的分享"))                          { currentStage = 5; }
     } else if (currentStage === 5) {
-      if (t.includes("别的让你困扰或有压力的经历") && !leasAsked) { leasAsked = true; }
+      if ((t.includes("别的让你困扰或有压力的经历") || t.includes("其他类似的经历") || t.includes("任何让你困扰或者有压力的经历")) && !leasAsked) {
+        leasAsked = true;
+        stageTimes.another_start = new Date();
+      }
       if (t.includes("本次对话到此结束"))                            { saveToLark(); setTimeout(showContinueButton, 800); }
     }
   } else { // control
@@ -1798,7 +1858,10 @@ function updateState(t) {
       else if (t.includes("能很容易地描述"))                        currentQuestion = 5;
       else if (t.includes("谢谢你的分享"))                          { currentStage = 4; }
     } else if (currentStage === 4) {
-      if (t.includes("别的让你困扰或有压力的经历") && !leasAsked) { leasAsked = true; }
+      if ((t.includes("别的让你困扰或有压力的经历") || t.includes("其他类似的经历") || t.includes("任何让你困扰或者有压力的经历")) && !leasAsked) {
+        leasAsked = true;
+        stageTimes.another_start = new Date();
+      }
       if (t.includes("本次对话到此结束"))                            { saveToLark(); setTimeout(showContinueButton, 800); }
     }
   }
@@ -1842,6 +1905,26 @@ function classifyStage3Question(text) {
   return null;
 }
 
+function stage3OpeningHasEmpathicLeadIn(text) {
+  if (typeof text !== 'string') return false;
+
+  // Only evaluate turns that are actually starting an emotion and already contain
+  // the first cognition question. A multiple-emotion "which one first?" turn is
+  // allowed to remain brief because the empathic lead-in comes after the choice.
+  if (classifyStage3Question(text) !== 'COG') return true;
+
+  const visible = stripStage3Markers(text);
+  const questionIndex = visible.search(/[？?]/);
+  const beforeQuestion = questionIndex >= 0 ? visible.slice(0, questionIndex) : visible;
+
+  // Require genuine contextual/empathic content before the first question,
+  // rather than only "我们来聊聊X。" followed immediately by the cognition prompt.
+  const hasEmpathicLanguage = /(?:听起来|看起来|像是|确实|不容易|不轻松|辛苦|难受|承受|消耗|让人|压得|拉扯|被困住|不由自己|很难)/.test(beforeQuestion);
+  const hasContextualLeadIn = beforeQuestion.replace(/^\s*(?:接下来)?我们来聊聊[^。！？!?]*[。！？!?]?\s*/, '').trim().length >= 16;
+
+  return hasEmpathicLanguage && hasContextualLeadIn;
+}
+
 function stage3ReplyHasNextQuestion(text) {
   return !!classifyStage3Question(text) || text.includes('我们再来评估一下');
 }
@@ -1881,13 +1964,17 @@ function shouldRepairStage2EmotionFormat(text) {
 }
 
 function getStage2FormatRepairInstruction() {
-  return `【当前流程状态：阶段2情绪分析。不得跳到阶段3、阶段4或阶段5。】你刚才的回复没有严格执行阶段2。请只重新生成这一条阶段2回复，并严格使用下面的版式：
+  return `【当前流程状态：阶段2情绪分析。不得跳到阶段3、阶段4或阶段5。】你刚才的回复没有严格执行阶段2。请只重新生成这一条阶段2回复，并严格使用下面的版式和语气：
 1. 先用一句很短的自然过渡语。
-2. 接着列出3-5个候选情绪，每个情绪必须单独一行，格式必须是：- **情绪名称**：一句很短、只基于用户实际描述的说明。说明要自然、具体地把用户提到的情境写进去，不要使用“可能和……有关”“可能与……有关”“与……有关”这种抽象、报告式的句型。
-3. 每个候选情绪都必须用Markdown粗体标出情绪名称。
-4. 不要把多个候选情绪合并在同一个自然段里。
-5. 列表之后，再单独一段询问：你觉得这些情绪里哪些符合你的感受？请尽可能把所有符合的都选出来，可以多选。如果你还有其他没有提到的感受，也可以告诉我。
-6. 保持原来候选情绪的语义，不要新增没有依据的心理解释。
+2. 接着列出3-5个候选情绪，每个情绪必须单独一行，格式必须是：- **情绪名称**：解释。解释不必刻意很短；如果需要，可以用1-3句话把这个情绪为什么可能出现在用户的具体处境里说清楚。
+3. 解释时优先直接对用户说话，主语使用“你”，例如“这可能会让你……”“你一边……一边……时，可能会……”。不要反复写泛化的“让人觉得”。
+4. 语气要像一位成熟、温和的心理咨询师在帮助来访者辨认自己的情绪：先抓住用户处境里真正有分量的部分，再试探性地解释这个部分可能带来的主观体验。重点回答“在你经历的这些事情里，什么地方可能让你有这种感觉？”，而不是把事件和情绪标签简单并排。
+5. 每条说明可以比用户原话多走半步，例如指出“想改变但能控制的空间很少”“重要结果不确定”“同时被两个互相冲突的要求拉扯”“反复担心某个后果”“期待和现实之间有落差”等，但只有用户已经提供的信息支持时才能这样解释。不得编造新的经历、动机或心理原因。
+6. 不同情绪必须体现不同的主观意义。不要让所有项目都只是“面对X，可能感到Y”，也不要把同一套解释换一个情绪名称重复使用。
+7. 禁止循环、敷衍式写法，例如“面对医保和绩效压力，可能会感到无力”“面对不确定性，可能会觉得焦虑”“担心超支，也许会感到担忧”。要把为什么说清楚，让用户读完能看懂这种情绪是怎样从自己的处境里产生的。
+8. 每个候选情绪都必须用Markdown粗体标出情绪名称。不要把多个候选情绪合并在同一个自然段里。
+9. 列表之后，再单独一段询问：你觉得这些情绪里哪些符合你的感受？请尽可能把所有符合的都选出来，可以多选。如果你还有其他没有提到的感受，也可以告诉我。
+10. 不要使用“可能和……有关”“可能与……有关”“与……有关”这种抽象、报告式的句型。保持开放、试探性的语气，不要把候选情绪说成已经确定的事实。
 只输出修改后的参与者可见回复，不要解释格式规则。`;
 }
 
@@ -1906,6 +1993,15 @@ function stage3AcknowledgementNeedsRepair(text) {
     return true;
   }
 
+  // Do not let Stage 3 turn a reported bodily/sleep experience into an
+  // unsupported causal or clinical interpretation of the current emotion.
+  if (currentQuestion === 2 && (
+      /(?:失眠|睡不着|睡眠|心跳|呼吸|身体|外在表现).{0,16}(?:是|属于).{0,16}(?:情绪|无力感|焦虑|压力).{0,12}(?:反应)/.test(text) ||
+      /(?:这|这也)?说明.{0,24}(?:情绪|压力|无力感|焦虑).{0,24}(?:影响到|影响了).{0,20}(?:身体|睡眠|休息|恢复)/.test(text)
+    )) {
+    return true;
+  }
+
   return false;
 }
 
@@ -1921,6 +2017,13 @@ function shouldRepairStage3Reply(text) {
   if (stage3AcknowledgementNeedsRepair(text)) return true;
 
   const asked = classifyStage3Question(text);
+
+  // When an emotion is being opened, the first cognition question must be preceded
+  // by a brief context-sensitive empathic lead-in. For multiple selected emotions,
+  // the initial "which one first?" question is still allowed without this lead-in.
+  if (currentQuestion === 0 && asked === 'COG' && !stage3OpeningHasEmpathicLeadIn(text)) {
+    return true;
+  }
 
   // For the first three steps, the next category is deterministic. Repair not only
   // missing questions but also repeated/out-of-order questions (e.g. ACTION twice).
@@ -1943,7 +2046,9 @@ function shouldRepairStage3Reply(text) {
 
 function getStage3RepairInstruction() {
   let stateRule = '';
-  if (currentQuestion === 1) {
+  if (currentQuestion === 0) {
+    stateRule = '现在正在开始探索一个用户已经选择好的情绪。如果已经确定了要先聊哪个情绪，先用“我们来聊聊XX。”自然进入，然后必须先用1-2句结合用户具体经历的共情和情境重述，让用户感到这段处境被真正听见和理解；可以采用旧版“听起来你在面对……时感受到这种情绪。像这样的感受确实不容易承受……”的语气，但必须根据当前事件自然改写。完成这个共情开场后，再提出当前结构中的第一个认知问题，并在末尾加[[S3_COG]]。不要改变认知问题的目标和结构，也不要给建议、诊断或隐藏原因分析。';
+  } else if (currentQuestion === 1) {
     stateRule = stage3BodyQuestionAsked
       ? '用户刚刚已经回答了当前情绪的认知问题。下一步只能进入行为/动机问题，不要再问认知，也不要再问身体/外在表现。'
       : '用户刚刚已经回答了当前情绪的认知问题。下一步只能询问整个阶段3唯一一次的整体身体/外在表现问题，不要重复认知问题。';
@@ -1952,10 +2057,10 @@ function getStage3RepairInstruction() {
   } else if (currentQuestion === 3) {
     stateRule = '用户刚刚已经回答了当前情绪的行为/动机问题。下一步只能进入具体情境问题。绝对不要换一种说法再次询问想做什么、想说什么或想避开什么。';
   } else if (currentQuestion === 4) {
-    stateRule = '用户刚刚已经回答了当前情绪的具体情境问题，因此这个情绪的探索已经完成。像“在看到同事都做得比我好的时候”“在有很多事情要做的时候”这类简短的触发情境也算完整回答。绝对不要再问认知、身体/外在表现、行为/动机或具体情境，也不要要求用户把这个时刻再说具体一点。先总结这个情绪；如果还有阶段2已选择但未探索的情绪，用“接下来我们来聊聊XX。”过渡，并直接从下一个情绪的认知问题开始；如果已全部完成，则按系统提示进入结束该阶段的逻辑。';
+    stateRule = '用户刚刚已经回答了当前情绪的具体情境问题，因此这个情绪的探索已经完成。像“在看到同事都做得比我好的时候”“在有很多事情要做的时候”这类简短的触发情境也算完整回答。绝对不要再问认知、身体/外在表现、行为/动机或具体情境，也不要要求用户把这个时刻再说具体一点。先总结这个情绪；如果还有阶段2已选择但未探索的情绪，用“接下来我们来聊聊XX。”过渡。开始新的情绪后，先用1句结合具体事件的共情和情境重述，再从该情绪的认知问题开始；不要从过渡语直接跳到提问。如果已全部完成，则按系统提示进入结束该阶段的逻辑。';
   }
 
-  return `你刚才的阶段3回复出现了漏问、重复或顺序错误。请重新生成这一条回复。\n${stateRule}\n1. 在进入下一题前，先给1句自然、有内容的情绪验证，让用户感到自己的体验被听见和接住。语气参考一位成熟、温和、善于倾听的心理咨询师在简短支持性对话中的回应方式，但不要诊断、治疗解释或给解决问题的建议。不要只说“嗯，明白了”“好的”“知道了”这类很轻的回应，也不要机械复述用户原话。好的验证可以自然回应这段体验里的压力、辛苦、拉扯、失落或害怕，并可以在有依据时适度概括情境和感受之间的联系；如果比用户原话多走半步，用“听起来……”“像是……”“可能……”等开放措辞，不要把推测说成事实。不要用“你刚才提到……”“你刚才说……”“你说的是……”来重复用户原话；也不要评价回答本身的形式或质量，禁止说“这个想法挺具体的”“你说得很清楚”“说得很详细”“表达得很好”等。不要使用“我理解”“这很正常”“这很自然”“谢谢你的分享”等固定同理模板；\n2. 严格按照上面的当前进度，只继续尚未完成的下一步；同一个情绪下每一种探索内容最多问一次。用户已经给出一个实际想法后，认知部分立即完成，禁止再问“还有其他想法吗”“还能想到什么”“还有什么念头”等第二个认知问题。问题本身可以用“如果愿意，可以尽量具体地说说”等方式鼓励充分表达，但用户回答后不要围绕同一方面追加追问；\n3. 不要使用固定模板。措辞必须结合当前情绪、事件、人物关系和用户刚才的回答，像自然中文对话；\n4. 不要重复用户已经明确回答过的信息，不要预设用户一定有身体反应或想做的事情，也不要用“冲动/倾向”等研究术语直接问用户；\n5. 如果需要提出认知问题，原则上给1-2个很短、自然的例子帮助理解；例子必须同时贴合当前具体情境和当前情绪的核心体验；引出例子时直接用“比如‘……’或‘……’”，不要用“比如你会不会想……”；\n6. 如果需要提出身体/外在表现问题，可以中性地点到呼吸、心跳、语气、表情等方面，但不要预设具体变化，也不要使用“脸红”“呼吸急促”“心跳加快”等具体反应作为示例；措辞要自然，不要说“语气里有什么特别的表现”；\n7. 如果提出阶段3问题，按系统提示在回复末尾加对应内部标记 [[S3_COG]]、[[S3_BODY]]、[[S3_ACTION]] 或 [[S3_CONTEXT]]。\n只重新生成这一条回复，不要解释这些规则。`;
+  return `你刚才的阶段3回复出现了漏问、重复或顺序错误。请重新生成这一条回复。\n${stateRule}\n1. 在进入下一题前，先给1句自然、有内容的情绪验证，让用户感到自己的体验被听见和接住。语气参考一位成熟、温和、善于倾听的心理咨询师在简短支持性对话中的回应方式，但不要诊断、治疗解释或给解决问题的建议。不要只说“嗯，明白了”“好的”“知道了”这类很轻的回应，也不要机械复述用户原话。好的验证可以自然回应这段体验里的压力、辛苦、拉扯、失落或害怕，并可以在有依据时适度概括情境和感受之间的联系；如果比用户原话多走半步，用“听起来……”“像是……”“可能……”等开放措辞，不要把推测说成事实。不要用“你刚才提到……”“你刚才说……”“你说的是……”来重复用户原话；也不要评价回答本身的形式或质量，禁止说“这个想法挺具体的”“你说得很清楚”“说得很详细”“表达得很好”等。不要使用“我理解”“这很正常”“这很自然”“谢谢你的分享”等固定同理模板；\n2. 严格按照上面的当前进度，只继续尚未完成的下一步；同一个情绪下每一种探索内容最多问一次。用户已经给出一个实际想法后，认知部分立即完成，禁止再问“还有其他想法吗”“还能想到什么”“还有什么念头”等第二个认知问题。问题本身可以用“如果愿意，可以尽量具体地说说”等方式鼓励充分表达，但用户回答后不要围绕同一方面追加追问；\n3. 不要使用固定模板。措辞必须结合当前情绪、事件、人物关系和用户刚才的回答，像自然中文对话；\n4. 不要重复用户已经明确回答过的信息，不要预设用户一定有身体反应或想做的事情，也不要用“冲动/倾向”等研究术语直接问用户；\n5. 如果需要提出认知问题，原则上给1-2个很短、自然的例子帮助理解；例子必须同时贴合当前具体情境和当前情绪的核心体验；引出例子时直接用“比如‘……’或‘……’”，不要用“比如你会不会想……”；\n6. 如果需要提出身体/外在表现问题，可以中性地点到呼吸、心跳、语气、表情等方面，但不要预设具体变化，也不要使用“脸红”“呼吸急促”“心跳加快”等具体反应作为示例；措辞要自然，不要说“语气里有什么特别的表现”。如果用户已经回答了这一题，回应时只接住这段体验，不要把睡眠或身体表现解释成当前情绪造成的“生理反应”，也不要说“这说明情绪/压力已经影响了你的身体、睡眠、休息或恢复”。例如用户说“会失眠”，可以自然回应“连晚上都很难睡着，听起来那段时间很难真正放松下来”，然后直接进入行为/动机问题；\n7. 如果提出阶段3问题，按系统提示在回复末尾加对应内部标记 [[S3_COG]]、[[S3_BODY]]、[[S3_ACTION]] 或 [[S3_CONTEXT]]。\n只重新生成这一条回复，不要解释这些规则。`;
 }
 
 function sendToAI(messages) {
@@ -2554,6 +2659,7 @@ async function submitResponse(text) {
     // For selected_emotions this is intentionally the user's selection/own emotion text,
     // never the AI's candidate emotion list.
     textData[pendingCapture] = text;
+    if (pendingCapture === 'another_emotion') stageTimes.another_end = new Date();
     if (pendingCapture === 'selected_emotions') {
       console.log('[Capture] selected_emotions =', textData.selected_emotions);
       // Persist the user's ACTUAL selection in the model context. The emotions
@@ -2568,7 +2674,7 @@ async function submitResponse(text) {
         currentQuestion = 0;
         s.push({
           role: 'system',
-          content: '【当前流程状态：阶段3情绪探索】用户刚刚已经完成阶段2的情绪选择。下一条助手回复必须从阶段3开始，只探索用户实际选择的情绪。不得跳到阶段4或阶段5。'
+          content: '【当前流程状态：阶段3情绪探索】用户刚刚已经完成阶段2的情绪选择。下一条助手回复必须从阶段3开始，只探索用户实际选择的情绪。若用户只选择了一个情绪，开始该情绪时必须先用“我们来聊聊[情绪]”进入，再用1-2句结合其具体经历的共情和情境重述，让用户先感到被听见和理解，然后才提出当前结构中的第一个认知问题；不得直接从“我们来聊聊[情绪]”跳到提问。若用户选择了多个情绪，先按阶段3规则让用户选择从哪一个开始；用户选定后，同样先做上述共情开场，再进入认知问题。不得跳到阶段4或阶段5。'
         });
       }
     }
@@ -2633,6 +2739,20 @@ async function submitResponse(text) {
         updateState(nextQ);
       }
     }, 300);
+    return;
+  }
+
+  // The participant has now answered the one allowed concrete-event prompt.
+  // Treat Q1 as complete and explicitly tell the model to move on, so it cannot
+  // ask "能详细说说这件事吗" a second time just because some optional details
+  // such as location or every person present were not mentioned.
+  if (currentStage === 1 && capturedField === 'specific_event') {
+    currentQuestion = 1;
+    s.push({
+      role: 'system',
+      content: '【阶段1 Q1已完成】用户刚刚已经回答了具体事件提问。不要再次询问“可以举个具体的例子吗”“能详细说说这件事吗”，也不要把时间、地点、在场人物当成必须逐项补齐的清单。现在直接根据这件事的核心性质判断：如果确实存在自然的直接沟通对象，进入Q2；如果核心困难来自工作量、制度、资源、绩效、政策、不确定性等而没有自然的“对方”，完全跳过Q2/Q3并直接进入Q4。'
+    });
+    sendToAI(s);
     return;
   }
 
@@ -3072,6 +3192,20 @@ function renderScaleWidget(bubble, leftLabel, rightLabel) {
   widget.appendChild(optsDiv);
   bubble.appendChild(widget);
 }
+
+const DURATION_AUTOSAVE_MS = 30000;
+
+setInterval(function() {
+  if ((userMsgCount > 0 || larkRowNumber) && document.visibilityState === 'visible') {
+    saveToLark();
+  }
+}, DURATION_AUTOSAVE_MS);
+
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'hidden' && (userMsgCount > 0 || larkRowNumber)) {
+    saveToLark();
+  }
+});
 
 document.getElementById('chatSubmit').addEventListener('click', handleSend);
 document.getElementById('chatInput').addEventListener('keydown', function(e) {
